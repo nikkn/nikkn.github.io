@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market analytics and quantitative research</title>
+<meta name="description" content="Quantitative research on financial markets and free, open-source tools for market analysis.">
+<link rel="canonical" href="https://nikolai-alexander.com/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Market analytics and quantitative research">
+<meta property="og:description" content="Quantitative research on financial markets and free, open-source tools for market analysis.">
+<meta property="og:url" content="https://nikolai-alexander.com/">
+<link rel="stylesheet" href="style.css">
+<style>
+.brand-text { font: 600 17px var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+.project { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 40px; align-items: start; margin-top: 8px; }
+.project h2 { margin-bottom: 10px; }
+.project .lede { font-size: 18px; color: var(--ink-2); margin: 0 0 18px; }
+.project .qlist { margin: 0 0 26px; }
+.project .maps { margin-top: 0; }
+.tags { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 18px; }
+.tags span { font: 600 12px var(--mono); color: var(--ink-2); border: 1px solid var(--line-2); border-radius: 999px; padding: 4px 10px; }
+.site-foot .about { max-width: 560px; color: var(--ink-2); }
+@media (max-width: 860px) { .project { grid-template-columns: 1fr; gap: 28px; } }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="brand-text">nikolai-alexander.com</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="#projects">Projects</a>
+      <a href="#about">About</a>
+      <a href="https://github.com/nikkn">GitHub</a>
+      <a href="https://x.com/nikkn_alexander">X</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="hero">
+    <p class="eyebrow">Research and open-source tools</p>
+    <h1>Market analytics and quantitative research</h1>
+    <p class="lede">Quantitative studies of financial markets and free, open-source tools for market analysis.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="/OptionsCone/">Explore OptionsCone</a>
+      <a class="btn" href="https://github.com/nikkn">GitHub</a>
+    </div>
+  </div>
+
+  <section id="projects">
+    <p class="eyebrow">Project</p>
+    <div class="project">
+      <div>
+        <h2>OptionsCone</h2>
+        <p class="lede">Probability, premium and positioning heatmaps for any stock with options, drawn on the price chart.</p>
+        <div class="tags"><span>Python</span><span>Windows</span><span>AGPL-3.0</span></div>
+        <ul class="qlist">
+          <li>Touch and expiry probabilities, implied volatility, open interest, spreads and time value</li>
+          <li>Implied vs realized: option prices against 10,000 paths simulated from the stock's own history</li>
+          <li>Runs on your own computer, free and open source</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn primary" href="/OptionsCone/">Website</a>
+          <a class="btn" href="https://github.com/nikkn/OptionsCone">Source code</a>
+        </div>
+      </div>
+      <div class="maps">
+        <a class="map" href="/OptionsCone/"><span>Implied volatility</span><img src="img/cone-iv.png" width="550" height="840" alt="Broadcom (AVGO), implied volatility per contract as a heatmap."></a>
+        <a class="map" href="/OptionsCone/"><span>Implied vs realized</span><img src="img/cone-gap.png" width="550" height="840" alt="Broadcom (AVGO), implied minus realized touch probability: blue where the market prices a higher probability, red where lower."></a>
+        <a class="map" href="/OptionsCone/"><span>Premium per unit risk</span><img src="img/cone-vpr.png" width="550" height="840" alt="Broadcom (AVGO), option price relative to the average worst intrinsic value on simulated paths."></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-foot" id="about">
+  <div class="wrap">
+    <div>
+      <p class="about"><strong>About.</strong> Nikolai Alexander. 10+ years of quantitative research on financial markets. Former product lead and associate commercial director in biotech. I build open-source tools for market analysis.</p>
+      <p>&copy; 2026 Nikolai Alexander</p>
+    </div>
+    <div>
+      <p><a href="/OptionsCone/">OptionsCone</a> &middot; <a href="https://github.com/nikkn">GitHub</a> &middot; <a href="https://x.com/nikkn_alexander">X</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
