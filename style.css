@@ -5,7 +5,7 @@
 @font-face { font-family: "IBM Plex Mono"; font-style: normal; font-weight: 600; font-display: swap; src: url("fonts/ibm-plex-mono-600.woff2") format("woff2"); }
 
 :root {
-  --bg: #fcfbf8; --panel: #ffffff; --ink: #12130f; --ink-2: #4a4b43; --ink-3: #7d7e74;
+  --bg: #fbfbfa; --panel: #ffffff; --ink: #12130f; --ink-2: #4a4b43; --ink-3: #7d7e74;
   --line: #e3e2d9; --line-2: #cfcec2; --accent: #256abf; --accent-ink: #ffffff;
   --track: #c2410c; --m5: #0f766e; --m10: #7c4bb8; --code: #f1f0ea;
   --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
