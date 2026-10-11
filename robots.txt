@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nikolai-alexander.com/sitemap.xml
+Sitemap: https://nikolai-alexander.com/OptionsCone/sitemap.xml
