@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free options probability calculator and heatmaps | OptionsCone</title>
+<meta name="description" content="OptionsCone is a free Windows app: probability of touch, implied volatility and open interest as heatmaps on the price chart, compared with the stock&#39;s own history.">
+<link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/">
+<meta name="google-site-verification" content="AMuyXyZixV_yJbMoVUShqFuyZB4kxgZxZLLErU_1Yw0" />
+<link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OptionsCone: probability, premium and positioning heatmaps">
+<meta property="og:description" content="The option chain as heatmaps on the price chart, compared with the stock&#39;s own history. Free, for Windows.">
+<meta property="og:url" content="https://nikolai-alexander.com/OptionsCone/">
+<meta property="og:image" content="https://nikolai-alexander.com/OptionsCone/img/social.png?v=6">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="OptionsCone: a probability cone over the listed option strikes of a stock, with implied and historical contour lines.">
+<meta property="og:site_name" content="OptionsCone">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "OptionsCone",
+  "description": "Desktop app with probability, premium and positioning heatmaps for any stock with options: touch and expiry probabilities, implied volatility, open interest, spreads, time value and premium relative to risk, compared with what the stock realized over the last ten years.",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Windows 10, Windows 11",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "downloadUrl": "https://github.com/nikkn/OptionsCone/releases/latest",
+  "screenshot": "https://nikolai-alexander.com/OptionsCone/img/avgo/app.png",
+  "author": { "@type": "Person", "name": "Nikolai Alexander" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "What is the probability of touch?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The probability that the stock price reaches a given strike at any time before expiry, even if it moves away again afterwards. It is always at least as high as the probability of finishing beyond the strike, and often about twice as high." } },
+    { "@type": "Question", "name": "Is delta the probability of an option expiring in the money?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Not exactly. For short-dated options at moderate volatility the two are close, but the higher the volatility and the longer the time to expiry, the further they drift apart." } },
+    { "@type": "Question", "name": "Can I use OptionsCone without trading options?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. For a stock position it shows how likely a stop level, a price target or the break-even price is to be reached within a given time, from option prices and, with Pro, from the stock's own last five and ten years." } },
+    { "@type": "Question", "name": "Is OptionsCone free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The probability cone and the implied volatility, open interest and spread maps are free. Pro adds the historical models and the seller maps." } },
+    { "@type": "Question", "name": "Does OptionsCone run on Mac or Linux?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Not yet. OptionsCone is available for Windows 10 and 11." } }
+  ]
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="./"><picture><source media="(prefers-color-scheme: dark)" srcset="brand/optionscone-wordmark-dark.svg"><img src="brand/optionscone-wordmark-light.svg" alt="OptionsCone" width="183" height="34"></picture></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./" aria-current="page">Home</a>
+      <a href="use-cases.html">Use cases</a>
+      <a href="manual.html">Manual</a>
+      <a href="methods.html">Methods</a>
+      <a href="https://github.com/nikkn/OptionsCone">GitHub</a>
+      <a class="btn small primary" href="https://github.com/nikkn/OptionsCone/releases/latest">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Probability, premium and positioning heatmaps for any stock with options.</h1>
+    <p class="lede">OptionsCone turns the option chain into heatmaps on the price chart: touch and expiry probabilities, implied volatility, open interest, spreads, time value and premium relative to risk. It compares what the option market implies with what the stock&#39;s own history says. For option traders and for anyone who holds stocks. Free, for Windows.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="https://github.com/nikkn/OptionsCone/releases/latest">Download for Windows</a>
+      <span class="btn-note">Windows 10 and 11 &middot; no installation</span>
+    </div>
+  </div>
+
+  <div class="maps">
+    <figure class="mapfig"><a class="map" href="img/avgo/chart-p.png"><span>Touch probability</span><img src="img/avgo/cone-p.png" width="550" height="840" alt="Broadcom (AVGO), Touch probability: dark near the money, fading where a touch becomes unlikely."></a><figcaption>The chance that the price touches each strike before that expiry, implied from the option prices: dark near the money, fading where a touch becomes unlikely.</figcaption></figure>
+    <figure class="mapfig"><a class="map" href="img/avgo/chart-iv.png"><span>Implied volatility</span><img src="img/avgo/cone-iv.png" width="550" height="840" alt="Broadcom (AVGO), Implied volatility per contract: skew and term structure."></a><figcaption>Each contract&#39;s own volatility, so skew and the term structure show at a glance. The badges above each expiry show its overall implied volatility.</figcaption></figure>
+    <figure class="mapfig"><a class="map" href="img/avgo/chart-oi.png"><span>Open interest</span><img src="img/avgo/cone-oi.png" width="550" height="840" alt="Broadcom (AVGO), Open interest: where the large positions sit."></a><figcaption>Where traders hold the largest positions, for every strike and expiry.</figcaption></figure>
+    <figure class="mapfig"><a class="map" href="img/avgo/chart-tv.png"><span>Time value per day <em class="pro">Pro</em></span><img src="img/avgo/cone-tv.png" width="550" height="840" alt="Broadcom (AVGO), Time value per remaining day, darkest near the money for short expiries."></a><figcaption>Each option&#39;s premium spread over the days it has left, so a seller&#39;s average daily income is visible at a glance.</figcaption></figure>
+    <figure class="mapfig"><a class="map" href="img/avgo/chart-gap.png"><span>Implied vs realized <em class="pro">Pro</em></span><img src="img/avgo/cone-gap.png" width="550" height="840" alt="Broadcom (AVGO), Implied minus realized touch probability: blue where the market prices in a higher probability than the stock realized, red where lower."></a><figcaption>The market&#39;s touch probability against the stock&#39;s own realized moves, measured with industry-standard simulation models. Points to potential trading opportunities.</figcaption></figure>
+    <figure class="mapfig"><a class="map" href="img/avgo/chart-vpr.png"><span>Premium per unit risk <em class="pro">Pro</em></span><img src="img/avgo/cone-vpr.png" width="550" height="840" alt="Broadcom (AVGO), premium relative to historical risk."></a><figcaption>How much premium a seller collects for each dollar of risk the stock&#39;s individual realized moves suggest. Higher means the risk is better paid.</figcaption></figure>
+  </div>
+
+  <section>
+    <p class="eyebrow">What you see</p>
+    <h2>Option chain heatmaps on the price chart</h2>
+    <div class="grid3">
+      <div class="card">
+        <h3>The cone</h3>
+        <p>Every dot is a listed contract. The color behind it is the probability that the price touches that strike before that expiry: dark near the money, fading to pale where a touch becomes unlikely. The cone widens with time because the price has longer to travel.</p>
+      </div>
+      <div class="card">
+        <h3>Three models</h3>
+        <p><span class="swatch" style="background:var(--track)"></span><strong>Implied</strong> from the option prices, with each contract's own volatility.<br>
+        <span class="swatch" style="background:var(--m5)"></span><strong>5y</strong> and <span class="swatch" style="background:var(--m10)"></span><strong>10y</strong> simulated from the stock's own price history. <em class="pro">Pro</em></p>
+      </div>
+      <div class="card">
+        <h3>Contour lines</h3>
+        <p>Pick a probability and each model draws a line through the listed strikes that match it at every expiry, above and below spot. Where the lines separate, the market and the stock's realized moves disagree.</p>
+      </div>
+    </div>
+    <figure class="shot" style="margin:34px 0 14px">
+      <a href="img/features.png"><img src="img/features-annotated.png" width="1824" height="998" loading="lazy" alt="OptionsCone showing Apple (AAPL): a selected contract with its tooltip, contour lines for three models, volatility badges, earnings stars, a moving average and the readout of a candle."></a>
+    </figure>
+    <ol class="marks">
+      <li><strong>Candle readout.</strong> Open, high, low and close of the day under the pointer.</li>
+      <li><strong>Price chart tools.</strong> Two moving averages, trend and horizontal lines, daily or weekly candles, ten years of history.</li>
+      <li><strong>Contour lines.</strong> The strikes that match your chosen probability at every expiry, one line per model.</li>
+      <li><strong>Expiry badges.</strong> The implied volatility of each expiry, and how it compares with the stock&#39;s realized volatility.</li>
+      <li><strong>Selected contract.</strong> Click a dot and its tooltip stays open: delta, gamma, implied volatility, touch and expire probabilities from the option market and from the last 5 and 10 years.</li>
+      <li><strong>Earnings dates.</strong> Filled where confirmed, hollow where projected; an expiry that spans a report prices a different risk.</li>
+    </ol>
+  </section>
+
+  <section id="use">
+    <p class="eyebrow">What it is for</p>
+    <h2>Not only for option traders</h2>
+    <p class="prose">Option prices contain the market's view of how likely future stock prices are. OptionsCone turns that view, and the stock's own history, into plain probabilities you can use whether or not you ever trade an option.</p>
+    <div class="grid3">
+      <div class="card">
+        <h3>Build realistic scenarios</h3>
+        <ul class="qlist">
+          <li>How far can the stock plausibly move by a given date, up and down?</li>
+          <li>What are the chances my price target or my break-even is reached?</li>
+          <li>How much does the market price around the next earnings date?</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Manage risk at entry</h3>
+        <ul class="qlist">
+          <li>How likely is a stop level to be hit during my holding period?</li>
+          <li>Where are large positions sitting, and are the quotes tight enough to trade?</li>
+          <li>Is there an earnings date inside my horizon?</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Identify opportunities <em class="pro">Pro</em></h3>
+        <ul class="qlist">
+          <li>Where does the market price in a higher probability than the stock realized?</li>
+          <li>Which strikes pay a seller the most premium per unit of historical risk?</li>
+          <li>Where does time value melt fastest per day?</li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:22px"><a href="use-cases.html">See worked examples with real numbers</a>. The app shows probabilities, not recommendations.</p>
+  </section>
+
+  <section>
+    <div class="grid2">
+      <div>
+        <p class="eyebrow">The numbers</p>
+        <h2>Every value in a table</h2>
+        <p>The data table lists whatever the cone shows, strike by expiry, for the contracts that are actually listed. Switch it to delta to compare a whole chain with your broker at once.</p>
+        <p>A data quality report shows how many quotes passed the checks, by moneyness, and the Methods section explains what every number means. Nothing is hidden behind a score.</p>
+      </div>
+      <figure>
+        <img class="shot" src="img/avgo/table.png" width="1384" height="823" loading="lazy" alt="Data table of touch probabilities for Broadcom (AVGO), strikes in rows and expiries in columns.">
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="grid2">
+      <div>
+        <p class="eyebrow">Under the hood</p>
+        <h2>Careful with every quote</h2>
+        <p>Each contract's implied volatility is solved with a model for American options that accounts for dividends. Impossible quotes are removed and doubtful ones are flagged. The historical models keep the fat tails and the calm and turbulent stretches of the real history.</p>
+        <p>Every chain you download is archived on your computer, so a history of the option market builds up for every ticker you follow. <a href="methods.html">Read the methods</a>.</p>
+      </div>
+      <div>
+        <p class="eyebrow">Get started</p>
+        <h2>Three steps</h2>
+        <ol class="steps">
+          <li><strong>Download</strong> <code>OptionsCone.exe</code> from the <a href="https://github.com/nikkn/OptionsCone/releases/latest">releases page</a> and run it. If Windows warns about an unknown app, click <em>More info</em>, then <em>Run anyway</em>.</li>
+          <li><strong>Type a ticker</strong>, for example <code>AAPL</code>, and press <em>download</em>. The first download takes a minute or two.</li>
+          <li><strong>Read the cone.</strong> Set the probability you care about and compare the three lines. The <a href="manual.html">manual</a> explains every control.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="prose">
+      <p class="eyebrow">Questions</p>
+      <h2>Frequently asked</h2>
+      <details class="faq"><summary>What is the probability of touch?</summary>
+        <p>The probability that the stock price reaches a given strike at any time before expiry, even if it moves away again afterwards. It is always at least as high as the probability of finishing beyond the strike, and often about twice as high.</p></details>
+      <details class="faq"><summary>Do I need to trade options to use it?</summary>
+        <p>No. The option market is only the source of one of the three views. If you hold stocks, the same chart tells you how likely a stop level, a price target or your break-even is to be reached within a given time, by the market's pricing and by the stock's own history. See the <a href="use-cases.html">use cases</a>.</p></details>
+      <details class="faq"><summary>What is the difference between the implied and the historical models?</summary>
+        <p>The implied model uses option prices, so it reflects what the market charges for the risk today. The historical models are built with industry-standard simulation models from the stock's own last five or ten years. This lets you compare the market's expectations with the realized moves of each individual stock. Where the two differ, the option market is pricing a move the history did not produce, or the other way round.</p></details>
+      <details class="faq"><summary>Is OptionsCone free?</summary>
+        <p>Yes. The probability cone and the implied volatility, open interest and spread maps are free. Pro adds the historical models and the seller maps: implied vs realized, premium per unit risk and time value per day.</p></details>
+      <details class="faq"><summary>Why does a chart show older data in the evening?</summary>
+        <p>Option prices are only meaningful while the US market is open. Outside trading hours, the app shows your most recent download from the trading session, with its date. If a ticker has never been downloaded during trading hours, the app tells you so: download it again between 9:30 and 16:00 New York time, usually 15:30 to 22:00 in Central Europe.</p></details>
+      <details class="faq"><summary>Does the app send my data anywhere?</summary>
+        <p>No. Everything you download stays in a folder on your computer.</p></details>
+      <details class="faq"><summary>Why does Windows show a warning when I start it?</summary>
+        <p>The executable is not code-signed, which costs money every year. SmartScreen warns about any unsigned program it has not seen often. Click <em>More info</em>, then <em>Run anyway</em>. Each release lists a SHA-256 checksum of the file, so you can check that it was not altered.</p></details>
+      <details class="faq"><summary>Does it run on Mac or Linux?</summary>
+        <p>Not yet. OptionsCone is available for Windows 10 and 11.</p></details>
+      <details class="faq"><summary>Is this financial advice?</summary>
+        <p>No. All probabilities are estimates from market prices or from the past. They are not forecasts, and the data can be delayed, incomplete or wrong.</p></details>
+    </div>
+  </section>
+
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p>&copy; 2026 Nikolai Alexander</p>
+      <p>Not financial advice.</p>
+    </div>
+    <div>
+      <p><a href="use-cases.html">Use cases</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="https://github.com/nikkn/OptionsCone/issues">Report a problem</a></p>
+      <p><a href="https://x.com/nikkn_alexander">@nikkn_alexander on X</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

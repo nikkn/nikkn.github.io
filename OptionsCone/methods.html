@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Probability of touch and expiry, explained | OptionsCone</title>
+<meta name="description" content="What OptionsCone&#39;s numbers mean: touch and expiry probabilities from option prices, simulations from the stock&#39;s own history, the maps and their limits.">
+<link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/methods.html">
+<link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Probability of touch and expiry, explained">
+<meta property="og:description" content="What the probabilities and maps in OptionsCone mean, where they come from, and where their limits are.">
+<meta property="og:url" content="https://nikolai-alexander.com/OptionsCone/methods.html">
+<meta property="og:image" content="https://nikolai-alexander.com/OptionsCone/img/social.png?v=6">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="OptionsCone: a probability cone over the listed option strikes of a stock, with implied and historical contour lines.">
+<meta property="og:site_name" content="OptionsCone">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css">
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="./"><picture><source media="(prefers-color-scheme: dark)" srcset="brand/optionscone-wordmark-dark.svg"><img src="brand/optionscone-wordmark-light.svg" alt="OptionsCone" width="183" height="34"></picture></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="use-cases.html">Use cases</a>
+      <a href="manual.html">Manual</a>
+      <a href="methods.html" aria-current="page">Methods</a>
+      <a href="https://github.com/nikkn/OptionsCone">GitHub</a>
+      <a class="btn small primary" href="https://github.com/nikkn/OptionsCone/releases/latest">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="doc">
+
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ul>
+      <li><a href="#data">Data</a></li>
+      <li><a href="#contracts">Which contracts are shown</a></li>
+      <li><a href="#iv">Implied volatility and Greeks</a></li>
+      <li><a href="#touch">Probability of touch</a></li>
+      <li><a href="#expire">Probability at expiry</a></li>
+      <li><a href="#delta">Delta is not a probability</a></li>
+      <li><a href="#history">Historical models</a></li>
+      <li><a href="#badges">Expiry badges</a></li>
+      <li><a href="#maps">The maps</a></li>
+      <li><a href="#limits">Limits</a></li>
+    </ul>
+  </nav>
+
+  <article class="prose">
+    <h1>Methods: what the numbers mean</h1>
+    <p class="lede">What OptionsCone shows, where the numbers come from, and where their limits are.</p>
+
+    <h2 id="data">Data</h2>
+    <p>Option chains, stock prices and earnings dates come from Yahoo Finance. Option quotes are delayed by about 15 minutes. Every download is archived on your computer. The chart uses the newest download taken during the regular US session, when option prices are meaningful.</p>
+    <p>Interest rates come from US Treasury bill yields. Future dividends are projected from the stock&#39;s payout history.</p>
+
+    <h2 id="contracts">Which contracts are shown</h2>
+    <p>Calls above the current price and puts below it, so every contract on the chart is out of the money. Those are the liquid quotes. Contracts very close to expiry, and contracts whose price is only a few cents, are left out, because their prices say little.</p>
+    <p>Every quote passes a series of plausibility checks. Impossible quotes are removed. Doubtful ones stay on the chart, but their dot is drawn hollow and the data quality report counts them.</p>
+
+    <h2 id="iv">Implied volatility and Greeks</h2>
+    <p>Listed US stock options are American, so each contract&#39;s implied volatility is solved with a model that allows early exercise and accounts for dividends. Delta and gamma come from the same model and are shown for comparison with a broker. Brokers use their own rate and dividend assumptions, so small differences are normal.</p>
+
+    <h2 id="touch">Probability of touch</h2>
+    <p>The probability that the price reaches a strike at any time before expiry, even if it moves back afterwards. It uses each contract&#39;s own implied volatility. A touch probability is never lower than the probability at expiry, and often about twice as high.</p>
+
+    <h2 id="expire">Probability at expiry</h2>
+    <p>The probability that the price finishes beyond the strike on expiry day, with the same volatility and assumptions as the touch probability, so the two are directly comparable.</p>
+
+    <h2 id="delta">Delta is not a probability</h2>
+    <p>Delta is often read as the chance of an option expiring in the money. For short-dated options at moderate volatility the two are close. The higher the volatility and the longer the time to expiry, the further they drift apart: a 30-delta put on a volatile stock several months out can have a noticeably higher chance of expiring in the money than 30%. Delta remains the right number for hedging. For odds, use the probability at expiry, or the touch probability if the question is whether a level will be reached.</p>
+
+    <h2 id="history">Historical models (5y, 10y)</h2>
+    <p>The 5y and 10y models answer the same questions from the stock&#39;s own history instead of option prices. They are built from the last five or ten years of the stock&#39;s actual behavior with industry-standard simulation models, including calm and turbulent periods and intraday moves.</p>
+    <p>These are historical frequencies. They contain only moves that happened in those years, and they know nothing of what the market expects today, such as an upcoming earnings date.</p>
+    <div class="note">Where the implied and historical lines diverge, the option market is pricing a move the history did not produce, or the other way round.</div>
+
+    <h2 id="badges">Expiry badges</h2>
+    <p>The badge above each expiry shows that expiry&#39;s overall implied volatility. The ratio below compares it with the stock&#39;s recent realized volatility.</p>
+
+    <h2 id="maps">The maps</h2>
+    <p>Each map shows one value per listed contract as a heatmap on the price chart.</p>
+    <ul>
+      <li><strong>Probability:</strong> the implied touch probability.</li>
+      <li><strong>Implied volatility, open interest and spread:</strong> each contract&#39;s own values. On the spread map, darker means tighter.</li>
+      <li><strong>Time value per day:</strong> Each option&#39;s premium spread over the days it has left, so a seller&#39;s average daily income is visible at a glance. It is an average over the remaining life; decay speeds up towards expiry.</li>
+      <li><strong>Implied vs realized:</strong> The market&#39;s touch probability against the stock&#39;s own realized moves, measured with industry-standard simulation models. Blue where the market prices in a higher probability (a potential opportunity for sellers), red where lower. The historical models do not know the earnings calendar, so an expiry that ends before the next report leans red, and one that spans it leans blue.</li>
+      <li><strong>Premium per unit risk:</strong> How much premium a seller collects for each dollar of risk the stock&#39;s individual realized moves suggest. Higher means the risk is better paid. It is left out where the history gives too little data. It uses the mid price; a seller receives the bid, which on far out-of-the-money contracts is noticeably lower.</li>
+    </ul>
+    <p>For each expiry and model, the contour lines mark the listed strike whose probability is closest to your target, above and below the current price.</p>
+
+    <h2 id="limits">Limits</h2>
+    <ul>
+      <li>The implied model assumes each contract&#39;s volatility is constant until expiry. Real prices jump, especially around earnings.</li>
+      <li>Implied probabilities are risk-neutral. They include the market&#39;s price for risk and are not real-world odds.</li>
+      <li>The historical models ignore the earnings calendar, so comparisons for expiries just before a report lean towards history overstating the risk.</li>
+      <li>The historical models only know the chosen years. A stock that changed its business, or a period without a crash, gives a narrow picture.</li>
+      <li>Free data can be delayed, incomplete or wrong. The checks catch much of that, not all of it.</li>
+    </ul>
+    <p>All probabilities are estimates. They are not forecasts and not financial advice.</p>
+  </article>
+
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p>&copy; 2026 Nikolai Alexander</p>
+      <p>Not financial advice.</p>
+    </div>
+    <div>
+      <p><a href="./">Home</a> &middot; <a href="use-cases.html">Use cases</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="https://github.com/nikkn/OptionsCone/issues">Report a problem</a></p>
+      <p><a href="https://x.com/nikkn_alexander">@nikkn_alexander on X</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

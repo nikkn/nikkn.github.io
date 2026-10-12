@@ -116,7 +116,7 @@ details.faq p { margin: 10px 0 0; color: var(--ink-2); }
 table { border-collapse: collapse; width: 100%; font-size: 15px; margin: 14px 0 20px; }
 th, td { text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
 th { font: 600 12.5px var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); }
-td:first-child { white-space: nowrap; }
+td:first-child { width: 34%; min-width: 9em; }
 .table-scroll { overflow-x: auto; }
 
 .note { border-left: 3px solid var(--line-2); padding: 4px 0 4px 16px; color: var(--ink-2); margin: 18px 0; }
