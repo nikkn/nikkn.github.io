@@ -158,3 +158,6 @@ td:first-child { width: 34%; min-width: 9em; }
 /* Pro features */
 .pro { font: 600 10.5px var(--mono); font-style: normal; color: var(--accent); border: 1px solid currentColor;
   border-radius: 3px; padding: 1px 5px; margin-left: 4px; letter-spacing: 0.04em; vertical-align: 2px; }
+
+/* A button for something not available yet */
+.btn.disabled { opacity: 0.45; cursor: default; pointer-events: none; }
