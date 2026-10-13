@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is delta the probability of expiring in the money? | Research</title>
+<meta name="description" content="Delta is often read as the chance of an option finishing in the money. The textbook model and four real option chains (SPY, Apple, Broadcom, Bloom Energy) show when that holds and when it does not.">
+<link rel="canonical" href="https://nikolai-alexander.com/research/delta-vs-itm-probability.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Is delta the probability of expiring in the money?">
+<meta property="og:description" content="The textbook model and four real option chains show when delta works as odds and when it does not.">
+<meta property="og:url" content="https://nikolai-alexander.com/research/delta-vs-itm-probability.html">
+<meta property="og:image" content="https://nikolai-alexander.com/research/img/delta-vs-itm-probability.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Probability of finishing in the money for 30-delta puts and calls on SPY, Apple, Broadcom and Bloom Energy, with and without the skew.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Is delta the probability of expiring in the money?",
+  "description": "Delta is often read as the chance of an option finishing in the money. The textbook model and four real option chains show when that holds and when it does not.",
+  "datePublished": "2026-10-13",
+  "dateModified": "2026-10-13",
+  "author": { "@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/" },
+  "image": "https://nikolai-alexander.com/research/img/delta-vs-itm-probability.png",
+  "mainEntityOfPage": "https://nikolai-alexander.com/research/delta-vs-itm-probability.html"
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="/count.js"></script>
+<style>
+.brand-text { font: 600 17px var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+.article { max-width: 760px; padding: 48px 0 24px; }
+.article h1 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.015em; }
+.article h2 { margin-top: 48px; }
+.article .lede { font-size: 19px; color: var(--ink-2); }
+.byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+.findings { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px 22px; margin: 26px 0 8px; }
+.findings p { font: 600 12.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 10px; }
+.findings ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.article table { font-size: 14.5px; }
+.article td, .article th { white-space: nowrap; padding-right: 14px; }
+.article td.num, .article th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.article tr.group td { font-weight: 600; color: var(--ink); padding-top: 16px; }
+.article details { margin: 10px 0 18px; }
+.article details summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+.small { font-size: 14px; color: var(--ink-3); }
+
+/* charts */
+.viz { --c-iv20: #86b6ef; --c-iv50: #2a78d6; --c-iv80: #104281;
+       --c-own: #eb6834; --c-skew: #2a78d6; --c-ref: var(--ink-3); --c-grid: var(--line);
+       position: relative; margin: 22px 0 6px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .viz { --c-iv20: #1c5cab; --c-iv50: #3987e5; --c-iv80: #9ec5f4;
+                                         --c-own: #d95926; --c-skew: #3987e5; }
+}
+:root[data-theme="dark"] .viz { --c-iv20: #1c5cab; --c-iv50: #3987e5; --c-iv80: #9ec5f4;
+                                --c-own: #d95926; --c-skew: #3987e5; }
+.viz-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--ink-2); margin-bottom: 6px; }
+.viz-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.viz-legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+.viz-legend i.dot { width: 11px; height: 11px; border-radius: 50%; }
+.viz-legend i.hollow { background: transparent !important; border: 2px solid; box-sizing: border-box; }
+.viz-legend i.dash { height: 0; border-top: 2px dashed var(--c-ref); background: none; }
+.viz-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.viz svg { width: 100%; height: auto; display: block; overflow: visible; }
+.viz text { font-family: var(--sans); fill: var(--ink-2); }
+.viz .ttl { font-weight: 600; fill: var(--ink); font-size: 13px; }
+.viz .tick { font-size: 11px; fill: var(--ink-3); }
+.viz-tip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s; background: var(--ink); color: var(--bg);
+           font-size: 12.5px; line-height: 1.45; padding: 7px 10px; border-radius: 4px; white-space: nowrap; z-index: 5; }
+@media (max-width: 640px) { .viz-panels { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="brand-text">nikolai-alexander.com</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/research/" aria-current="page">Research</a>
+      <a href="/#projects">Projects</a>
+      <a href="/#about">About</a>
+      <a href="https://github.com/nikkn">GitHub</a>
+      <a href="https://x.com/nikkn_alexander">X</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="article">
+  <p class="eyebrow">Research</p>
+  <h1>Is delta the probability of expiring in the money?</h1>
+  <p class="byline">Nikolai Alexander &middot; 13 October 2026</p>
+  <p class="lede">Many traders read an option&#39;s delta as its chance of finishing in the money. I checked how far that holds: first in the textbook model, then in four real option chains, SPY, Apple, Broadcom and Bloom Energy.</p>
+
+  <div class="findings">
+    <p>Key findings</p>
+    <ul>
+      <li>In the textbook model, the gap between delta and the probability grows with volatility and time. At 80% implied volatility and six months, a 10-delta put finishes in the money 24% of the time, a 10-delta call 3%.</li>
+      <li>In real chains, the skew changes the picture. On SPY, a 30-delta put has only a 22% chance of finishing in the money and a 30-delta call 33%: the opposite of the textbook.</li>
+      <li>On a volatile stock with a flat skew, the textbook gap stays. On Bloom Energy, a 30-delta put has a 43% chance, a 30-delta call 18%.</li>
+      <li>Delta works as odds only where the two effects roughly cancel, as they did for Apple.</li>
+    </ul>
+  </div>
+
+  <h2>The rule of thumb</h2>
+  <p>Delta measures how much an option&#39;s price moves when the stock moves by one dollar. Because it runs from 0 to 1 for calls (and 0 to &minus;1 for puts), it is often read as the probability of the option finishing in the money: a 30-delta put, about a 30% chance. Many broker platforms show a separate &quot;probability in the money&quot; next to delta, and for short-dated options the two are usually within a couple of points.</p>
+  <p>The question is how well that holds for longer expiries, for volatile stocks, and once the real shape of the option chain is taken into account.</p>
+
+  <h2>In the textbook model, the gap grows with volatility and time</h2>
+  <p>The textbook model (Black-Scholes) uses one volatility for every strike. A call&#39;s delta is N(d<sub>1</sub>), but its probability of finishing in the money is N(d<sub>2</sub>), with d<sub>2</sub> = d<sub>1</sub> &minus; &sigma;&radic;T. The two are only equal when volatility times the square root of time is close to zero. So delta and the probability are different numbers by construction, a mix-up many traders make.</p>
+  <p>They drift apart the higher the volatility and the longer the time to expiry. For puts, the probability ends up above delta; for calls, below it.</p>
+
+  <figure class="viz" id="viz1" aria-label="Chart: probability of finishing in the money for a 30-delta put and a 30-delta call, by days to expiry, at 20%, 50% and 80% implied volatility.">
+    <div class="viz-legend">
+      <span><i style="background:var(--c-iv20)"></i>IV 20%</span>
+      <span><i style="background:var(--c-iv50)"></i>IV 50%</span>
+      <span><i style="background:var(--c-iv80)"></i>IV 80%</span>
+      <span><i class="dash"></i>delta 0.30</span>
+    </div>
+    <div class="viz-panels"><svg id="viz1-put" viewBox="0 0 360 250" role="img"></svg><svg id="viz1-call" viewBox="0 0 360 250" role="img"></svg></div>
+    <div class="viz-tip"></div>
+    <figcaption>Probability of finishing in the money for a 30-delta put and a 30-delta call. Textbook model with one volatility for all strikes.</figcaption>
+  </figure>
+
+  <p>At 20% volatility and 30 days, the rule of thumb works: a 30-delta put finishes in the money 32% of the time. At 80% volatility and six months, the same 30-delta put does so 51% of the time, and a 30-delta call only 14%.</p>
+
+  <h3>All values of the textbook model</h3>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put 30d</th><th class="num">Put 90d</th><th class="num">Put 180d</th>
+    <th class="num">Call 30d</th><th class="num">Call 90d</th><th class="num">Call 180d</th></tr></thead><tbody>
+    <tr class="group"><td colspan="7">Implied volatility 20%</td></tr>
+    <tr><td>0.50</td><td class="num">52.3%</td><td class="num">54.0%</td><td class="num">55.6%</td><td class="num">47.7%</td><td class="num">46.0%</td><td class="num">44.4%</td></tr>
+    <tr><td>0.40</td><td class="num">42.2%</td><td class="num">43.9%</td><td class="num">45.5%</td><td class="num">37.8%</td><td class="num">36.2%</td><td class="num">34.7%</td></tr>
+    <tr><td>0.30</td><td class="num">32.0%</td><td class="num">33.5%</td><td class="num">35.1%</td><td class="num">28.0%</td><td class="num">26.6%</td><td class="num">25.3%</td></tr>
+    <tr><td>0.20</td><td class="num">21.6%</td><td class="num">22.9%</td><td class="num">24.2%</td><td class="num">18.4%</td><td class="num">17.3%</td><td class="num">16.3%</td></tr>
+    <tr><td>0.10</td><td class="num">11.0%</td><td class="num">11.9%</td><td class="num">12.7%</td><td class="num">9.0%</td><td class="num">8.4%</td><td class="num">7.8%</td></tr>
+    <tr class="group"><td colspan="7">Implied volatility 50%</td></tr>
+    <tr><td>0.50</td><td class="num">55.7%</td><td class="num">59.8%</td><td class="num">63.7%</td><td class="num">44.3%</td><td class="num">40.2%</td><td class="num">36.3%</td></tr>
+    <tr><td>0.40</td><td class="num">45.6%</td><td class="num">49.8%</td><td class="num">53.9%</td><td class="num">34.6%</td><td class="num">30.8%</td><td class="num">27.3%</td></tr>
+    <tr><td>0.30</td><td class="num">35.2%</td><td class="num">39.1%</td><td class="num">43.1%</td><td class="num">25.2%</td><td class="num">22.0%</td><td class="num">19.1%</td></tr>
+    <tr><td>0.20</td><td class="num">24.3%</td><td class="num">27.6%</td><td class="num">31.2%</td><td class="num">16.2%</td><td class="num">13.8%</td><td class="num">11.6%</td></tr>
+    <tr><td>0.10</td><td class="num">12.8%</td><td class="num">15.1%</td><td class="num">17.6%</td><td class="num">7.7%</td><td class="num">6.3%</td><td class="num">5.1%</td></tr>
+    <tr class="group"><td colspan="7">Implied volatility 80%</td></tr>
+    <tr><td>0.50</td><td class="num">59.1%</td><td class="num">65.4%</td><td class="num">71.3%</td><td class="num">40.9%</td><td class="num">34.6%</td><td class="num">28.7%</td></tr>
+    <tr><td>0.40</td><td class="num">49.0%</td><td class="num">55.7%</td><td class="num">62.1%</td><td class="num">31.5%</td><td class="num">25.8%</td><td class="num">20.7%</td></tr>
+    <tr><td>0.30</td><td class="num">38.4%</td><td class="num">44.9%</td><td class="num">51.5%</td><td class="num">22.5%</td><td class="num">17.8%</td><td class="num">13.9%</td></tr>
+    <tr><td>0.20</td><td class="num">27.0%</td><td class="num">32.8%</td><td class="num">39.0%</td><td class="num">14.2%</td><td class="num">10.8%</td><td class="num">8.0%</td></tr>
+    <tr><td>0.10</td><td class="num">14.6%</td><td class="num">18.8%</td><td class="num">23.6%</td><td class="num">6.5%</td><td class="num">4.7%</td><td class="num">3.3%</td></tr>
+    </tbody></table></div>
+    <p class="small">Probability of finishing in the money. One volatility for all strikes, interest rate 4.05%, no dividends.</p>
+
+  <h2>In real option chains, the skew changes the picture</h2>
+  <p>In a real option chain, each strike trades at its own implied volatility. On most stocks and especially on indexes, out-of-the-money puts carry a higher volatility than calls: the skew. That changes the odds in two ways, so I compare three numbers for each contract:</p>
+  <ul>
+    <li><strong>Delta</strong>, as usual.</li>
+    <li><strong>Own IV:</strong> the probability with each strike&#39;s own implied volatility in the textbook formula. This is what broker platforms usually show.</li>
+    <li><strong>With skew:</strong> the probability implied by the whole chain, which also takes into account how the volatility changes from strike to strike.</li>
+  </ul>
+
+  <figure class="viz" id="viz2" aria-label="Chart: probability of finishing in the money for 30-delta puts and calls on SPY, Apple, Broadcom and Bloom Energy, about three months to expiry, with each strike's own volatility and with the skew.">
+    <div class="viz-legend">
+      <span><i class="dot hollow" style="border-color:var(--c-own)"></i>Own IV (what brokers show)</span>
+      <span><i class="dot" style="background:var(--c-skew)"></i>With skew</span>
+      <span><i class="dash"></i>delta 0.30</span>
+    </div>
+    <div class="viz-panels"><svg id="viz2-put" viewBox="0 0 360 230" role="img"></svg><svg id="viz2-call" viewBox="0 0 360 230" role="img"></svg></div>
+    <div class="viz-tip"></div>
+    <figcaption>Probability of finishing in the money for 30-delta options, 95 days to expiry (15 January 2027). Option chains from 12 October 2026.</figcaption>
+  </figure>
+
+  <p>The four stocks fall into three groups:</p>
+  <ul>
+    <li><strong>SPY, steep skew:</strong> the skew more than reverses the textbook effect. A 30-delta put has a 22% chance of finishing in the money, below its delta, and a 30-delta call 33%, above it. For index options, delta overstates the chance of a put finishing in the money.</li>
+    <li><strong>Apple, moderate skew:</strong> the skew roughly cancels the volatility effect. With skew, a 30-delta put is at 30% and a 30-delta call at 28%, close to delta.</li>
+    <li><strong>Broadcom and Bloom Energy, flat skew:</strong> the skew changes little, and the textbook gap remains. On Bloom Energy, at about 70% implied volatility, a 30-delta put has a 43% chance of finishing in the money and a 30-delta call 18%.</li>
+  </ul>
+  <p>Not even an option with a delta of 0.50 is a coin toss: with skew, the 0.50-delta put is at 44% on SPY and 64% on Bloom Energy.</p>
+
+  <h2>What it means for traders</h2>
+  <p>The same delta stands for very different odds, depending on two properties of the stock: how steep its skew is, and how high its volatility is. A steep skew pushes the odds of puts below delta and those of calls above it. High volatility and long expiries push them the other way. Delta is a reasonable stand-in for the probability only where these two effects roughly cancel, and the broker-style probability with each strike&#39;s own volatility does not show the skew effect at all.</p>
+  <p>For underlyings with relatively low implied volatility, a moderate skew and short expiries, delta is a good approximation of the probability of finishing in the money. The steeper the skew, the higher the volatility and the longer the expiry, the less accurate it becomes. Whether delta then overstates or understates the probability depends on which of the two effects is stronger:</p>
+  <div class="table-scroll"><table><thead><tr><th>Skew</th><th>Volatility and time</th><th>Puts: delta</th><th>Calls: delta</th></tr></thead><tbody>
+    <tr><td>Flat</td><td>Low volatility, short expiry</td><td>about right</td><td>about right</td></tr>
+    <tr><td>Moderate</td><td>Moderate volatility</td><td>about right</td><td>about right</td></tr>
+    <tr><td>Flat</td><td>High volatility or long expiry</td><td>understates</td><td>overstates</td></tr>
+    <tr><td>Steep</td><td>Low volatility</td><td>overstates</td><td>understates</td></tr>
+  </tbody></table></div>
+  <p class="small">&quot;Overstates&quot; means the probability of finishing in the money is lower than delta suggests; &quot;understates&quot; means it is higher. With a steep skew and high volatility at the same time, the two effects work against each other, and which one wins depends on the stock.</p>
+  <p>Traders who read delta as odds, for example when choosing which strikes to sell, need to be aware of that gap.</p>
+
+  <h2>Data and notes</h2>
+  <ul class="small">
+    <li>Option chains for SPY, AAPL, AVGO and BE from Yahoo Finance, downloaded with <a href="/OptionsCone/">OptionsCone</a> on 12 October 2026 during US trading hours. Expiries 13 November 2026 (32 days), 15 January 2027 (95 days) and 19 March 2027 (158 days); for SPY the longest is 31 March 2027 (170 days).</li>
+    <li>Interest rate 4.05% (13-week US Treasury bill). Deltas are model deltas without dividends; a broker&#39;s deltas can differ slightly.</li>
+    <li>The probabilities with skew were confirmed against the raw option prices of neighbouring strikes: typically within about 1 percentage point, on Bloom Energy within about 2.5 points because of its wider bid-ask spreads.</li>
+    <li>The textbook values were confirmed by a simulation of 400,000 price paths.</li>
+    <li>All probabilities are risk-neutral: they describe what option prices imply, including the market&#39;s price for risk. They are not forecasts and not financial advice.</li>
+  </ul>
+
+  <h2>All values: real option chains</h2>
+  <p class="small">Probability of finishing in the money with each strike&#39;s own implied volatility (own IV) and implied by the whole chain (with skew), for deltas from 0.50 to 0.10.</p>
+  <h3>SPY</h3>
+  <p class="small">32 days to expiry (13 November 2026)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">780.64</td><td class="num">12.2%</td><td class="num">51.4%</td><td class="num"><strong>43.3%</strong></td><td class="num">780.64</td><td class="num">12.2%</td><td class="num">48.6%</td><td class="num"><strong>56.7%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">773.16</td><td class="num">12.9%</td><td class="num">41.5%</td><td class="num"><strong>32.5%</strong></td><td class="num">787.47</td><td class="num">11.7%</td><td class="num">38.7%</td><td class="num"><strong>45.4%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">764.10</td><td class="num">13.9%</td><td class="num">31.4%</td><td class="num"><strong>22.3%</strong></td><td class="num">794.28</td><td class="num">11.2%</td><td class="num">28.9%</td><td class="num"><strong>33.8%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">751.42</td><td class="num">15.5%</td><td class="num">21.3%</td><td class="num"><strong>12.9%</strong></td><td class="num">801.86</td><td class="num">10.8%</td><td class="num">19.1%</td><td class="num"><strong>22.0%</strong></td></tr>
+    <tr><td>0.10</td><td class="num">727.70</td><td class="num">18.7%</td><td class="num">11.0%</td><td class="num"><strong>5.2%</strong></td><td class="num">812.19</td><td class="num">10.5%</td><td class="num">9.5%</td><td class="num"><strong>10.3%</strong></td></tr>
+    </tbody></table></div>
+  <p class="small">95 days to expiry (15 January 2027)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">785.95</td><td class="num">13.5%</td><td class="num">52.7%</td><td class="num"><strong>43.6%</strong></td><td class="num">785.95</td><td class="num">13.5%</td><td class="num">47.3%</td><td class="num"><strong>56.4%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">771.75</td><td class="num">14.4%</td><td class="num">42.9%</td><td class="num"><strong>32.5%</strong></td><td class="num">798.86</td><td class="num">12.8%</td><td class="num">37.5%</td><td class="num"><strong>45.0%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">754.44</td><td class="num">15.6%</td><td class="num">32.8%</td><td class="num"><strong>22.2%</strong></td><td class="num">811.73</td><td class="num">12.2%</td><td class="num">27.9%</td><td class="num"><strong>33.3%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">729.90</td><td class="num">17.6%</td><td class="num">22.6%</td><td class="num"><strong>12.7%</strong></td><td class="num">826.12</td><td class="num">11.7%</td><td class="num">18.4%</td><td class="num"><strong>21.5%</strong></td></tr>
+    <tr><td>0.10</td><td class="num">683.18</td><td class="num">22.0%</td><td class="num">12.1%</td><td class="num"><strong>5.2%</strong></td><td class="num">845.96</td><td class="num">11.4%</td><td class="num">9.0%</td><td class="num"><strong>9.8%</strong></td></tr>
+    </tbody></table></div>
+  <p class="small">170 days to expiry (31 March 2027)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">793.58</td><td class="num">14.3%</td><td class="num">53.9%</td><td class="num"><strong>44.5%</strong></td><td class="num">793.58</td><td class="num">14.3%</td><td class="num">46.1%</td><td class="num"><strong>55.5%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">773.36</td><td class="num">15.3%</td><td class="num">44.1%</td><td class="num"><strong>33.4%</strong></td><td class="num">812.08</td><td class="num">13.6%</td><td class="num">36.5%</td><td class="num"><strong>44.0%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">748.87</td><td class="num">16.7%</td><td class="num">34.1%</td><td class="num"><strong>22.9%</strong></td><td class="num">830.68</td><td class="num">13.0%</td><td class="num">27.0%</td><td class="num"><strong>32.3%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">714.42</td><td class="num">18.9%</td><td class="num">23.8%</td><td class="num"><strong>13.3%</strong></td><td class="num">851.69</td><td class="num">12.5%</td><td class="num">17.7%</td><td class="num"><strong>20.6%</strong></td></tr>
+    <tr><td>0.10</td><td class="num">649.99</td><td class="num">23.8%</td><td class="num">13.2%</td><td class="num"><strong>5.7%</strong></td><td class="num">881.19</td><td class="num">12.1%</td><td class="num">8.6%</td><td class="num"><strong>9.2%</strong></td></tr>
+    </tbody></table></div>
+  <h3>Apple (AAPL)</h3>
+  <p class="small">32 days to expiry (13 November 2026)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">342.00</td><td class="num">25.4%</td><td class="num">53.0%</td><td class="num"><strong>48.9%</strong></td><td class="num">342.00</td><td class="num">25.4%</td><td class="num">47.0%</td><td class="num"><strong>51.1%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">335.41</td><td class="num">26.1%</td><td class="num">43.0%</td><td class="num"><strong>38.5%</strong></td><td class="num">348.39</td><td class="num">24.8%</td><td class="num">37.2%</td><td class="num"><strong>40.5%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">328.06</td><td class="num">27.0%</td><td class="num">32.8%</td><td class="num"><strong>28.4%</strong></td><td class="num">355.09</td><td class="num">24.3%</td><td class="num">27.5%</td><td class="num"><strong>29.8%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">318.99</td><td class="num">28.2%</td><td class="num">22.4%</td><td class="num"><strong>18.7%</strong></td><td class="num">362.91</td><td class="num">23.9%</td><td class="num">18.1%</td><td class="num"><strong>19.1%</strong></td></tr>
+    <tr><td>0.10</td><td class="num">305.61</td><td class="num">29.9%</td><td class="num">11.6%</td><td class="num"><strong>9.5%</strong></td><td class="num">374.14</td><td class="num">23.8%</td><td class="num">8.8%</td><td class="num"><strong>8.7%</strong></td></tr>
+    </tbody></table></div>
+  <p class="small">95 days to expiry (15 January 2027)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">346.03</td><td class="num">23.6%</td><td class="num">54.8%</td><td class="num"><strong>51.1%</strong></td><td class="num">346.03</td><td class="num">23.6%</td><td class="num">45.2%</td><td class="num"><strong>48.9%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">335.48</td><td class="num">24.2%</td><td class="num">44.8%</td><td class="num"><strong>40.6%</strong></td><td class="num">356.42</td><td class="num">23.1%</td><td class="num">35.5%</td><td class="num"><strong>38.5%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">323.91</td><td class="num">25.0%</td><td class="num">34.6%</td><td class="num"><strong>30.1%</strong></td><td class="num">367.48</td><td class="num">22.7%</td><td class="num">26.1%</td><td class="num"><strong>28.2%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">309.79</td><td class="num">26.1%</td><td class="num">23.9%</td><td class="num"><strong>19.7%</strong></td><td class="num">380.55</td><td class="num">22.3%</td><td class="num">17.0%</td><td class="num"><strong>18.1%</strong></td></tr>
+    <tr><td>0.10</td><td class="num">288.73</td><td class="num">28.2%</td><td class="num">12.8%</td><td class="num"><strong>9.5%</strong></td><td class="num">399.30</td><td class="num">22.0%</td><td class="num">8.2%</td><td class="num"><strong>8.4%</strong></td></tr>
+    </tbody></table></div>
+  <p class="small">158 days to expiry (19 March 2027)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">350.55</td><td class="num">25.0%</td><td class="num">56.5%</td><td class="num"><strong>53.2%</strong></td><td class="num">350.55</td><td class="num">25.0%</td><td class="num">43.5%</td><td class="num"><strong>46.8%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">336.15</td><td class="num">25.5%</td><td class="num">46.6%</td><td class="num"><strong>42.7%</strong></td><td class="num">364.97</td><td class="num">24.5%</td><td class="num">33.9%</td><td class="num"><strong>36.5%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">320.62</td><td class="num">26.3%</td><td class="num">36.3%</td><td class="num"><strong>32.0%</strong></td><td class="num">380.56</td><td class="num">24.1%</td><td class="num">24.7%</td><td class="num"><strong>26.6%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">302.03</td><td class="num">27.4%</td><td class="num">25.4%</td><td class="num"><strong>21.2%</strong></td><td class="num">399.19</td><td class="num">23.7%</td><td class="num">15.9%</td><td class="num"><strong>17.0%</strong></td></tr>
+    <tr><td>0.10</td><td class="num">274.70</td><td class="num">29.6%</td><td class="num">13.9%</td><td class="num"><strong>10.2%</strong></td><td class="num">426.16</td><td class="num">23.4%</td><td class="num">7.6%</td><td class="num"><strong>7.9%</strong></td></tr>
+    </tbody></table></div>
+  <h3>Broadcom (AVGO)</h3>
+  <p class="small">32 days to expiry (13 November 2026)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">357.97</td><td class="num">35.9%</td><td class="num">54.2%</td><td class="num"><strong>52.9%</strong></td><td class="num">357.97</td><td class="num">35.9%</td><td class="num">45.8%</td><td class="num"><strong>47.1%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">348.40</td><td class="num">36.3%</td><td class="num">44.2%</td><td class="num"><strong>42.5%</strong></td><td class="num">367.66</td><td class="num">35.7%</td><td class="num">36.0%</td><td class="num"><strong>36.7%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">338.20</td><td class="num">36.8%</td><td class="num">33.9%</td><td class="num"><strong>32.1%</strong></td><td class="num">378.28</td><td class="num">35.6%</td><td class="num">26.4%</td><td class="num"><strong>26.4%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">326.32</td><td class="num">37.3%</td><td class="num">23.2%</td><td class="num"><strong>21.9%</strong></td><td class="num">391.39</td><td class="num">35.8%</td><td class="num">17.2%</td><td class="num"><strong>16.2%</strong></td></tr>
+    <tr><td>0.10</td><td class="num">310.20</td><td class="num">37.9%</td><td class="num">12.1%</td><td class="num"><strong>11.7%</strong></td><td class="num">412.15</td><td class="num">37.0%</td><td class="num">8.2%</td><td class="num"><strong>6.6%</strong></td></tr>
+    </tbody></table></div>
+  <p class="small">95 days to expiry (15 January 2027)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">365.33</td><td class="num">39.5%</td><td class="num">58.0%</td><td class="num"><strong>57.5%</strong></td><td class="num">365.33</td><td class="num">39.5%</td><td class="num">42.0%</td><td class="num"><strong>42.5%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">347.11</td><td class="num">39.7%</td><td class="num">48.0%</td><td class="num"><strong>46.8%</strong></td><td class="num">384.45</td><td class="num">39.5%</td><td class="num">32.5%</td><td class="num"><strong>32.3%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">328.33</td><td class="num">40.1%</td><td class="num">37.5%</td><td class="num"><strong>35.8%</strong></td><td class="num">406.30</td><td class="num">39.7%</td><td class="num">23.4%</td><td class="num"><strong>22.5%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">306.99</td><td class="num">40.8%</td><td class="num">26.3%</td><td class="num"><strong>24.4%</strong></td><td class="num">434.55</td><td class="num">40.2%</td><td class="num">14.8%</td><td class="num"><strong>13.4%</strong></td></tr>
+    <tr><td>0.10</td><td class="num">278.06</td><td class="num">42.2%</td><td class="num">14.3%</td><td class="num"><strong>12.6%</strong></td><td class="num">481.76</td><td class="num">41.9%</td><td class="num">6.7%</td><td class="num"><strong>5.3%</strong></td></tr>
+    </tbody></table></div>
+  <p class="small">158 days to expiry (19 March 2027)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">374.93</td><td class="num">41.7%</td><td class="num">60.8%</td><td class="num"><strong>61.1%</strong></td><td class="num">374.93</td><td class="num">41.7%</td><td class="num">39.2%</td><td class="num"><strong>38.9%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">349.74</td><td class="num">41.7%</td><td class="num">50.8%</td><td class="num"><strong>50.6%</strong></td><td class="num">402.13</td><td class="num">41.9%</td><td class="num">29.8%</td><td class="num"><strong>29.1%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">324.58</td><td class="num">41.9%</td><td class="num">40.2%</td><td class="num"><strong>39.3%</strong></td><td class="num">434.06</td><td class="num">42.2%</td><td class="num">21.1%</td><td class="num"><strong>20.1%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">296.97</td><td class="num">42.3%</td><td class="num">28.7%</td><td class="num"><strong>27.4%</strong></td><td class="num">476.31</td><td class="num">42.8%</td><td class="num">13.1%</td><td class="num"><strong>11.9%</strong></td></tr>
+    <tr><td>0.10</td><td class="num">261.09</td><td class="num">43.3%</td><td class="num">15.9%</td><td class="num"><strong>14.5%</strong></td><td class="num">547.77</td><td class="num">44.4%</td><td class="num">5.8%</td><td class="num"><strong>4.8%</strong></td></tr>
+    </tbody></table></div>
+  <h3>Bloom Energy (BE)</h3>
+  <p class="small">32 days to expiry (13 November 2026)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">267.86</td><td class="num">74.9%</td><td class="num">58.8%</td><td class="num"><strong>57.4%</strong></td><td class="num">267.86</td><td class="num">74.9%</td><td class="num">41.2%</td><td class="num"><strong>42.6%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">253.20</td><td class="num">75.7%</td><td class="num">48.8%</td><td class="num"><strong>47.0%</strong></td><td class="num">283.13</td><td class="num">74.4%</td><td class="num">31.8%</td><td class="num"><strong>32.5%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">238.07</td><td class="num">76.7%</td><td class="num">38.3%</td><td class="num"><strong>36.5%</strong></td><td class="num">300.44</td><td class="num">74.2%</td><td class="num">22.8%</td><td class="num"><strong>22.7%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">221.09</td><td class="num">77.8%</td><td class="num">27.0%</td><td class="num"><strong>25.9%</strong></td><td class="num">322.75</td><td class="num">74.8%</td><td class="num">14.4%</td><td class="num"><strong>13.3%</strong></td></tr>
+    <tr><td>0.10</td><td class="num">199.38</td><td class="num">78.4%</td><td class="num">14.7%</td><td class="num"><strong>14.7%</strong></td><td class="num">361.28</td><td class="num">78.3%</td><td class="num">6.5%</td><td class="num"><strong>4.8%</strong></td></tr>
+    </tbody></table></div>
+  <p class="small">95 days to expiry (15 January 2027)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">281.11</td><td class="num">70.3%</td><td class="num">64.0%</td><td class="num"><strong>63.9%</strong></td><td class="num">281.11</td><td class="num">70.3%</td><td class="num">36.0%</td><td class="num"><strong>36.1%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">256.71</td><td class="num">70.5%</td><td class="num">54.2%</td><td class="num"><strong>53.7%</strong></td><td class="num">307.90</td><td class="num">70.4%</td><td class="num">27.0%</td><td class="num"><strong>26.7%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">232.80</td><td class="num">70.9%</td><td class="num">43.5%</td><td class="num"><strong>42.6%</strong></td><td class="num">339.86</td><td class="num">70.7%</td><td class="num">18.8%</td><td class="num"><strong>18.1%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">207.26</td><td class="num">71.5%</td><td class="num">31.7%</td><td class="num"><strong>30.6%</strong></td><td class="num">383.06</td><td class="num">71.5%</td><td class="num">11.4%</td><td class="num"><strong>10.4%</strong></td></tr>
+    <tr><td>0.10</td><td class="num">175.68</td><td class="num">72.5%</td><td class="num">18.1%</td><td class="num"><strong>17.2%</strong></td><td class="num">459.27</td><td class="num">74.0%</td><td class="num">4.9%</td><td class="num"><strong>3.9%</strong></td></tr>
+    </tbody></table></div>
+  <p class="small">158 days to expiry (19 March 2027)</p>
+    <div class="table-scroll"><table><thead><tr><th>Delta</th>
+    <th class="num">Put strike</th><th class="num">Put IV</th><th class="num">Own IV</th><th class="num">With skew</th>
+    <th class="num">Call strike</th><th class="num">Call IV</th><th class="num">Own IV</th><th class="num">With skew</th></tr></thead><tbody>
+    <tr><td>0.50</td><td class="num">297.68</td><td class="num">72.3%</td><td class="num">68.3%</td><td class="num"><strong>68.6%</strong></td><td class="num">297.68</td><td class="num">72.3%</td><td class="num">31.7%</td><td class="num"><strong>31.4%</strong></td></tr>
+    <tr><td>0.40</td><td class="num">263.88</td><td class="num">72.3%</td><td class="num">58.8%</td><td class="num"><strong>58.6%</strong></td><td class="num">336.30</td><td class="num">72.6%</td><td class="num">23.2%</td><td class="num"><strong>22.4%</strong></td></tr>
+    <tr><td>0.30</td><td class="num">231.96</td><td class="num">72.5%</td><td class="num">48.1%</td><td class="num"><strong>47.5%</strong></td><td class="num">384.85</td><td class="num">73.4%</td><td class="num">15.7%</td><td class="num"><strong>14.4%</strong></td></tr>
+    <tr><td>0.20</td><td class="num">199.23</td><td class="num">72.8%</td><td class="num">35.9%</td><td class="num"><strong>35.2%</strong></td><td class="num">n/a</td><td class="num">n/a</td><td class="num">n/a</td><td class="num">n/a</td></tr>
+    <tr><td>0.10</td><td class="num">160.96</td><td class="num">73.3%</td><td class="num">21.2%</td><td class="num"><strong>21.0%</strong></td><td class="num">n/a</td><td class="num">n/a</td><td class="num">n/a</td><td class="num">n/a</td></tr>
+    </tbody></table></div>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p class="about"><strong>About.</strong> Nikolai Alexander. 10+ years of quantitative research on financial markets. Former product lead and associate commercial director in biotech. I build research tools for market analysis.</p>
+      <p>&copy; 2026 Nikolai Alexander</p>
+    </div>
+    <div>
+      <p><a href="/research/">Research</a> &middot; <a href="/OptionsCone/">OptionsCone</a> &middot; <a href="https://github.com/nikkn">GitHub</a> &middot; <a href="https://x.com/nikkn_alexander">X</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const P1 = [{"iv": 0.2, "dte": 30, "delta": 0.5, "call": 0.47714, "put": 0.52286}, {"iv": 0.2, "dte": 30, "delta": 0.4, "call": 0.37802, "put": 0.4223}, {"iv": 0.2, "dte": 30, "delta": 0.3, "call": 0.28037, "put": 0.32023}, {"iv": 0.2, "dte": 30, "delta": 0.2, "call": 0.18434, "put": 0.21644}, {"iv": 0.2, "dte": 30, "delta": 0.1, "call": 0.0903, "put": 0.11044}, {"iv": 0.2, "dte": 90, "delta": 0.5, "call": 0.46044, "put": 0.53956}, {"iv": 0.2, "dte": 90, "delta": 0.4, "call": 0.36217, "put": 0.43879}, {"iv": 0.2, "dte": 90, "delta": 0.3, "call": 0.26641, "put": 0.33539}, {"iv": 0.2, "dte": 90, "delta": 0.2, "call": 0.17337, "put": 0.22895}, {"iv": 0.2, "dte": 90, "delta": 0.1, "call": 0.08366, "put": 0.11856}, {"iv": 0.2, "dte": 180, "delta": 0.5, "call": 0.44415, "put": 0.55585}, {"iv": 0.2, "dte": 180, "delta": 0.4, "call": 0.34687, "put": 0.45506}, {"iv": 0.2, "dte": 180, "delta": 0.3, "call": 0.25307, "put": 0.35051}, {"iv": 0.2, "dte": 180, "delta": 0.2, "call": 0.16303, "put": 0.2416}, {"iv": 0.2, "dte": 180, "delta": 0.1, "call": 0.07751, "put": 0.12691}, {"iv": 0.5, "dte": 30, "delta": 0.5, "call": 0.44301, "put": 0.55699}, {"iv": 0.5, "dte": 30, "delta": 0.4, "call": 0.3458, "put": 0.4562}, {"iv": 0.5, "dte": 30, "delta": 0.3, "call": 0.25215, "put": 0.35158}, {"iv": 0.5, "dte": 30, "delta": 0.2, "call": 0.16232, "put": 0.2425}, {"iv": 0.5, "dte": 30, "delta": 0.1, "call": 0.07709, "put": 0.12752}, {"iv": 0.5, "dte": 90, "delta": 0.5, "call": 0.40196, "put": 0.59804}, {"iv": 0.5, "dte": 90, "delta": 0.4, "call": 0.30796, "put": 0.49798}, {"iv": 0.5, "dte": 90, "delta": 0.3, "call": 0.21986, "put": 0.39123}, {"iv": 0.5, "dte": 90, "delta": 0.2, "call": 0.13788, "put": 0.27648}, {"iv": 0.5, "dte": 90, "delta": 0.1, "call": 0.06303, "put": 0.15074}, {"iv": 0.5, "dte": 180, "delta": 0.5, "call": 0.36275, "put": 0.63725}, {"iv": 0.5, "dte": 180, "delta": 0.4, "call": 0.27277, "put": 0.53895}, {"iv": 0.5, "dte": 180, "delta": 0.3, "call": 0.19064, "put": 0.43122}, {"iv": 0.5, "dte": 180, "delta": 0.2, "call": 0.11648, "put": 0.31189}, {"iv": 0.5, "dte": 180, "delta": 0.1, "call": 0.05127, "put": 0.17607}, {"iv": 0.8, "dte": 30, "delta": 0.5, "call": 0.4093, "put": 0.5907}, {"iv": 0.8, "dte": 30, "delta": 0.4, "call": 0.31465, "put": 0.49043}, {"iv": 0.8, "dte": 30, "delta": 0.3, "call": 0.2255, "put": 0.38398}, {"iv": 0.8, "dte": 30, "delta": 0.2, "call": 0.14209, "put": 0.27018}, {"iv": 0.8, "dte": 30, "delta": 0.1, "call": 0.06541, "put": 0.14635}, {"iv": 0.8, "dte": 90, "delta": 0.5, "call": 0.34559, "put": 0.65441}, {"iv": 0.8, "dte": 90, "delta": 0.4, "call": 0.25765, "put": 0.55721}, {"iv": 0.8, "dte": 90, "delta": 0.3, "call": 0.17836, "put": 0.44941}, {"iv": 0.8, "dte": 90, "delta": 0.2, "call": 0.1077, "put": 0.32839}, {"iv": 0.8, "dte": 90, "delta": 0.1, "call": 0.0466, "put": 0.18827}, {"iv": 0.8, "dte": 180, "delta": 0.5, "call": 0.28713, "put": 0.71287}, {"iv": 0.8, "dte": 180, "delta": 0.4, "call": 0.20749, "put": 0.62113}, {"iv": 0.8, "dte": 180, "delta": 0.3, "call": 0.1387, "put": 0.51492}, {"iv": 0.8, "dte": 180, "delta": 0.2, "call": 0.08025, "put": 0.38981}, {"iv": 0.8, "dte": 180, "delta": 0.1, "call": 0.03264, "put": 0.23584}];
+const P2 = [{"sym": "SPY", "target": 30, "dte": 32, "side": "put", "delta": 0.5, "flat": 0.51445, "skew": 0.43343}, {"sym": "SPY", "target": 30, "dte": 32, "side": "put", "delta": 0.4, "flat": 0.41488, "skew": 0.32495}, {"sym": "SPY", "target": 30, "dte": 32, "side": "put", "delta": 0.3, "flat": 0.31448, "skew": 0.22267}, {"sym": "SPY", "target": 30, "dte": 32, "side": "put", "delta": 0.2, "flat": 0.21307, "skew": 0.12944}, {"sym": "SPY", "target": 30, "dte": 32, "side": "put", "delta": 0.1, "flat": 0.11009, "skew": 0.05202}, {"sym": "SPY", "target": 30, "dte": 32, "side": "call", "delta": 0.5, "flat": 0.48555, "skew": 0.56657}, {"sym": "SPY", "target": 30, "dte": 32, "side": "call", "delta": 0.4, "flat": 0.3867, "skew": 0.45364}, {"sym": "SPY", "target": 30, "dte": 32, "side": "call", "delta": 0.3, "flat": 0.28855, "skew": 0.33758}, {"sym": "SPY", "target": 30, "dte": 32, "side": "call", "delta": 0.2, "flat": 0.19115, "skew": 0.21979}, {"sym": "SPY", "target": 30, "dte": 32, "side": "call", "delta": 0.1, "flat": 0.09466, "skew": 0.10259}, {"sym": "SPY", "target": 90, "dte": 95, "side": "put", "delta": 0.5, "flat": 0.52739, "skew": 0.43565}, {"sym": "SPY", "target": 90, "dte": 95, "side": "put", "delta": 0.4, "flat": 0.42852, "skew": 0.32548}, {"sym": "SPY", "target": 90, "dte": 95, "side": "put", "delta": 0.3, "flat": 0.32821, "skew": 0.2216}, {"sym": "SPY", "target": 90, "dte": 95, "side": "put", "delta": 0.2, "flat": 0.22611, "skew": 0.12748}, {"sym": "SPY", "target": 90, "dte": 95, "side": "put", "delta": 0.1, "flat": 0.12118, "skew": 0.0523}, {"sym": "SPY", "target": 90, "dte": 95, "side": "call", "delta": 0.5, "flat": 0.47261, "skew": 0.56435}, {"sym": "SPY", "target": 90, "dte": 95, "side": "call", "delta": 0.4, "flat": 0.37503, "skew": 0.4499}, {"sym": "SPY", "target": 90, "dte": 95, "side": "call", "delta": 0.3, "flat": 0.27869, "skew": 0.33273}, {"sym": "SPY", "target": 90, "dte": 95, "side": "call", "delta": 0.2, "flat": 0.18365, "skew": 0.21452}, {"sym": "SPY", "target": 90, "dte": 95, "side": "call", "delta": 0.1, "flat": 0.0902, "skew": 0.09801}, {"sym": "SPY", "target": 180, "dte": 170, "side": "put", "delta": 0.5, "flat": 0.539, "skew": 0.44514}, {"sym": "SPY", "target": 180, "dte": 170, "side": "put", "delta": 0.4, "flat": 0.44083, "skew": 0.33397}, {"sym": "SPY", "target": 180, "dte": 170, "side": "put", "delta": 0.3, "flat": 0.34067, "skew": 0.22863}, {"sym": "SPY", "target": 180, "dte": 170, "side": "put", "delta": 0.2, "flat": 0.23806, "skew": 0.13285}, {"sym": "SPY", "target": 180, "dte": 170, "side": "put", "delta": 0.1, "flat": 0.13151, "skew": 0.05686}, {"sym": "SPY", "target": 180, "dte": 170, "side": "call", "delta": 0.5, "flat": 0.461, "skew": 0.55486}, {"sym": "SPY", "target": 180, "dte": 170, "side": "call", "delta": 0.4, "flat": 0.36459, "skew": 0.44}, {"sym": "SPY", "target": 180, "dte": 170, "side": "call", "delta": 0.3, "flat": 0.26988, "skew": 0.32313}, {"sym": "SPY", "target": 180, "dte": 170, "side": "call", "delta": 0.2, "flat": 0.17697, "skew": 0.20608}, {"sym": "SPY", "target": 180, "dte": 170, "side": "call", "delta": 0.1, "flat": 0.08623, "skew": 0.09198}, {"sym": "AAPL", "target": 30, "dte": 32, "side": "put", "delta": 0.5, "flat": 0.53002, "skew": 0.4894}, {"sym": "AAPL", "target": 30, "dte": 32, "side": "put", "delta": 0.4, "flat": 0.43018, "skew": 0.38549}, {"sym": "AAPL", "target": 30, "dte": 32, "side": "put", "delta": 0.3, "flat": 0.32839, "skew": 0.28435}, {"sym": "AAPL", "target": 30, "dte": 32, "side": "put", "delta": 0.2, "flat": 0.22419, "skew": 0.18702}, {"sym": "AAPL", "target": 30, "dte": 32, "side": "put", "delta": 0.1, "flat": 0.11645, "skew": 0.09477}, {"sym": "AAPL", "target": 30, "dte": 32, "side": "call", "delta": 0.5, "flat": 0.46998, "skew": 0.5106}, {"sym": "AAPL", "target": 30, "dte": 32, "side": "call", "delta": 0.4, "flat": 0.37187, "skew": 0.4048}, {"sym": "AAPL", "target": 30, "dte": 32, "side": "call", "delta": 0.3, "flat": 0.27543, "skew": 0.298}, {"sym": "AAPL", "target": 30, "dte": 32, "side": "call", "delta": 0.2, "flat": 0.18075, "skew": 0.19135}, {"sym": "AAPL", "target": 30, "dte": 32, "side": "call", "delta": 0.1, "flat": 0.0882, "skew": 0.08711}, {"sym": "AAPL", "target": 90, "dte": 95, "side": "put", "delta": 0.5, "flat": 0.54797, "skew": 0.51099}, {"sym": "AAPL", "target": 90, "dte": 95, "side": "put", "delta": 0.4, "flat": 0.4484, "skew": 0.40613}, {"sym": "AAPL", "target": 90, "dte": 95, "side": "put", "delta": 0.3, "flat": 0.34577, "skew": 0.30128}, {"sym": "AAPL", "target": 90, "dte": 95, "side": "put", "delta": 0.2, "flat": 0.23939, "skew": 0.19721}, {"sym": "AAPL", "target": 90, "dte": 95, "side": "put", "delta": 0.1, "flat": 0.12758, "skew": 0.09527}, {"sym": "AAPL", "target": 90, "dte": 95, "side": "call", "delta": 0.5, "flat": 0.45203, "skew": 0.48901}, {"sym": "AAPL", "target": 90, "dte": 95, "side": "call", "delta": 0.4, "flat": 0.3552, "skew": 0.38474}, {"sym": "AAPL", "target": 90, "dte": 95, "side": "call", "delta": 0.3, "flat": 0.26102, "skew": 0.28171}, {"sym": "AAPL", "target": 90, "dte": 95, "side": "call", "delta": 0.2, "flat": 0.16966, "skew": 0.18084}, {"sym": "AAPL", "target": 90, "dte": 95, "side": "call", "delta": 0.1, "flat": 0.08166, "skew": 0.08391}, {"sym": "AAPL", "target": 180, "dte": 158, "side": "put", "delta": 0.5, "flat": 0.56522, "skew": 0.53232}, {"sym": "AAPL", "target": 180, "dte": 158, "side": "put", "delta": 0.4, "flat": 0.466, "skew": 0.42742}, {"sym": "AAPL", "target": 180, "dte": 158, "side": "put", "delta": 0.3, "flat": 0.36263, "skew": 0.32039}, {"sym": "AAPL", "target": 180, "dte": 158, "side": "put", "delta": 0.2, "flat": 0.2542, "skew": 0.2116}, {"sym": "AAPL", "target": 180, "dte": 158, "side": "put", "delta": 0.1, "flat": 0.1385, "skew": 0.10173}, {"sym": "AAPL", "target": 180, "dte": 158, "side": "call", "delta": 0.5, "flat": 0.43478, "skew": 0.46768}, {"sym": "AAPL", "target": 180, "dte": 158, "side": "call", "delta": 0.4, "flat": 0.33927, "skew": 0.36525}, {"sym": "AAPL", "target": 180, "dte": 158, "side": "call", "delta": 0.3, "flat": 0.24736, "skew": 0.26574}, {"sym": "AAPL", "target": 180, "dte": 158, "side": "call", "delta": 0.2, "flat": 0.15924, "skew": 0.1699}, {"sym": "AAPL", "target": 180, "dte": 158, "side": "call", "delta": 0.1, "flat": 0.07561, "skew": 0.0792}, {"sym": "AVGO", "target": 30, "dte": 32, "side": "put", "delta": 0.5, "flat": 0.54237, "skew": 0.52875}, {"sym": "AVGO", "target": 30, "dte": 32, "side": "put", "delta": 0.4, "flat": 0.44202, "skew": 0.42467}, {"sym": "AVGO", "target": 30, "dte": 32, "side": "put", "delta": 0.3, "flat": 0.33888, "skew": 0.32132}, {"sym": "AVGO", "target": 30, "dte": 32, "side": "put", "delta": 0.2, "flat": 0.23237, "skew": 0.21896}, {"sym": "AVGO", "target": 30, "dte": 32, "side": "put", "delta": 0.1, "flat": 0.12115, "skew": 0.11685}, {"sym": "AVGO", "target": 30, "dte": 32, "side": "call", "delta": 0.5, "flat": 0.45763, "skew": 0.47125}, {"sym": "AVGO", "target": 30, "dte": 32, "side": "call", "delta": 0.4, "flat": 0.35979, "skew": 0.36704}, {"sym": "AVGO", "target": 30, "dte": 32, "side": "call", "delta": 0.3, "flat": 0.2644, "skew": 0.26356}, {"sym": "AVGO", "target": 30, "dte": 32, "side": "call", "delta": 0.2, "flat": 0.17164, "skew": 0.16222}, {"sym": "AVGO", "target": 30, "dte": 32, "side": "call", "delta": 0.1, "flat": 0.08208, "skew": 0.06598}, {"sym": "AVGO", "target": 90, "dte": 95, "side": "put", "delta": 0.5, "flat": 0.57993, "skew": 0.57504}, {"sym": "AVGO", "target": 90, "dte": 95, "side": "put", "delta": 0.4, "flat": 0.47983, "skew": 0.46833}, {"sym": "AVGO", "target": 90, "dte": 95, "side": "put", "delta": 0.3, "flat": 0.37464, "skew": 0.35782}, {"sym": "AVGO", "target": 90, "dte": 95, "side": "put", "delta": 0.2, "flat": 0.26328, "skew": 0.24369}, {"sym": "AVGO", "target": 90, "dte": 95, "side": "put", "delta": 0.1, "flat": 0.14313, "skew": 0.12578}, {"sym": "AVGO", "target": 90, "dte": 95, "side": "call", "delta": 0.5, "flat": 0.42007, "skew": 0.42496}, {"sym": "AVGO", "target": 90, "dte": 95, "side": "call", "delta": 0.4, "flat": 0.3246, "skew": 0.32252}, {"sym": "AVGO", "target": 90, "dte": 95, "side": "call", "delta": 0.3, "flat": 0.23366, "skew": 0.22514}, {"sym": "AVGO", "target": 90, "dte": 95, "side": "call", "delta": 0.2, "flat": 0.14757, "skew": 0.13425}, {"sym": "AVGO", "target": 90, "dte": 95, "side": "call", "delta": 0.1, "flat": 0.0674, "skew": 0.05301}, {"sym": "AVGO", "target": 180, "dte": 158, "side": "put", "delta": 0.5, "flat": 0.60814, "skew": 0.61065}, {"sym": "AVGO", "target": 180, "dte": 158, "side": "put", "delta": 0.4, "flat": 0.50844, "skew": 0.50558}, {"sym": "AVGO", "target": 180, "dte": 158, "side": "put", "delta": 0.3, "flat": 0.40175, "skew": 0.39345}, {"sym": "AVGO", "target": 180, "dte": 158, "side": "put", "delta": 0.2, "flat": 0.28658, "skew": 0.27366}, {"sym": "AVGO", "target": 180, "dte": 158, "side": "put", "delta": 0.1, "flat": 0.15939, "skew": 0.14464}, {"sym": "AVGO", "target": 180, "dte": 158, "side": "call", "delta": 0.5, "flat": 0.39186, "skew": 0.38935}, {"sym": "AVGO", "target": 180, "dte": 158, "side": "call", "delta": 0.4, "flat": 0.29848, "skew": 0.2913}, {"sym": "AVGO", "target": 180, "dte": 158, "side": "call", "delta": 0.3, "flat": 0.21127, "skew": 0.2007}, {"sym": "AVGO", "target": 180, "dte": 158, "side": "call", "delta": 0.2, "flat": 0.1306, "skew": 0.11863}, {"sym": "AVGO", "target": 180, "dte": 158, "side": "call", "delta": 0.1, "flat": 0.0578, "skew": 0.04768}, {"sym": "BE", "target": 30, "dte": 32, "side": "put", "delta": 0.5, "flat": 0.5878, "skew": 0.57356}, {"sym": "BE", "target": 30, "dte": 32, "side": "put", "delta": 0.4, "flat": 0.48838, "skew": 0.47026}, {"sym": "BE", "target": 30, "dte": 32, "side": "put", "delta": 0.3, "flat": 0.38312, "skew": 0.36537}, {"sym": "BE", "target": 30, "dte": 32, "side": "put", "delta": 0.2, "flat": 0.27047, "skew": 0.25864}, {"sym": "BE", "target": 30, "dte": 32, "side": "put", "delta": 0.1, "flat": 0.14702, "skew": 0.1473}, {"sym": "BE", "target": 30, "dte": 32, "side": "call", "delta": 0.5, "flat": 0.4122, "skew": 0.42644}, {"sym": "BE", "target": 30, "dte": 32, "side": "call", "delta": 0.4, "flat": 0.31789, "skew": 0.32516}, {"sym": "BE", "target": 30, "dte": 32, "side": "call", "delta": 0.3, "flat": 0.22839, "skew": 0.22685}, {"sym": "BE", "target": 30, "dte": 32, "side": "call", "delta": 0.2, "flat": 0.14385, "skew": 0.13319}, {"sym": "BE", "target": 30, "dte": 32, "side": "call", "delta": 0.1, "flat": 0.06511, "skew": 0.04759}, {"sym": "BE", "target": 90, "dte": 95, "side": "put", "delta": 0.5, "flat": 0.64012, "skew": 0.6386}, {"sym": "BE", "target": 90, "dte": 95, "side": "put", "delta": 0.4, "flat": 0.54233, "skew": 0.53657}, {"sym": "BE", "target": 90, "dte": 95, "side": "put", "delta": 0.3, "flat": 0.4353, "skew": 0.42617}, {"sym": "BE", "target": 90, "dte": 95, "side": "put", "delta": 0.2, "flat": 0.31669, "skew": 0.30599}, {"sym": "BE", "target": 90, "dte": 95, "side": "put", "delta": 0.1, "flat": 0.181, "skew": 0.17221}, {"sym": "BE", "target": 90, "dte": 95, "side": "call", "delta": 0.5, "flat": 0.35988, "skew": 0.3614}, {"sym": "BE", "target": 90, "dte": 95, "side": "call", "delta": 0.4, "flat": 0.27016, "skew": 0.26729}, {"sym": "BE", "target": 90, "dte": 95, "side": "call", "delta": 0.3, "flat": 0.18807, "skew": 0.18129}, {"sym": "BE", "target": 90, "dte": 95, "side": "call", "delta": 0.2, "flat": 0.11379, "skew": 0.10441}, {"sym": "BE", "target": 90, "dte": 95, "side": "call", "delta": 0.1, "flat": 0.04854, "skew": 0.03928}, {"sym": "BE", "target": 180, "dte": 158, "side": "put", "delta": 0.5, "flat": 0.68279, "skew": 0.6857}, {"sym": "BE", "target": 180, "dte": 158, "side": "put", "delta": 0.4, "flat": 0.58786, "skew": 0.58577}, {"sym": "BE", "target": 180, "dte": 158, "side": "put", "delta": 0.3, "flat": 0.48099, "skew": 0.47528}, {"sym": "BE", "target": 180, "dte": 158, "side": "put", "delta": 0.2, "flat": 0.35854, "skew": 0.35199}, {"sym": "BE", "target": 180, "dte": 158, "side": "put", "delta": 0.1, "flat": 0.21208, "skew": 0.20958}, {"sym": "BE", "target": 180, "dte": 158, "side": "call", "delta": 0.5, "flat": 0.31721, "skew": 0.3143}, {"sym": "BE", "target": 180, "dte": 158, "side": "call", "delta": 0.4, "flat": 0.2324, "skew": 0.22417}, {"sym": "BE", "target": 180, "dte": 158, "side": "call", "delta": 0.3, "flat": 0.15688, "skew": 0.14398}];
+const NS = 'http://www.w3.org/2000/svg';
+const pct = v => (v * 100).toFixed(1) + '%';
+function el(tag, attrs, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function tipFor(fig) {
+  const tip = fig.querySelector('.viz-tip');
+  return {
+    show(html, evt) {
+      tip.innerHTML = html; tip.style.opacity = 1;
+      const r = fig.getBoundingClientRect();
+      let x = evt.clientX - r.left + 14, y = evt.clientY - r.top - 12;
+      if (x + tip.offsetWidth > r.width) x = evt.clientX - r.left - tip.offsetWidth - 14;
+      tip.style.left = Math.max(0, x) + 'px'; tip.style.top = Math.max(0, y - tip.offsetHeight) + 'px';
+    },
+    hide() { tip.style.opacity = 0; }
+  };
+}
+
+// Chart 1: textbook model, 30-delta put and call by days to expiry
+(function () {
+  const fig = document.getElementById('viz1'), tip = tipFor(fig);
+  const L = 44, R = 64, T = 30, B = 36, W = 360, H = 250;
+  const xs = d => L + (d - 30) / (180 - 30) * (W - L - R);
+  const ys = v => T + (1 - v / 0.6) * (H - T - B);
+  const ivs = [[0.2, '--c-iv20'], [0.5, '--c-iv50'], [0.8, '--c-iv80']];
+  [['put', 'viz1-put', '30-delta put'], ['call', 'viz1-call', '30-delta call']].forEach(([side, id, title]) => {
+    const s = document.getElementById(id);
+    el('text', { x: L, y: 14, class: 'ttl' }, s, title);
+    [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6].forEach(v => {
+      el('line', { x1: L, x2: W - R, y1: ys(v), y2: ys(v), stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+      el('text', { x: L - 8, y: ys(v) + 4, 'text-anchor': 'end', class: 'tick' }, s, (v * 100) + '%');
+    });
+    [30, 90, 180].forEach(d => el('text', { x: xs(d), y: H - B + 18, 'text-anchor': 'middle', class: 'tick' }, s, d + ' days'));
+    el('line', { x1: L, x2: W - R, y1: ys(0.3), y2: ys(0.3), stroke: 'var(--c-ref)', 'stroke-width': 1.5, 'stroke-dasharray': '5 4' }, s);
+    ivs.forEach(([iv, col]) => {
+      const pts = P1.filter(r => r.iv === iv && r.delta === 0.3).sort((a, b) => a.dte - b.dte);
+      el('polyline', { points: pts.map(r => xs(r.dte) + ',' + ys(r[side])).join(' '), fill: 'none',
+                       stroke: 'var(' + col + ')', 'stroke-width': 2 }, s);
+      pts.forEach(r => {
+        el('circle', { cx: xs(r.dte), cy: ys(r[side]), r: 4.5, fill: 'var(' + col + ')', stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+        const hit = el('circle', { cx: xs(r.dte), cy: ys(r[side]), r: 12, fill: 'transparent' }, s);
+        hit.addEventListener('mousemove', e => tip.show('<b>30-delta ' + side + '</b>, IV ' + (iv * 100) + '%, ' + r.dte + ' days<br>in the money: ' + pct(r[side]), e));
+        hit.addEventListener('mouseleave', () => tip.hide());
+      });
+      const last = pts[pts.length - 1];
+      el('text', { x: xs(last.dte) + 9, y: ys(last[side]) + 4, class: 'tick' }, s, 'IV ' + (iv * 100) + '%');
+    });
+  });
+})();
+
+// Chart 2: real chains, 30-delta, about 95 days
+(function () {
+  const fig = document.getElementById('viz2'), tip = tipFor(fig);
+  const names = { SPY: 'SPY', AAPL: 'Apple', AVGO: 'Broadcom', BE: 'Bloom Energy' };
+  const order = ['SPY', 'AAPL', 'AVGO', 'BE'];
+  const L = 92, R = 12, T = 30, B = 34, W = 360, H = 230;
+  const xs = v => L + v / 0.5 * (W - L - R);
+  const rowY = i => T + 16 + i * ((H - T - B - 40) / (order.length - 1));
+  [['put', 'viz2-put', '30-delta put'], ['call', 'viz2-call', '30-delta call']].forEach(([side, id, title]) => {
+    const s = document.getElementById(id);
+    el('text', { x: L, y: 14, class: 'ttl' }, s, title);
+    [0, 0.1, 0.2, 0.3, 0.4, 0.5].forEach(v => {
+      el('line', { x1: xs(v), x2: xs(v), y1: T, y2: H - B, stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+      el('text', { x: xs(v), y: H - B + 18, 'text-anchor': 'middle', class: 'tick' }, s, (v * 100) + '%');
+    });
+    el('line', { x1: xs(0.3), x2: xs(0.3), y1: T, y2: H - B, stroke: 'var(--c-ref)', 'stroke-width': 1.5, 'stroke-dasharray': '5 4' }, s);
+    order.forEach((sym, i) => {
+      const r = P2.find(q => q.sym === sym && q.target === 90 && q.side === side && q.delta === 0.3);
+      if (!r) return;
+      const y = rowY(i);
+      el('text', { x: L - 10, y: y + 4, 'text-anchor': 'end' , 'font-size': 12.5 }, s, names[sym]);
+      el('line', { x1: xs(r.flat), x2: xs(r.skew), y1: y, y2: y, stroke: 'var(--ink-3)', 'stroke-width': 1.5 }, s);
+      el('circle', { cx: xs(r.flat), cy: y, r: 5.5, fill: 'var(--bg)', stroke: 'var(--c-own)', 'stroke-width': 2.2 }, s);
+      el('circle', { cx: xs(r.skew), cy: y, r: 6, fill: 'var(--c-skew)', stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+      const hit = el('rect', { x: L, y: y - 13, width: W - L - R, height: 26, fill: 'transparent' }, s);
+      hit.addEventListener('mousemove', e => tip.show('<b>' + names[sym] + '</b>, 30-delta ' + side + ', ' + r.dte + ' days<br>own IV: ' + pct(r.flat) + '<br>with skew: ' + pct(r.skew), e));
+      hit.addEventListener('mouseleave', () => tip.hide());
+    });
+  });
+})();
+</script>
+</body>
+</html>
