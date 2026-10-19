@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0DTE SPY odds: touched vs closed beyond, ten years of data | Research</title>
+<meta name="description" content="Ten years of SPY trading days, from the open to the close: how often a distance of 0.5%, 1% or 2% is touched, how often the close ends beyond it, and how the VIX, the weekday and the last day of the month change the odds.">
+<link rel="canonical" href="https://nikolai-alexander.com/research/spy-0dte-touch-vs-close.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0DTE odds on SPY: how often a level is touched, and how often it closes beyond it">
+<meta property="og:description" content="Ten years of SPY days from the open to the close: touched vs closed beyond, by VIX level, weekday and month end.">
+<meta property="og:url" content="https://nikolai-alexander.com/research/spy-0dte-touch-vs-close.html">
+<meta property="og:image" content="https://nikolai-alexander.com/research/img/spy-0dte-touch-vs-close.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Share of SPY trading days over ten years on which a distance from the opening price was touched, and on which the close ended beyond it.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "0DTE odds on SPY: how often a level is touched, and how often it closes beyond it",
+  "description": "Ten years of SPY trading days, from the open to the close: how often a distance of 0.5%, 1% or 2% is touched, how often the close ends beyond it, and how the VIX, the weekday and the last day of the month change the odds.",
+  "datePublished": "2026-10-20",
+  "dateModified": "2026-10-20",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "10+ years of quantitative research on financial markets",
+             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+  "about": ["0DTE options", "SPY", "iron condor", "touch probability", "VIX expected move", "intraday range"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/research/spy-0dte-touch-vs-close.html"
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="/count.js"></script>
+<style>
+.brand-text { font: 600 17px var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+.article { max-width: 760px; padding: 48px 0 24px; }
+.article h1 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.015em; }
+.article h2 { margin-top: 48px; }
+.article .lede { font-size: 19px; color: var(--ink-2); }
+.byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+.findings { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px 22px; margin: 26px 0 8px; }
+.findings p { font: 600 12.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 10px; }
+.findings ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.article table { font-size: 14.5px; }
+.article td, .article th { white-space: nowrap; padding-right: 14px; }
+.article td.num, .article th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.article tr.group td { font-weight: 600; color: var(--ink); padding-top: 16px; }
+.article details { margin: 10px 0 18px; }
+.article details summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+.small { font-size: 14px; color: var(--ink-3); }
+
+/* charts */
+.viz { --c-iv20: #86b6ef; --c-iv50: #2a78d6; --c-iv80: #104281;
+       --c-own: #eb6834; --c-skew: #2a78d6; --c-ref: var(--ink-3); --c-grid: var(--line);
+       position: relative; margin: 22px 0 6px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .viz { --c-iv20: #1c5cab; --c-iv50: #3987e5; --c-iv80: #9ec5f4;
+                                         --c-own: #d95926; --c-skew: #3987e5; }
+}
+:root[data-theme="dark"] .viz { --c-iv20: #1c5cab; --c-iv50: #3987e5; --c-iv80: #9ec5f4;
+                                --c-own: #d95926; --c-skew: #3987e5; }
+.viz-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--ink-2); margin-bottom: 6px; }
+.viz-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.viz-legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+.viz-legend i.dot { width: 11px; height: 11px; border-radius: 50%; }
+.viz-legend i.hollow { background: transparent !important; border: 2px solid; box-sizing: border-box; }
+.viz-legend i.dash { height: 0; border-top: 2px dashed var(--c-ref); background: none; }
+.viz-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.viz svg { width: 100%; height: auto; display: block; overflow: visible; }
+.viz text { font-family: var(--sans); fill: var(--ink-2); }
+.viz .ttl { font-weight: 600; fill: var(--ink); font-size: 13px; }
+.viz .tick { font-size: 11px; fill: var(--ink-3); }
+.viz-tip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s; background: var(--ink); color: var(--bg);
+           font-size: 12.5px; line-height: 1.45; padding: 7px 10px; border-radius: 4px; white-space: nowrap; z-index: 5; }
+@media (max-width: 640px) { .viz-panels { grid-template-columns: 1fr; } }
+.viz { --c-touch: #2a78d6; --c-end: #eb6834; } @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .viz { --c-touch: #3987e5; --c-end: #d95926; } } :root[data-theme="dark"] .viz { --c-touch: #3987e5; --c-end: #d95926; }
+.viz-panels.one { grid-template-columns: 1fr; }
+.article table.compact td, .article table.compact th { padding-right: 10px; }
+.article table.compact th { font-size: 12px; }
+.article th.grp { text-align: center; border-bottom: 1px solid var(--line); }
+.tnote { margin-top: 4px; }
+.viz + .table-scroll { margin-top: 34px; }
+</style>
+</head></head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="brand-text">nikolai-alexander.com</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/research/" aria-current="page">Research</a>
+      <a href="/#projects">Projects</a>
+      <a href="/#about">About</a>
+      <a href="https://github.com/nikkn">GitHub</a>
+      <a href="https://x.com/nikkn_alexander">X</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="article">
+  <p class="eyebrow">Research</p>
+  <h1>0DTE odds on SPY: how often a level is touched, and how often it closes beyond it</h1>
+  <p class="byline">By <a href="/#about">Nikolai Alexander</a> &middot; 20 October 2026</p>
+  <p class="lede">A 0DTE trade lives for one session. Whether a short strike holds depends on two different questions: does SPY reach it at any point during the day, and where does it close? I counted both on every SPY trading day of the last ten years, from the opening price to the close.</p>
+
+  <div class="findings">
+    <p>Key findings</p>
+    <ul>
+      <li>A distance of &plusmn;1% from the open was touched on 29.1% of all days, but the close ended beyond it on only 16.0%. Almost half of the days that touched the level closed back inside it.</li>
+      <li>The daily move the VIX implies was overstated: SPY closed beyond one VIX move from its open on 9.4% of days. Part of the reason is the overnight gap, which carries about 41% of SPY's daily movement and is already over at the open.</li>
+      <li>The VIX level at the open separates quiet from wild days almost completely: with the VIX under 15, &plusmn;1% was touched on 7.0% of days, with the VIX over 30 on 87.0%.</li>
+      <li>Mondays and Tuesdays were the quietest days, Thursdays and Fridays the most active.</li>
+      <li>On the last trading day of the month, the close ended beyond &plusmn;1% on 24.8% of days, against 15.6% on all other days.</li>
+    </ul>
+  </div>
+
+  <h2>Touched or closed beyond: why the difference matters for 0DTE</h2>
+  <p>Take a 0DTE iron condor on SPY with its short strikes 1% above and below the opening price. Two numbers decide how it goes. The <strong>touch</strong>: does SPY reach one of the short strikes at some point during the session? A trader with a stop at the short strike is stopped out on those days. The <strong>close</strong>: does SPY finish beyond a short strike at 16:00, when the options settle? A trader who holds to the close only loses on those days.</p>
+  <p>The two can be far apart. A level touched at 11:00 can be far away again by the close, and the history shows how often that happens.</p>
+
+  <h2>How the days were counted</h2>
+  <ul>
+    <li><strong>2,520 trading days</strong> of SPY, from 2016 to 2026, with every day counted. Daily expirations on SPY did not always exist, but the question here is about how SPY moves within one session, and that applies to every day.</li>
+    <li><strong>From the open to the close:</strong> each day starts at the opening price. A distance counts as <em>touched</em> when the day's high reached it above the open, or the day's low below it. It counts as <em>closed beyond</em> when the closing price ended past it.</li>
+    <li><strong>The VIX at the open</strong> of each day serves as the option market's expected volatility. Its daily move is the VIX divided by the square root of 252 trading days, 1.07% on a typical day.</li>
+  </ul>
+
+  <h2>How often SPY touches a level, and how often it closes beyond it</h2>
+  <figure class="viz" id="viz1" aria-label="Chart: share of SPY trading days on which a distance from the open was touched, and on which the close ended beyond it, for distances from 0.25% to 2%.">
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-touch)"></i>Touched (either side)</span>
+      <span><i class="dot hollow" style="border-color:var(--c-end)"></i>Closed beyond (either side)</span>
+    </div>
+    <div class="viz-panels one"><svg id="viz1-s" viewBox="0 0 720 300" role="img"></svg></div>
+    <div class="viz-tip"></div>
+    <figcaption>Share of SPY trading days, 2016 to 2026, measured from the opening price.</figcaption>
+  </figure>
+  <p>On an average day SPY closed 0.57% away from its open, and its range from high to low was 1.13%. At &plusmn;0.5%, a touch was close to the rule (67.4% of days), while the close ended beyond it on 40.6%. At &plusmn;2%, both became rare: touched on 6.6%, closed beyond on 3.2%. Across all distances, the close ended beyond the level on roughly half the days the level was touched.</p>
+  <p>Falls were touched more often than rises from 0.5% on, even though SPY rose over the ten years: &plusmn;1% was touched below the open on 17.2% of days and above it on 14.2%.</p>
+  <details><summary>All values by distance</summary>
+  <div class="table-scroll"><table class="compact"><thead><tr><th rowspan="2">Distance</th><th class="num grp" colspan="3">touched</th><th class="num grp" colspan="3">closed beyond</th></tr><tr><th class="num">above</th><th class="num">below</th><th class="num">either</th><th class="num">above</th><th class="num">below</th><th class="num">either</th></tr></thead><tbody>
+    <tr><td>&plusmn;0.25%</td><td class="num">64.5%</td><td class="num">64.0%</td><td class="num">94.0%</td><td class="num">35.6%</td><td class="num">28.6%</td><td class="num">64.1%</td></tr><tr><td>&plusmn;0.50%</td><td class="num">38.5%</td><td class="num">40.8%</td><td class="num">67.4%</td><td class="num">21.7%</td><td class="num">18.9%</td><td class="num">40.6%</td></tr><tr><td>&plusmn;0.75%</td><td class="num">23.1%</td><td class="num">25.9%</td><td class="num">44.1%</td><td class="num">12.9%</td><td class="num">12.8%</td><td class="num">25.8%</td></tr><tr><td>&plusmn;1.00%</td><td class="num">14.2%</td><td class="num">17.2%</td><td class="num">29.1%</td><td class="num">7.2%</td><td class="num">8.8%</td><td class="num">16.0%</td></tr><tr><td>&plusmn;1.25%</td><td class="num">8.3%</td><td class="num">11.6%</td><td class="num">18.8%</td><td class="num">4.5%</td><td class="num">6.2%</td><td class="num">10.7%</td></tr><tr><td>&plusmn;1.50%</td><td class="num">5.4%</td><td class="num">8.6%</td><td class="num">13.4%</td><td class="num">2.8%</td><td class="num">4.1%</td><td class="num">6.9%</td></tr><tr><td>&plusmn;1.75%</td><td class="num">3.8%</td><td class="num">6.0%</td><td class="num">9.4%</td><td class="num">1.9%</td><td class="num">2.9%</td><td class="num">4.8%</td></tr><tr><td>&plusmn;2.00%</td><td class="num">2.6%</td><td class="num">4.3%</td><td class="num">6.6%</td><td class="num">1.2%</td><td class="num">2.0%</td><td class="num">3.2%</td></tr>
+  </tbody></table></div></details>
+
+  <h2>How large the big days were</h2>
+  <p>Most days stay close to the open, but the risk of a short 0DTE position sits in the few days that do not. Taking the largest days by the distance between close and open, in either direction:</p>
+  <div class="table-scroll"><table class="compact"><thead><tr><th>Days</th><th class="num">&#8960; close vs open</th><th class="num">&#8960; furthest point of the day</th><th class="num">Median VIX at the open</th></tr></thead><tbody>
+    <tr><td>the largest 10%</td><td class="num">2.00%</td><td class="num">2.55%</td><td class="num">25.0</td></tr><tr><td>the largest 5%</td><td class="num">2.53%</td><td class="num">3.16%</td><td class="num">27.0</td></tr><tr><td>the largest 1%</td><td class="num">3.94%</td><td class="num">4.89%</td><td class="num">36.4</td></tr>
+  </tbody></table></div>
+  <p class="small tnote">&#8960;: average. The furthest point of the day is the larger of the distances from the open to the high and to the low.</p>
+  <p>On the largest 10% of days, SPY closed on average 2.00% away from its open and reached 2.55% at its furthest point during the session, more than three times an ordinary day. The largest single day was 9 April 2025, with SPY +11.18% from its open. The big days rarely came out of calm: on the largest 10% the VIX at the open had a median of 25.0, against 17.1 on all days.</p>
+
+  <h2>The VIX expected move overstates the day</h2>
+  <p>A common rule for 0DTE is to place short strikes at the move the VIX implies for one day. If daily moves followed a normal distribution with that size, the close would end beyond one VIX move on about 32% of days. From the open, SPY did so on 9.4%.</p>
+  <div class="table-scroll"><table><thead><tr><th>Distance from the open</th><th class="num">Touched</th><th class="num">Closed beyond</th></tr></thead><tbody>
+    <tr><td>0.5 &times; the VIX move</td><td class="num">65.0%</td><td class="num">35.6%</td></tr><tr><td>1.0 &times; the VIX move</td><td class="num">18.4%</td><td class="num">9.4%</td></tr><tr><td>1.5 &times; the VIX move</td><td class="num">5.2%</td><td class="num">2.7%</td></tr><tr><td>2.0 &times; the VIX move</td><td class="num">1.5%</td><td class="num">0.7%</td></tr>
+  </tbody></table></div>
+  <p>Two things lie behind the gap. First, the VIX covers whole days, from one close to the next, and about 41% of SPY's daily movement happens overnight, between the close and the next open. A trade opened at the open no longer faces that part. Second, even from close to close SPY ended beyond one VIX move on only 18.0% of days: option prices tend to charge for more movement than follows, which is the premium option sellers are paid for.</p>
+
+  <h2>The VIX level at the open decides almost everything</h2>
+  <figure class="viz" id="viz2" aria-label="Chart: share of SPY days on which plus or minus 1% from the open was touched and closed beyond, by the VIX level at the open.">
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-touch)"></i>Touched &plusmn;1%</span>
+      <span><i class="dot hollow" style="border-color:var(--c-end)"></i>Closed beyond &plusmn;1%</span>
+    </div>
+    <div class="viz-panels one"><svg id="viz2-s" viewBox="0 0 720 220" role="img"></svg></div>
+    <div class="viz-tip"></div>
+    <figcaption>&plusmn;1% from the opening price, by the VIX at the open.</figcaption>
+  </figure>
+  <div class="table-scroll"><table class="compact"><thead><tr><th rowspan="2">VIX at the open</th><th class="num" rowspan="2">Days</th><th class="num" rowspan="2">&#8960; move</th><th class="num grp" colspan="2">&plusmn;0.5%</th><th class="num grp" colspan="2">&plusmn;1%</th></tr><tr><th class="num">touched</th><th class="num">closed b.</th><th class="num">touched</th><th class="num">closed b.</th></tr></thead><tbody>
+    <tr><td>VIX under 15</td><td class="num">806</td><td class="num">0.31%</td><td class="num">39.3%</td><td class="num">18.2%</td><td class="num">7.0%</td><td class="num">3.5%</td></tr><tr><td>VIX 15 to 20</td><td class="num">904</td><td class="num">0.49%</td><td class="num">68.8%</td><td class="num">38.2%</td><td class="num">22.7%</td><td class="num">11.1%</td></tr><tr><td>VIX 20 to 30</td><td class="num">649</td><td class="num">0.81%</td><td class="num">92.3%</td><td class="num">62.4%</td><td class="num">51.2%</td><td class="num">29.0%</td></tr><tr><td>VIX over 30</td><td class="num">161</td><td class="num">1.39%</td><td class="num">99.4%</td><td class="num">77.6%</td><td class="num">87.0%</td><td class="num">54.7%</td></tr>
+  </tbody></table></div>
+  <p class="small tnote">&#8960; Move: the average distance between the close and the open. Touched: the day&#39;s high or low reached the distance from the open. Closed b.: the close ended beyond it.</p>
+  <p>With the VIX under 15, a 1% move within the session was the exception. With the VIX over 30, it was the rule, and the close ended beyond &plusmn;1% on more than half of those days. A fixed distance in percent means very different odds depending on the day.</p>
+
+  <h2>Weekdays: Monday and Tuesday were the quietest</h2>
+  <div class="table-scroll"><table class="compact"><thead><tr><th rowspan="2">Weekday</th><th class="num" rowspan="2">Days</th><th class="num" rowspan="2">&#8960; move</th><th class="num grp" colspan="2">&plusmn;0.5%</th><th class="num grp" colspan="2">&plusmn;1%</th></tr><tr><th class="num">touched</th><th class="num">closed b.</th><th class="num">touched</th><th class="num">closed b.</th></tr></thead><tbody>
+    <tr><td>Monday</td><td class="num">472</td><td class="num">0.51%</td><td class="num">62.5%</td><td class="num">37.3%</td><td class="num">26.3%</td><td class="num">13.4%</td></tr><tr><td>Tuesday</td><td class="num">519</td><td class="num">0.55%</td><td class="num">66.7%</td><td class="num">39.5%</td><td class="num">26.2%</td><td class="num">13.3%</td></tr><tr><td>Wednesday</td><td class="num">516</td><td class="num">0.60%</td><td class="num">67.6%</td><td class="num">42.0%</td><td class="num">28.5%</td><td class="num">17.2%</td></tr><tr><td>Thursday</td><td class="num">507</td><td class="num">0.60%</td><td class="num">72.2%</td><td class="num">43.8%</td><td class="num">32.1%</td><td class="num">18.7%</td></tr><tr><td>Friday</td><td class="num">506</td><td class="num">0.59%</td><td class="num">67.6%</td><td class="num">39.9%</td><td class="num">32.2%</td><td class="num">17.4%</td></tr>
+  </tbody></table></div>
+  <p class="small tnote">&#8960; Move: the average distance between the close and the open. Touched: the day&#39;s high or low reached the distance from the open. Closed b.: the close ended beyond it.</p>
+  <p>The differences are smaller than those between VIX levels, but consistent: &plusmn;1% was touched on about 26% of Mondays and Tuesdays, and on about 32% of Thursdays and Fridays.</p>
+
+  <h2>The last trading day of the month</h2>
+  <p>Month ends are a known subject in options research, including studies by tastylive, because funds rebalance and flows bunch up on those days. In SPY's last ten years, the last trading day of the month stood out mainly at the close:</p>
+  <figure class="viz" id="viz3" aria-label="Chart: share of days on which plus or minus 1% from the open was touched and closed beyond, last trading day of the month against all other days.">
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-touch)"></i>Touched &plusmn;1%</span>
+      <span><i class="dot hollow" style="border-color:var(--c-end)"></i>Closed beyond &plusmn;1%</span>
+    </div>
+    <div class="viz-panels one"><svg id="viz3-s" viewBox="0 0 720 150" role="img"></svg></div>
+    <div class="viz-tip"></div>
+    <figcaption>&plusmn;1% from the opening price, last trading day of the month against all other days.</figcaption>
+  </figure>
+  <div class="table-scroll"><table class="compact"><thead><tr><th rowspan="2">Day</th><th class="num" rowspan="2">Days</th><th class="num" rowspan="2">&#8960; move</th><th class="num grp" colspan="2">&plusmn;0.5%</th><th class="num grp" colspan="2">&plusmn;1%</th></tr><tr><th class="num">touched</th><th class="num">closed b.</th><th class="num">touched</th><th class="num">closed b.</th></tr></thead><tbody>
+    <tr><td>Last trading day of the month</td><td class="num">121</td><td class="num">0.62%</td><td class="num">69.4%</td><td class="num">43.0%</td><td class="num">33.1%</td><td class="num">24.8%</td></tr><tr><td>All other days</td><td class="num">2,399</td><td class="num">0.57%</td><td class="num">67.3%</td><td class="num">40.4%</td><td class="num">28.9%</td><td class="num">15.6%</td></tr>
+  </tbody></table></div>
+  <p class="small tnote">&#8960; Move: the average distance between the close and the open. Touched: the day&#39;s high or low reached the distance from the open. Closed b.: the close ended beyond it.</p>
+  <p>The touch rate was only slightly higher, but the close ended beyond &plusmn;1% on 24.8% of month ends against 15.6% on other days: month ends more often ran in one direction and stayed there, in both directions about equally. Two checks: the effect is not a Friday effect, because month ends on other weekdays showed it even more clearly than those on a Friday. And among 121 days drawn at random from the ordinary days, a share this high came up in fewer than 1 in 100 draws. With only 121 month ends in ten years, it is still a small sample.</p>
+
+  <h2>What it means for 0DTE traders</h2>
+  <p>For a 0DTE position opened at the open, the history separates three things that often get mixed up. How often a short strike is reached during the session, which is what a stop at the strike reacts to. How often the close ends beyond it, which is what decides the result when the position is held to settlement. And how much the day's starting conditions, above all the VIX level, shift both. A rule like "short strikes at one VIX move" was more conservative than it looks, because part of the move the VIX prices has already happened overnight.</p>
+  <p>The outliers are rare, but they come regularly. SPY closed more than 2% away from its open on 3.2% of days, about 8 trading days a year, and reached 2% at some point during the session on about 17 days a year. On the largest 1% of days, two or three a year, the close was on average 3.9% away from the open, far beyond the short strikes most 0DTE positions use.</p>
+
+  <h2>Data and notes</h2>
+  <ul class="small">
+    <li>SPY daily bars (open, high, low, close) and the VIX at each day's open from Yahoo Finance, 2016-10-10 to 2026-10-19, 2,520 trading days.</li>
+    <li>Every day is measured from its official opening price to its close. Positions opened later in the day face a shorter, different session, and daily bars cannot show what happened after a given time of day.</li>
+    <li>The VIX measures expected volatility over 30 days, not for one session. Using it for a single day is a common rule of thumb and is used here in that sense.</li>
+    <li>The probabilities are frequencies from the past. They are not forecasts and not financial advice.</li>
+  </ul>
+  <p class="small">OptionsCone answers the same two questions, touched and closed beyond, for every strike and expiry of a stock's option chain, from the option prices and from the stock's own realized moves: <a href="/OptionsCone/">OptionsCone</a>.</p>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p class="about"><strong>About.</strong> Nikolai Alexander. 10+ years of quantitative research on financial markets. Former product lead and associate commercial director in biotech. I build research tools for market analysis.</p>
+      <p>&copy; 2026 Nikolai Alexander</p>
+    </div>
+    <div>
+      <p><a href="/research/">Research</a> &middot; <a href="/OptionsCone/">OptionsCone</a> &middot; <a href="https://github.com/nikkn">GitHub</a> &middot; <a href="https://x.com/nikkn_alexander">X</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const D = {"dist": [{"x": 0.0025, "touch": 0.9401, "end": 0.6413}, {"x": 0.005, "touch": 0.6738, "end": 0.4056}, {"x": 0.0075, "touch": 0.4409, "end": 0.2575}, {"x": 0.01, "touch": 0.2909, "end": 0.1603}, {"x": 0.0125, "touch": 0.1877, "end": 0.1067}, {"x": 0.015, "touch": 0.1337, "end": 0.0694}, {"x": 0.0175, "touch": 0.0937, "end": 0.0476}, {"x": 0.02, "touch": 0.0659, "end": 0.0317}], "vix": [{"lab": "VIX under 15", "n": 806, "touch": 0.0695, "end": 0.0347}, {"lab": "VIX 15 to 20", "n": 904, "touch": 0.2268, "end": 0.1106}, {"lab": "VIX 20 to 30", "n": 649, "touch": 0.5116, "end": 0.2897}, {"lab": "VIX over 30", "n": 161, "touch": 0.8696, "end": 0.5466}], "eom": [{"lab": "Last trading day of the month", "n": 121, "touch": 0.3306, "end": 0.2479}, {"lab": "All other days", "n": 2399, "touch": 0.2889, "end": 0.1559}]};
+const NS = 'http://www.w3.org/2000/svg';
+const pct = v => (v * 100).toFixed(1) + '%';
+function el(tag, attrs, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function tipFor(fig) {
+  const tip = fig.querySelector('.viz-tip');
+  return {
+    show(html, evt) {
+      tip.innerHTML = html; tip.style.opacity = 1;
+      const r = fig.getBoundingClientRect();
+      let x = evt.clientX - r.left + 14, y = evt.clientY - r.top - 12;
+      if (x + tip.offsetWidth > r.width) x = evt.clientX - r.left - tip.offsetWidth - 14;
+      tip.style.left = Math.max(0, x) + 'px'; tip.style.top = Math.max(0, y - tip.offsetHeight) + 'px';
+    },
+    hide() { tip.style.opacity = 0; }
+  };
+}
+
+// Chart 1: touched and closed beyond, by distance from the open
+(function () {
+  const fig = document.getElementById('viz1'), tip = tipFor(fig), s = document.getElementById('viz1-s');
+  const L = 50, R = 120, T = 16, B = 38, W = 720, H = 300;
+  const xs = x => L + (x - 0.0025) / (0.02 - 0.0025) * (W - L - R);
+  const ys = v => T + (1 - v) * (H - T - B);
+  [0, 0.25, 0.5, 0.75, 1].forEach(v => {
+    el('line', { x1: L, x2: W - R, y1: ys(v), y2: ys(v), stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+    el('text', { x: L - 8, y: ys(v) + 4, 'text-anchor': 'end', class: 'tick' }, s, (v * 100) + '%');
+  });
+  D.dist.forEach(r => el('text', { x: xs(r.x), y: H - B + 18, 'text-anchor': 'middle', class: 'tick' }, s, '\u00b1' + (r.x * 100).toFixed(2) + '%'));
+  el('text', { x: (L + W - R) / 2, y: H - 4, 'text-anchor': 'middle', class: 'tick' }, s, 'distance from the opening price');
+  // the days that touched and came back
+  el('polygon', { points: D.dist.map(r => xs(r.x) + ',' + ys(r.touch)).concat(D.dist.slice().reverse().map(r => xs(r.x) + ',' + ys(r.end))).join(' '),
+                  fill: 'var(--c-touch)', 'fill-opacity': 0.08, stroke: 'none' }, s);
+  [['touch', 'var(--c-touch)', false, 'touched'], ['end', 'var(--c-end)', true, 'closed beyond']].forEach(([k, col, hollow, lab]) => {
+    el('polyline', { points: D.dist.map(r => xs(r.x) + ',' + ys(r[k])).join(' '), fill: 'none', stroke: col, 'stroke-width': 2 }, s);
+    D.dist.forEach(r => {
+      el('circle', { cx: xs(r.x), cy: ys(r[k]), r: 5, fill: hollow ? 'var(--bg)' : col, stroke: hollow ? col : 'var(--bg)', 'stroke-width': hollow ? 2.2 : 2 }, s);
+    });
+    const last = D.dist[D.dist.length - 1];
+    el('text', { x: xs(last.x) + 12, y: ys(last[k]) + (k === 'touch' ? -4 : 12), class: 'tick' }, s, lab);
+  });
+  D.dist.forEach(r => {
+    const hit = el('rect', { x: xs(r.x) - 18, y: T, width: 36, height: H - T - B, fill: 'transparent' }, s);
+    hit.addEventListener('mousemove', e => tip.show('<b>\u00b1' + (r.x * 100).toFixed(2) + '% from the open</b><br>touched: ' + pct(r.touch) + '<br>closed beyond: ' + pct(r.end), e));
+    hit.addEventListener('mouseleave', () => tip.hide());
+  });
+})();
+
+// Charts 2 and 3: touched and closed beyond, by group
+function rows(id, list, max) {
+  const fig = document.getElementById(id), tip = tipFor(fig), s = document.getElementById(id + '-s');
+  const W = 720, L = 220, R = 20, T = 14, B = 30, H = +s.getAttribute('viewBox').split(' ')[3];
+  const xs = v => L + v / max * (W - L - R);
+  const step = (H - T - B) / list.length;
+  for (let v = 0; v <= max + 1e-9; v += max / 4) {
+    el('line', { x1: xs(v), x2: xs(v), y1: T, y2: H - B, stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+    el('text', { x: xs(v), y: H - B + 18, 'text-anchor': 'middle', class: 'tick' }, s, Math.round(v * 100) + '%');
+  }
+  list.forEach((r, i) => {
+    const y = T + step * (i + 0.5);
+    el('text', { x: L - 12, y: y + 4, 'text-anchor': 'end', 'font-size': 13 }, s, r.lab + '  (' + r.n.toLocaleString('en-US') + ' days)');
+    el('line', { x1: xs(r.end), x2: xs(r.touch), y1: y, y2: y, stroke: 'var(--ink-3)', 'stroke-width': 1.5 }, s);
+    el('circle', { cx: xs(r.end), cy: y, r: 5.5, fill: 'var(--bg)', stroke: 'var(--c-end)', 'stroke-width': 2.2 }, s);
+    el('circle', { cx: xs(r.touch), cy: y, r: 6, fill: 'var(--c-touch)', stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+    const hit = el('rect', { x: 0, y: y - step / 2, width: W, height: step, fill: 'transparent' }, s);
+    hit.addEventListener('mousemove', e => tip.show('<b>' + r.lab + '</b>, ' + r.n.toLocaleString('en-US') + ' days<br>\u00b11% touched: ' + pct(r.touch) + '<br>\u00b11% closed beyond: ' + pct(r.end), e));
+    hit.addEventListener('mouseleave', () => tip.hide());
+  });
+}
+rows('viz2', D.vix, 1);
+rows('viz3', D.eom, 0.4);
+</script>
+</body>
+</html>
