@@ -85,9 +85,9 @@
     <figure class="mapfig"><a class="map" href="img/avgo/chart-p.png"><span>Touch probability</span><img src="img/avgo/cone-p.png" width="550" height="840" alt="Broadcom (AVGO), Touch probability: dark near the money, fading where a touch becomes unlikely."></a><figcaption>The chance that the price touches each strike before that expiry, implied from the option prices: dark near the money, fading where a touch becomes unlikely.</figcaption></figure>
     <figure class="mapfig"><a class="map" href="img/avgo/chart-iv.png"><span>Implied volatility</span><img src="img/avgo/cone-iv.png" width="550" height="840" alt="Broadcom (AVGO), Implied volatility per contract: skew and term structure."></a><figcaption>Each contract&#39;s own volatility, so skew and the term structure show at a glance. The badges above each expiry show its overall implied volatility.</figcaption></figure>
     <figure class="mapfig"><a class="map" href="img/avgo/chart-oi.png"><span>Open interest</span><img src="img/avgo/cone-oi.png" width="550" height="840" alt="Broadcom (AVGO), Open interest: where the large positions sit."></a><figcaption>Where traders hold the largest positions, for every strike and expiry.</figcaption></figure>
-    <figure class="mapfig"><a class="map" href="img/avgo/chart-tv.png"><span>Time value per day <em class="pro">Pro</em></span><img src="img/avgo/cone-tv.png" width="550" height="840" alt="Broadcom (AVGO), Time value per remaining day, darkest near the money for short expiries."></a><figcaption>Each option&#39;s premium spread over the days it has left, so a seller&#39;s average daily income is visible at a glance.</figcaption></figure>
+    <figure class="mapfig"><a class="map" href="img/avgo/chart-tv.png"><span>Time value per day</span><img src="img/avgo/cone-tv.png" width="550" height="840" alt="Broadcom (AVGO), Time value per remaining day, darkest near the money for short expiries."></a><figcaption>Each option&#39;s premium spread over the days it has left, so a seller&#39;s average daily income is visible at a glance.</figcaption></figure>
     <figure class="mapfig"><a class="map" href="img/avgo/chart-gap.png"><span>Implied vs realized <em class="pro">Pro</em></span><img src="img/avgo/cone-gap.png" width="550" height="840" alt="Broadcom (AVGO), Implied minus realized touch probability: blue where the market prices in a higher probability than the stock realized, red where lower."></a><figcaption>The market&#39;s touch probability against the stock&#39;s own realized moves, measured with industry-standard simulation models. Points to potential trading opportunities.</figcaption></figure>
-    <figure class="mapfig"><a class="map" href="img/avgo/chart-vpr.png"><span>Premium per unit risk <em class="pro">Pro</em></span><img src="img/avgo/cone-vpr.png" width="550" height="840" alt="Broadcom (AVGO), premium relative to historical risk."></a><figcaption>How much premium a seller collects for each dollar of risk the stock&#39;s individual realized moves suggest. Higher means the risk is better paid.</figcaption></figure>
+    <figure class="mapfig"><a class="map" href="img/avgo/chart-vpr.png"><span>Premium per unit risk <em class="pro">Pro</em></span><img src="img/avgo/cone-vpr.png" width="550" height="840" alt="Broadcom (AVGO), premium relative to realized risk."></a><figcaption>How much premium a seller collects for each dollar of risk the stock&#39;s individual realized moves suggest. Higher means the risk is better paid.</figcaption></figure>
   </div>
 
   <section>
@@ -146,8 +146,8 @@
         <h3>Identify opportunities <em class="pro">Pro</em></h3>
         <ul class="qlist">
           <li>Where does the market price in a higher probability than the stock realized?</li>
-          <li>Which strikes pay a seller the most premium per unit of historical risk?</li>
-          <li>Where does time value melt fastest per day?</li>
+          <li>Which strikes pay a seller the most premium per unit of realized risk?</li>
+          <li>Where could dealer hedging slow down or speed up a move?</li>
         </ul>
       </div>
     </div>
@@ -199,7 +199,7 @@
       <details class="faq"><summary>What is the difference between the implied and the historical models?</summary>
         <p>The implied model uses option prices, so it reflects what the market charges for the risk today. The historical models are built with industry-standard simulation models from the stock's own last five or ten years. This lets you compare the market's expectations with the realized moves of each individual stock. Where the two differ, the option market is pricing a move the history did not produce, or the other way round.</p></details>
       <details class="faq"><summary>Is OptionsCone free?</summary>
-        <p>Yes. The probability cone and the implied volatility, open interest and spread maps are free. Pro adds the historical models and the seller maps: implied vs realized, premium per unit risk and time value per day.</p></details>
+        <p>Yes. The probability cone and the implied volatility, open interest, spread and time value maps are free. Pro adds the historical models, implied vs realized, premium per unit risk and the gamma exposure map (GEX).</p></details>
       <details class="faq"><summary>Why does a chart show older data in the evening?</summary>
         <p>Option prices are only meaningful while the US market is open. Outside trading hours, the app shows your most recent download from the trading session, with its date. If a ticker has never been downloaded during trading hours, the app tells you so: download it again between 9:30 and 16:00 New York time, usually 15:30 to 22:00 in Central Europe.</p></details>
       <details class="faq"><summary>Does the app send my data anywhere?</summary>
@@ -219,7 +219,7 @@
 <footer class="site-foot">
   <div class="wrap">
     <div>
-      <p>&copy; 2026 Nikolai Alexander</p>
+      <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/test_dRm28r9KQ0HAen2dwmdEs00" rel="nofollow">Cancel subscription here</a></p>
       <p>Not financial advice.</p>
     </div>
     <div>
