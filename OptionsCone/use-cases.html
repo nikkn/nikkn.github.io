@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stop loss odds, break-even and price targets | OptionsCone</title>
-<meta name="description" content="How likely is a stop loss to be hit, a price target reached, or a losing position back to break-even? Worked examples from option prices and history.">
+<title>Use cases and guides: covered calls, cash secured puts, GEX, stop loss odds | OptionsCone</title>
+<meta name="description" content="Guides for option traders on covered calls, cash secured puts and gamma exposure, and for stock holders: how likely a stop loss is hit, a price target reached or a losing position back to break-even. Each with real numbers.">
 <link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/use-cases.html">
 <link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -18,7 +18,7 @@
 <meta property="og:image:alt" content="OptionsCone: a probability cone over the listed option strikes of a stock, with implied and historical contour lines.">
 <meta property="og:site_name" content="OptionsCone">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=13">
 <script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
 </head>
 <body>
@@ -32,17 +32,53 @@
       <a href="manual.html">Manual</a>
       <a href="methods.html">Methods</a>
       <a href="https://github.com/nikkn/OptionsCone">GitHub</a>
-      <span class="btn small primary disabled" aria-disabled="true">Available soon</span>
+      <a class="nav-pro" href="./#pro">Pro</a>
+      <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
     </nav>
   </div>
 </header>
 
 <main class="wrap">
+
+  <div class="hero uc-hero">
+    <h1>Use cases and guides</h1>
+    <p class="lede">How option traders and stock holders use OptionsCone, each worked through with a real option chain.</p>
+  </div>
+
+  <section id="guides" class="uc-guides">
+    <h2>Guides for option traders</h2>
+    <div class="grid3 guide-cards">
+      <a class="guide-card" href="covered-call.html">
+        <img src="img/guides/cc-time-value.png" width="1832" height="1006" loading="lazy" alt="OptionsCone cone for META coloured by time value per day.">
+        <span class="g-body"><span class="kind">Strategy</span>
+          <span class="g-title">Covered calls: how to find the strike that pays the most</span>
+          <span class="g-text">Pick a strike that pays well per day and still leaves the stock room to run.</span>
+          <span class="g-foot">Example: META &middot; <span class="g-more">Read the guide &rarr;</span></span></span>
+      </a>
+      <a class="guide-card" href="cash-secured-put.html">
+        <img src="img/guides/csp-chart-probability.png" width="1824" height="998" loading="lazy" alt="OptionsCone cone for NVDA coloured by the probability of finishing below each strike.">
+        <span class="g-body"><span class="kind">Strategy</span>
+          <span class="g-title">Cash secured puts: how to earn the premium without getting assigned</span>
+          <span class="g-text">Sell the put that pays the most with the least chance of assignment, and know what to do if the stock falls.</span>
+          <span class="g-foot">Example: NVDA &middot; <span class="g-more">Read the guide &rarr;</span></span></span>
+      </a>
+      <a class="guide-card" href="gex-gamma-exposure.html">
+        <img src="img/pro-gex-spy.png" width="1087" height="1006" loading="lazy" alt="OptionsCone Pro gamma exposure map for SPY with the call wall, the put wall and the gamma flip.">
+        <span class="g-body"><span class="kind kind-pro">Pro</span>
+          <span class="g-title">Gamma exposure (GEX): how dealer hedging can damp or amplify moves</span>
+          <span class="g-text">Read the gamma flip and the call and put walls, and what they can mean for the next move.</span>
+          <span class="g-foot">Example: SPY &middot; <span class="g-more">Read the guide &rarr;</span></span></span>
+      </a>
+    </div>
+  </section>
+
 <div class="doc">
 
   <nav class="toc" aria-label="On this page">
     <p>On this page</p>
     <ul>
+      <li><a href="#guides"><strong>Guides for option traders</strong></a></li>
+      <li><a href="#holders"><strong>For stock holders</strong></a></li>
       <li><a href="#scenarios"><strong>Build realistic scenarios</strong></a></li>
       <li><a href="#target">Price target</a></li>
       <li><a href="#breakeven">Back to break-even</a></li>
@@ -59,7 +95,7 @@
   </nav>
 
   <article class="prose">
-    <h1>Use cases: stop loss odds, price targets and break-even</h1>
+    <h2 id="holders" class="uc-first">For stock holders: stop loss odds, price targets and break-even</h2>
     <p class="lede">OptionsCone is not only for option traders. Anyone who holds a stock, or is about to buy one, can use the option market and the stock's own history to put numbers on the questions that come before and during a trade.</p>
     <p>Every example below uses the same data: Apple (AAPL) on 22 September 2026, with the stock at 340.85. The numbers come straight from the app's tooltip and data table. Each question is answered three ways: by the option market (<strong>implied</strong>) and by the stock's own last five and ten years (<strong>5y</strong>, <strong>10y</strong>).</p>
     <div class="note">This is information, not advice. The probabilities are estimates from market prices and from the past; they are not forecasts, and they say nothing about whether a trade is a good idea for you.</div>
@@ -130,7 +166,7 @@
 
     <h2>Go further</h2>
     <p>Every number on this page comes from one download and a few clicks. The <a href="manual.html">manual</a> explains each control, and the <a href="methods.html">methods</a> explain how each probability is calculated and where its limits are.</p>
-    <p><span class="btn primary disabled" aria-disabled="true">Available soon</span></p>
+    <p><a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a></p>
   </article>
 
 </div>

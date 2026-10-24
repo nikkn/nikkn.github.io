@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Covered call strike: how to find the best strike, with a META example | OptionsCone</title>
+<meta name="description" content="How to pick a covered call strike that pays well and still leaves the stock room to run: probabilities from every strike's IV next to META's realized moves, time value per day and spread.">
+<link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/covered-call.html">
+<link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Covered calls: finding the strike that pays the most">
+<meta property="og:description" content="Too far out and the call pays almost nothing, too close and you give up the upside. How to find the sweet spot.">
+<meta property="og:url" content="https://nikolai-alexander.com/OptionsCone/covered-call.html">
+<meta property="og:image" content="https://nikolai-alexander.com/OptionsCone/img/social.png?v=6">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="OptionsCone">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=13">
+<style>
+  .byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+  .data-note { font-size: 13.5px; color: var(--ink-3); border-left: 3px solid var(--line); padding: 2px 0 2px 12px; }
+  .note.end { margin-top: 56px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Covered call strike: how to find the best strike, with a META example",
+  "description": "How to pick a covered call strike that pays well and still leaves the stock room to run.",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "10+ years of quantitative research on financial markets",
+             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+  "publisher": {"@type": "Organization", "name": "OptionsCone"},
+  "datePublished": "2026-10-24",
+  "dateModified": "2026-10-24",
+  "about": ["covered call", "covered call strike selection", "poor man's covered call", "option probability"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/OptionsCone/covered-call.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What is the best strike for a covered call?",
+     "acceptedAnswer": {"@type": "Answer", "text": "The strike where the premium per day is still worth having and the stock keeps enough room to rise. Strikes far out of the money pay almost nothing, while strikes close to the price cap the stock's gains. Comparing the probability of finishing above each strike with the time value it pays per day shows where the sweet spot lies."}},
+    {"@type": "Question", "name": "Which delta should I use for a covered call?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Delta is often used as a shortcut for the chance of the call finishing in the money, but it is not that probability. A call's delta is higher than its risk-neutral probability of finishing in the money, and the gap grows with the days to expiry and with implied volatility. Delta also comes from option prices alone, so it carries the risk-neutral assumption and says nothing about how the stock has actually moved."}},
+    {"@type": "Question", "name": "Weekly or monthly covered calls?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Short expiries lose time value faster, so per day they often pay more than monthlies, but you sell more often and pay the spread each time. Comparing time value per day across expiries at a similar probability shows which one pays more for the same room to run."}},
+    {"@type": "Question", "name": "What is a covered call?",
+     "acceptedAnswer": {"@type": "Answer", "text": "A covered call is an option strategy for shareholders: you own 100 shares and sell one call option on them. You keep the premium in any case, and if the stock finishes above the strike, your shares are sold at the strike and you give up the gain beyond it."}},
+    {"@type": "Question", "name": "What if the stock rises past my covered call strike?",
+     "acceptedAnswer": {"@type": "Answer", "text": "The call caps the gain above the strike. A common response is to roll the call up and out, to a higher strike and a later expiry, to give the stock more room for profits."}}
+  ]
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="./"><picture><source media="(prefers-color-scheme: dark)" srcset="brand/optionscone-wordmark-dark.svg"><img src="brand/optionscone-wordmark-light.svg" alt="OptionsCone" width="183" height="34"></picture></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="use-cases.html" aria-current="page">Use cases</a>
+      <a href="manual.html">Manual</a>
+      <a href="methods.html">Methods</a>
+      <a href="https://github.com/nikkn/OptionsCone">GitHub</a>
+      <a class="nav-pro" href="./#pro">Pro</a>
+      <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="doc">
+
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ul>
+      <li><a href="#what">What is a covered call?</a></li>
+      <li><a href="#sweet-spot">The covered call sweet spot</a></li>
+      <li><a href="#probability">How likely the call finishes in the money</a></li>
+      <li><a href="#risk-neutral">How options are priced</a></li>
+      <li><a href="#realized">META's realized moves</a></li>
+      <li><a href="#expiry">Which expiry</a></li>
+      <li><a href="#compare">Comparing strikes</a></li>
+      <li><a href="#example">Worked example</a></li>
+      <li><a href="#pmcc">Poor man's covered call</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <article class="prose">
+    <h1>Covered calls: how to find the strike that pays the most</h1>
+    <p class="byline">By <a href="https://nikolai-alexander.com/#about">Nikolai Alexander</a> &middot; 24 October 2026</p>
+    <p class="lede">You hold 100 shares of META and want to earn from them by selling a covered call. Every strike is a trade-off: too far out and the call pays almost nothing, too close and you give up the stock's upside. This guide shows how to find the sweet spot, the covered call strike that pays well and still leaves META room to run. Throughout the guide we work through a real example: META's option chain on 19 October 2026, analysed with OptionsCone.</p>
+
+    <p><strong>In short:</strong> OptionsCone shows, for every strike and expiry of META, two probabilities of the price finishing above the strike: one from option prices (risk-neutral pricing) and one from META's own realized moves. Next to them it shows profitability and liquidity figures for every contract, such as the time value it pays per day and its spread. Where the two probabilities differ, you see which covered calls pay you fairly for the upside you give away, and which ones sell it too cheap.</p>
+
+    <h2 id="what">What is a covered call?</h2>
+    <p>A covered call is an option strategy for shareholders. You own 100 shares of a stock and sell one call option on them. The buyer of the call pays you a premium today, and in return gets the right to buy your shares at the strike price until the call expires.</p>
+    <ul>
+      <li><strong>If the stock stays below the strike,</strong> the call expires worthless. You keep the premium and your shares, and can sell the next call.</li>
+      <li><strong>If the stock finishes above the strike,</strong> your shares are sold at the strike. You keep the premium and the gain up to the strike, but not the gain beyond it.</li>
+    </ul>
+    <p>The call is "covered" because the shares you own cover the obligation to deliver them. Many investors use covered calls to earn regular income from shares they hold anyway.</p>
+
+    <h2 id="sweet-spot">What is the best strike for a covered call?</h2>
+    <p>A covered call pays you a premium today. In return, you hand over every gain above the strike until expiry. That gives two ways to get it wrong:</p>
+    <ul>
+      <li><strong>Strike too far out of the money:</strong> the call pays so little that it is hardly worth selling.</li>
+      <li><strong>Strike too close to the price:</strong> the premium looks attractive, but META only has to rise a little before your gains from the stock are capped.</li>
+    </ul>
+    <p>The best covered call strike sits between the two: the highest premium for the least upside given away. Finding it takes two numbers for every strike: how likely META finishes above it, and how much the call pays.</p>
+
+    <h2 id="probability">How likely is my covered call to finish in the money?</h2>
+    <p>Download META in OptionsCone and look at the probability cone above the price. Every dot is a listed call. Set the contour to <em>expire</em> and, for example, 20%: the line then marks, expiry by expiry, the strike META finishes above with a 20% probability. That is how often a covered call at that strike would end in the money and cap your gains from META stock.</p>
+    <p>Switch the contour to <em>touch</em> and the line moves further out. A touch, the price reaching the strike at any point before expiry, is roughly twice as likely as finishing above it. For a covered call the touch is the moment that matters in practice: it is when you decide whether to roll the call up and out to give the stock more room for profits.</p>
+
+    <h2 id="risk-neutral">How options are priced, and what that means for probabilities</h2>
+    <p>Options are priced <em>risk-neutrally</em>: the market prices every option as if the stock grew only at the risk-free interest rate. This is not a mispricing, and there is a good reason why option prices have to work this way: an option can be replicated by trading the stock itself, and the cost of that replication does not depend on which way the stock drifts. If option prices included the stock's expected extra return, anyone could replicate the option, sell it at that price and earn a riskless profit. So the market leaves the stock's extra return out of every option price.</p>
+    <p>Every probability read from option prices therefore carries the same assumption: no drift beyond the risk-free rate. This holds for any tool that works from option prices, including your broker's probability figures and delta.</p>
+    <p>OptionsCone shows these probabilities in the cone in <em>implied</em> mode. It reads them from the implied volatility of every single strike. Many probability tools use one at-the-money volatility for the whole option chain. Using each strike's own implied volatility means the volatility skew shows up strike by strike, instead of one number for all of them.</p>
+
+    <h2 id="realized">Why META's realized moves matter for a covered call</h2>
+    <p>Risk-neutral probabilities leave out the stock's own extra return above the risk-free rate. For a stock in a long uptrend like META, the real chance of finishing above your strike can be higher than the risk-neutral number. Your covered call would then end in the money more often than the option prices suggest, and cap your gains more often than you planned for.</p>
+    <p>OptionsCone puts the risk-neutral probabilities next to probabilities from META's own realized moves. The cone then shows, strike by strike, where the two differ: blue and red mark where option prices assume more or less movement than META has actually shown. Pick the covered call strikes where option prices pay you fairly for the upside you give away.</p>
+
+    <h2 id="expiry">Which expiry for a covered call: weekly, monthly or longer?</h2>
+    <p>The days to expiry (DTE) change both numbers that decide the sweet spot.</p>
+    <ul>
+      <li><strong>Probability:</strong> the longer the call runs, the further META can move. The cone widens with time, so at the same strike a longer expiry is more likely to finish in the money. Follow one contour line from expiry to expiry: it marks the strikes with the same probability, further out the longer the call runs.</li>
+      <li><strong>Premium:</strong> a longer call pays more in total, but less per day. Time value decays faster as expiry approaches, so short expiries often pay the most per day. In exchange you sell more often, and every new call costs you the spread again.</li>
+      <li><strong>Realized moves:</strong> the gap between risk-neutral probabilities and META's realized moves grows with time. A drift barely matters over a week and adds up over months, so for longer covered calls the comparison with META's own moves matters most.</li>
+    </ul>
+    <p>A practical way to compare expiries: pick strikes with a similar probability of finishing in the money, one per expiry, and compare what they pay per day.</p>
+
+    <figure><img class="shot" src="img/guides/cc-time-value.png" width="1832" height="1006" loading="lazy" alt="OptionsCone cone for META colored by time value per day, brightest close to the price and at the short expiries, with the implied and 5y contours and the 780 call of 20 November pinned, its tooltip showing an average time value of $37.19 per contract and day"></figure>
+
+    <h2 id="compare">How to compare covered call strikes in OptionsCone</h2>
+    <p>Click a contract and its tooltip stays open. Then switch between the maps: the same contract shows its values in each of them, so you can check one candidate from every side before you sell it.</p>
+    <ul>
+      <li><strong>Probability:</strong> how likely META touches the strike, and how likely it finishes above it.</li>
+      <li><strong>Time value per day:</strong> what this covered call earns you for every day until expiry. Short expiries lose time value faster, so per day they often pay more than monthlies.</li>
+      <li><strong>Spread:</strong> how close to the mid you can sell. As a seller you are filled near the bid, so on a wide spread part of the premium stays with the market maker.</li>
+      <li><strong>Implied volatility:</strong> where IV is higher, the call pays more for the same distance from the price. The contract details that open for each option show whether its quote is reliable enough to read a volatility from, with a yellow or red mark where it is not.</li>
+    </ul>
+    <p>You can also step through the contracts with the arrow keys: up and down move to the next listed strike of the same expiry, left and right to the neighbouring expiry. The tooltip follows, so you can scan a whole row of candidates in a few seconds and pick the one that fits best.</p>
+
+    <h2 id="example">Worked example: three META covered calls compared</h2>
+    <p>From a download of META on 19 October 2026 at 14:23, with the stock at $702.98. These figures illustrate the comparison and are not a recommendation.</p>
+    <div class="table-scroll"><table>
+      <tr><th>Call</th><th>Distance</th><th>Finishes above (option prices)</th><th>Finishes above (META's moves)</th><th>Time value per day (per contract)</th><th>Bid-ask spread</th></tr>
+      <tr><td>775 call, 13 Nov (25 days)</td><td>+10.2%</td><td>20.0%</td><td>19.5%</td><td>$43.90</td><td>5.0%</td></tr>
+      <tr><td>780 call, 20 Nov (32 days)</td><td>+11.0%</td><td>20.1%</td><td>22.2%</td><td>$37.19</td><td>3.4%</td></tr>
+      <tr><td>800 call, 18 Dec (60 days)</td><td>+13.8%</td><td>19.9%</td><td>27.4%</td><td>$25.21</td><td>3.0%</td></tr>
+    </table></div>
+    <p class="data-note">Data: META option chain, downloaded on 19 October 2026 at 14:23 New York time, quotes delayed about 15 minutes. All figures calculated with OptionsCone.</p>
+    <p><strong>Read it as:</strong> All three calls have about the same 20% chance of finishing above the strike from option prices. The weekly 775 call of 13 November pays the most per day, but its spread of 5.0% and its open interest of only 52 contracts cost part of that back on every trade. The 780 call of 20 November pays almost as much per day at a tighter spread, with 7,535 contracts open, and META's own moves give it a similar probability, 22% against 20%, which makes it the sweet spot of the three. The 800 call of 18 December pays the least per day, and META's realized moves put its chance of finishing above the strike at 27%, well above the 20% from option prices, because over two months the drift adds up. META reports earnings on 21 October, inside all three expiries, so all three premiums include the earnings move.</p>
+
+    <h2 id="pmcc">Poor man's covered call</h2>
+    <p>A poor man's covered call replaces the 100 shares with a long-dated call deep in the money, which ties up far less capital than the stock. The choice of the short call works the same way as above: find the strike that pays the most while leaving room to run. OptionsCone shows the short call side, while the long-dated call itself is not shown in the cone.</p>
+
+    <h2 id="faq">Covered call FAQ</h2>
+    <h3>Which delta should I use for a covered call?</h3>
+    <p>Delta is often used as a shortcut for the chance of the call finishing in the money, but it is not that probability. A call's delta is higher than its risk-neutral probability of finishing in the money, and the gap grows with the days to expiry and with implied volatility. For short, calm options the two are close, but for long-dated calls on volatile stocks they can differ a lot. Our study <a href="../research/delta-vs-itm-probability.html">delta is not the probability of finishing in the money</a> shows how large the gap gets.</p>
+    <p>Delta also comes from option prices alone, so it carries the risk-neutral assumption explained above: it says nothing about how the stock has actually moved. Reading the probability of finishing above the strike directly, from option prices and from the stock's own realized moves, gives a clearer picture than a delta rule of thumb.</p>
+    <h3>Weekly or monthly covered calls?</h3>
+    <p>Short expiries lose time value faster, so per day they often pay more than monthlies, but you sell more often and pay the spread each time. Comparing time value per day across expiries at a similar probability shows which one pays more for the same room to run. See <a href="#expiry">which expiry for a covered call</a>.</p>
+    <h3>What if META rises past my strike?</h3>
+    <p>The call caps the gain above the strike. A common response is to roll the call up and out, to a higher strike and a later expiry, to give the stock more room for profits.</p>
+
+    <p class="note end">We use META as an example. The same steps work for any stock with listed options. Nothing on this page is a recommendation to buy or sell META stock or options.</p>
+
+    <h2>Try it on your own stock</h2>
+    <p>Every figure on this page comes from one download and a few clicks. The <a href="manual.html">manual</a> explains each control.</p>
+    <p><a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a></p>
+  </article>
+
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/eVqbJ14of3vwabb4NSbII00" rel="nofollow">Cancel subscription here</a></p>
+      <p>Not financial advice.</p>
+    </div>
+    <div>
+      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="https://github.com/nikkn/OptionsCone/issues">Report a problem</a></p>
+      <p><a href="https://x.com/nikkn_alexander">@nikkn_alexander on X</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

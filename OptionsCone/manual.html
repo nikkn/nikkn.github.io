@@ -18,7 +18,7 @@
 <meta property="og:image:alt" content="OptionsCone: a probability cone over the listed option strikes of a stock, with implied and historical contour lines.">
 <meta property="og:site_name" content="OptionsCone">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=13">
 <script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
 </head>
 <body>
@@ -32,7 +32,8 @@
       <a href="manual.html" aria-current="page">Manual</a>
       <a href="methods.html">Methods</a>
       <a href="https://github.com/nikkn/OptionsCone">GitHub</a>
-      <span class="btn small primary disabled" aria-disabled="true">Available soon</span>
+      <a class="nav-pro" href="./#pro">Pro</a>
+      <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
     </nav>
   </div>
 </header>
@@ -62,12 +63,13 @@
     <p class="lede">Everything the app shows and every control, in the order you meet them.</p>
 
     <h2 id="install">Install</h2>
-    <p>OptionsCone is a single file and needs no installation.</p>
+    <p>OptionsCone installs for your Windows user, so it needs no admin rights.</p>
     <ol>
-      <li>Download <code>OptionsCone.exe</code> (available soon).</li>
-      <li>Move it wherever you like, for example to your desktop, and double-click it.</li>
-      <li>The file is not code-signed, so Windows SmartScreen may say it protected your PC. Click <em>More info</em>, then <em>Run anyway</em>. Windows remembers the choice.</li>
+      <li>Download <a href="https://licence.optionscone.com/get/free"><code>OptionsCone-Setup.exe</code></a>.</li>
+      <li>Run it. It installs OptionsCone in a few seconds and can put a shortcut on your desktop.</li>
+      <li>The file is not code-signed yet, so Windows SmartScreen may say it protected your PC. Click <em>More info</em>, then <em>Run anyway</em>. Windows remembers the choice.</li>
     </ol>
+    <p>New versions install themselves: when one is out, OptionsCone shows an <em>Update</em> button at the top, and one click installs it. Your tickers and settings are kept.</p>
     <p>The first start takes a few seconds longer while the program unpacks itself. It runs on Windows 10 and 11 and uses the Edge WebView2 component that both include.</p>
     <p>Each release lists a SHA-256 checksum. To check your download, open PowerShell in the download folder and run <code>Get-FileHash OptionsCone.exe</code>; the result should match.</p>
 

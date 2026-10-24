@@ -161,3 +161,59 @@ td:first-child { width: 34%; min-width: 9em; }
 
 /* A button for something not available yet */
 .btn.disabled { opacity: 0.45; cursor: default; pointer-events: none; }
+
+/* The Pro page: two maps side by side, the two plans */
+.maps2 { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 0; }
+.plan { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 22px 24px; }
+.plan h3 { margin: 0; }
+.plan .price { font: 700 30px/1.2 var(--sans); color: var(--ink); margin: 10px 0 16px; }
+.plan .per { font-size: 15px; font-weight: 400; color: var(--ink-3); }
+.save { font-size: 14px; font-weight: 600; color: #d23b2c; margin-left: 8px; }
+.fine { font-size: 14px; color: var(--ink-3); margin-top: 18px; }
+.site-nav a.nav-pro { color: var(--accent); font-weight: 600; }
+.site-nav a.nav-pro:hover, .site-nav a.nav-pro[aria-current="page"] { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+.pro-cards .card { border: 1.5px solid var(--accent); border-radius: 6px; background: var(--panel); padding: 20px 22px; }
+.pro-cards .card h3 { color: var(--accent); }
+.after-steps { margin-top: 28px; }
+.gexfig { margin: 56px 0 6px; }
+.gexfig img { width: 100%; height: auto; display: block; }
+.gexfig figcaption { font-size: 14px; color: var(--ink-2); padding: 10px 14px; border-top: 1px solid var(--line); }
+.h-pro { color: var(--accent); }
+.plan .cancel { margin: -6px 0 0; }
+.pro-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 470px); gap: 48px; align-items: start; margin-top: 8px; }
+.pro-hero .hero { padding-bottom: 0; }
+.pro-hero .mapfig figcaption { font-size: 13px; }
+.hero-cancel { margin: 10px 0 0; font-size: 15px; color: var(--ink-3); }
+.pro-hero .maps2 { margin-top: 64px; }
+.pro-hero .save { margin-left: 2px; }
+@media (max-width: 860px) { .pro-hero { grid-template-columns: minmax(0, 1fr); gap: 0; } .pro-hero .maps2 { margin-top: 0; } }
+/* the two cones, and below them the gamma exposure map as wide as both */
+.pro-gallery { max-width: 760px; margin: 8px 0 0; }
+.pro-gallery .gexrow { grid-template-columns: 1fr; margin-top: 40px; }
+/* The Pro part of the home page */
+.gexhome { max-width: 760px; margin-top: 22px; }
+.sub-h { font-size: 22px; margin: 44px 0 0; }
+.compare { border-collapse: collapse; margin-top: 34px; width: 100%; max-width: 760px; font-size: 15px; }
+.compare th, .compare td { padding: 10px 14px; border-bottom: 1px solid var(--line); text-align: center; }
+.compare th:first-child, .compare td:first-child { text-align: left; color: var(--ink-2); }
+.compare thead th { font: 600 13px var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); }
+.compare thead th.c-pro, .compare td:last-child { color: var(--accent); font-weight: 600; }
+.pro-cards .kind { font: 600 11.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 6px; }
+.compare tr.grp th { text-align: left; padding: 22px 14px 8px; font: 600 12.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink); border-bottom: 1px solid var(--line-2); }
+.compare .txt { font: 500 13.5px var(--sans); }
+/* Use cases: the guide cards above the stock-holder article */
+.uc-hero { padding-bottom: 8px; }
+.uc-guides h2 { margin: 20px 0 0; }
+.guide-card { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 6px; background: var(--panel);
+  overflow: hidden; text-decoration: none; color: var(--ink); }
+.guide-card:hover { border-color: var(--ink-3); }
+.guide-card img { width: 100%; height: 190px; object-fit: cover; object-position: right center; display: block; border-bottom: 1px solid var(--line); }
+.guide-card .g-body { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px 18px; flex: 1; }
+.guide-card .kind { font: 600 11.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); }
+.guide-card .kind-pro { color: var(--accent); }
+.guide-card .g-title { font-weight: 600; font-size: 17px; line-height: 1.35; }
+.guide-card .g-text { color: var(--ink-2); font-size: 15px; }
+.guide-card .g-foot { margin-top: auto; padding-top: 6px; font-size: 14px; color: var(--ink-3); }
+.guide-card .g-more { color: var(--accent); font-weight: 600; }
+.doc h2.uc-first { margin-top: 0; padding-top: 0; font-size: clamp(26px, 3.6vw, 32px); }
+.uc-guides { padding-top: 8px; margin-top: 0; border-top: 0; }

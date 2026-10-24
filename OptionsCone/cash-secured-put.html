@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cash secured puts: how to earn the premium without getting assigned, with an NVDA example | OptionsCone</title>
+<meta name="description" content="How to sell cash secured puts on NVDA for the most premium with the least chance of assignment: assignment probability by strike, support levels and trend lines, rolling down and out, earnings and liquidity.">
+<link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/cash-secured-put.html">
+<link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cash secured puts: how to earn the premium without getting assigned">
+<meta property="og:description" content="Assignment probability by strike, support levels, rolling down and out, earnings and liquidity: picking and defending a cash secured put.">
+<meta property="og:url" content="https://nikolai-alexander.com/OptionsCone/cash-secured-put.html">
+<meta property="og:image" content="https://nikolai-alexander.com/OptionsCone/img/social.png?v=6">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="OptionsCone">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=13">
+<style>
+  .byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+  .data-note { font-size: 13.5px; color: var(--ink-3); border-left: 3px solid var(--line); padding: 2px 0 2px 12px; }
+  .note.end { margin-top: 56px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Cash secured puts: how to earn the premium without getting assigned, with an NVDA example",
+  "description": "How to sell cash secured puts for the most premium with the least chance of assignment.",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "10+ years of quantitative research on financial markets",
+             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+  "publisher": {"@type": "Organization", "name": "OptionsCone"},
+  "datePublished": "2026-10-24",
+  "dateModified": "2026-10-24",
+  "about": ["cash secured put", "selling puts", "naked put", "avoid assignment", "rolling a put", "option probability"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/OptionsCone/cash-secured-put.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What is a cash secured put?",
+     "acceptedAnswer": {"@type": "Answer", "text": "A cash secured put is an option strategy in which you sell a put and set aside the cash to buy 100 shares at the strike. If the stock stays above the strike, the put expires worthless and you keep the premium. If it finishes below, you buy the shares at the strike."}},
+    {"@type": "Question", "name": "Which delta should I use for a cash secured put?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Delta is not the probability of being assigned. A put's delta is smaller than its risk-neutral probability of finishing in the money, so a 30-delta put ends in the money more often than 30% of the time. The gap grows with implied volatility and the days to expiry. Reading the assignment probability directly is clearer than a delta rule of thumb."}},
+    {"@type": "Question", "name": "How do I avoid assignment on a cash secured put?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Choose a strike with a low probability of finishing in the money, ideally below a support level, check whether an earnings date falls before expiry, and defend the position when the strike comes under pressure: roll it down and out for a credit, or close it."}},
+    {"@type": "Question", "name": "When should I roll a cash secured put?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Many put sellers roll when the stock approaches or touches the strike. Rolling down and out means buying back the put and selling one at a lower strike and a later expiry for a net credit, which gives the trade more time and more room."}},
+    {"@type": "Question", "name": "What is the difference between a cash secured put and a naked put?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Both are a sold put. With a cash secured put the full cash to buy the shares is set aside. Strictly, a naked put is sold on margin, without the full cash in reserve. The term is also used more broadly for any sold put that is not hedged by another option. Either way the largest possible loss is the strike minus the premium, if the stock falls to zero."}},
+    {"@type": "Question", "name": "Should I sell puts before earnings?",
+     "acceptedAnswer": {"@type": "Answer", "text": "An expiry that includes an earnings report pays a higher premium, because the stock can gap overnight past the strike and past any support level. Whether the put should run across the report is part of choosing the expiry."}}
+  ]
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="./"><picture><source media="(prefers-color-scheme: dark)" srcset="brand/optionscone-wordmark-dark.svg"><img src="brand/optionscone-wordmark-light.svg" alt="OptionsCone" width="183" height="34"></picture></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="use-cases.html" aria-current="page">Use cases</a>
+      <a href="manual.html">Manual</a>
+      <a href="methods.html">Methods</a>
+      <a href="https://github.com/nikkn/OptionsCone">GitHub</a>
+      <a class="nav-pro" href="./#pro">Pro</a>
+      <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="doc">
+
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ul>
+      <li><a href="#what">What is a cash secured put?</a></li>
+      <li><a href="#sweet-spot">The sweet spot</a></li>
+      <li><a href="#assignment">How likely you get assigned</a></li>
+      <li><a href="#delta">Delta is not the assignment probability</a></li>
+      <li><a href="#chart">Support, trend lines and EMAs</a></li>
+      <li><a href="#realized">NVDA's realized moves</a></li>
+      <li><a href="#earnings">Earnings</a></li>
+      <li><a href="#defend">Defending a put</a></li>
+      <li><a href="#spread">Limiting the risk at entry</a></li>
+      <li><a href="#liquidity">Liquidity</a></li>
+      <li><a href="#compare">Comparing puts</a></li>
+      <li><a href="#expiry">Which expiry</a></li>
+      <li><a href="#example">Worked example</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <article class="prose">
+    <h1>Cash secured puts: how to earn the premium without getting assigned</h1>
+    <p class="byline">By <a href="https://nikolai-alexander.com/#about">Nikolai Alexander</a> &middot; 24 October 2026</p>
+    <p class="lede">Selling a cash secured put pays you a premium today. The goal of this guide is to keep that premium: to pick the put with the most premium and the lowest chance of being assigned, and to know what to do when the stock moves against you. Throughout the guide we work through a real example: NVDA's option chain on 19 October 2026, analysed with OptionsCone.</p>
+
+    <p><strong>In short:</strong> OptionsCone shows, for every strike and expiry of NVDA, how likely the price is to touch the strike and to finish below it: from option prices (risk-neutral pricing) and from NVDA's own realized moves. Next to them it shows profitability and liquidity figures for every contract, and it lets you draw support levels, trend lines and moving averages over the probabilities. Together they show which puts pay well and still sit where NVDA is unlikely to reach.</p>
+
+    <h2 id="what">What is a cash secured put?</h2>
+    <p>A cash secured put is an option strategy in which you sell a put and set aside the cash to buy 100 shares at the strike price. The buyer of the put pays you a premium, and in return gets the right to sell you the shares at the strike until the put expires.</p>
+    <ul>
+      <li><strong>If NVDA stays above the strike,</strong> the put expires worthless and you keep the premium.</li>
+      <li><strong>If NVDA finishes below the strike,</strong> you are assigned: you buy 100 shares at the strike, while the stock trades lower.</li>
+    </ul>
+    <p>Some investors accept assignment on purpose, as the first step of the wheel strategy, and then sell <a href="covered-call.html">covered calls</a> on the shares. This guide is about the other goal: earning the premium without owning the stock. You will also hear the term naked put. It is used in two ways: strictly, for a put sold on margin without the full cash in reserve, and more broadly, for any sold put that is not hedged by another option. The choice of the strike works the same way in every case.</p>
+
+    <h2 id="sweet-spot">What is the best strike for a cash secured put?</h2>
+    <p>The strike decides how much the put pays and how often you get assigned. Close to the current stock price, the premium is attractive, but NVDA only has to fall a little before the put ends in the money. Far below the price, assignment is unlikely, but the put pays very little. The best cash secured put strike sits between the two: the most premium for the lowest chance of assignment.</p>
+
+    <h2 id="assignment">How likely am I to get assigned?</h2>
+    <p>Download NVDA in OptionsCone and look at the probability cone below the price. Every dot is a listed put. Set the contour to <em>expire</em> and, for example, 20%: the line then marks, expiry by expiry, the strike NVDA finishes below with a 20% probability. That is how often a put at that strike would end in the money and lead to assignment.</p>
+    <p>Switch the contour to <em>touch</em> and the line moves further away from the price. A touch, the price reaching the strike at any point before expiry, is roughly twice as likely as finishing below it. The touch is the moment that matters for a put seller, because that is when the position comes under pressure and you decide whether to defend it.</p>
+
+    <h2 id="delta">Delta is not the probability of being assigned</h2>
+    <p>Many put sellers use delta as the chance of assignment and sell, for example, a "30-delta put". For puts this underestimates the risk. A put's delta is smaller than its risk-neutral probability of finishing in the money, so a 30-delta put ends in the money more often than 30% of the time. The gap grows with implied volatility and with the days to expiry, which makes it large on a volatile stock like NVDA and on puts with several months to run.</p>
+    <p>Our study <a href="../research/delta-vs-itm-probability.html">delta is not the probability of finishing in the money</a> shows how large the gap gets. OptionsCone shows the probability of finishing below each strike directly, so you can read the assignment probability itself instead of a delta rule of thumb.</p>
+
+    <h2 id="chart">Reading the chart: support levels, trend lines and moving averages</h2>
+    <p>Probabilities describe how far a stock tends to move. Technical analysis looks at where it has turned before. Many put sellers combine the two, and OptionsCone draws both on the same chart.</p>
+    <ul>
+      <li><strong>Support levels:</strong> technical analysts look for prices where a stock has repeatedly stopped falling, often earlier lows. Many put sellers place the strike below such a level, so the price would first have to break through it. Draw a horizontal line at the level with the <em>horizontal</em> tool: where it crosses an expiry, the dots on the line show how likely NVDA is to touch that level by then.</li>
+      <li><strong>Trend lines:</strong> trend lines are traditionally drawn through the rising lows of an uptrend. Drawn with the <em>trend</em> tool and extended into the cone, the line shows where the trend would run at each expiry, and how far a strike sits below it.</li>
+      <li><strong>Moving averages:</strong> many traders watch exponential moving averages, such as the 50-day and the 200-day, as dynamic support. OptionsCone draws two EMAs with lengths of your choice.</li>
+    </ul>
+    <p>A strike below a support level and outside the probability contour has two arguments for it: one from the chart and one from the probabilities.</p>
+
+    <figure><img class="shot" src="img/guides/csp-chart-probability.png" width="1824" height="998" loading="lazy" alt="NVDA price chart in OptionsCone with support lines at about 211 and 195 and the 50-day and 200-day exponential moving averages, next to the touch probability cone for NVDA puts with the implied contour"></figure>
+
+    <h2 id="realized">How option prices compare with NVDA's realized moves</h2>
+    <p>The probabilities in the cone, in <em>implied</em> mode, come from option prices. Options are priced risk-neutrally, as if the stock grew only at the risk-free rate, which is explained in detail in <a href="covered-call.html#risk-neutral">how options are priced</a>. On the put side the comparison with the stock's own history often runs the other way than on the call side: option prices frequently charge more for falls than the stock has actually shown.</p>
+    <p>OptionsCone puts the risk-neutral probabilities next to probabilities from NVDA's own realized moves. Blue and red mark, strike by strike, where option prices assume more or less movement than NVDA has shown, and where a put is priced above or below the fair price for NVDA's own moves. For a put seller those are the strikes where the premium pays more than the stock's realized moves would justify.</p>
+
+    <h2 id="earnings">Earnings: the jump risk of a short put</h2>
+    <p>The stars on the date axis mark NVDA's earnings dates, and the badge above each expiry shows its implied volatility. An expiry that includes the report pays a noticeably higher premium. The reason is the jump: NVDA can open the next morning far below the previous close, past the strike and past any support level, without ever trading in between. Rolling or closing the put is then no longer possible at the levels you planned for. Whether the put should run across the report is part of choosing the expiry.</p>
+
+    <h2 id="defend">What to do when NVDA falls toward the strike</h2>
+    <p>Even a well chosen put can come under pressure. There are three common ways to respond:</p>
+    <ul>
+      <li><strong>Roll down and out for a credit:</strong> buy the put back and sell a new one at a lower strike and a later expiry, for more premium than the buyback costs. This gives the trade more time and more room to be right. In OptionsCone you can see right away how likely the new strike is to be reached by its expiry.</li>
+      <li><strong>Close the position:</strong> buy the put back and accept the loss, for example once the loss reaches a set limit or a support level breaks. This works like a stop loss on the put.</li>
+      <li><strong>Accept assignment:</strong> let the put expire in the money and buy the shares, as described above.</li>
+    </ul>
+
+    <h2 id="spread">Limiting the risk at entry: the put credit spread</h2>
+    <p>A cash secured put can lose almost the whole strike value if the stock collapses. Buying a second put with a lower strike and the same expiration caps that loss: the bought put pays out below its strike, so the maximum loss is the distance between the two strikes minus the premium received. This combination is called a put credit spread, and it ties up far less cash than a cash secured put.</p>
+
+    <h2 id="liquidity">Where the liquidity is highest: open interest and volume</h2>
+    <p>A put is only as good as the price at which you can sell it, and later buy it back when you roll or close it. Switch the cone to <em>open int.</em> and <em>volume</em>:</p>
+    <ul>
+      <li><strong>Open interest</strong> shows where large positions sit. Strikes with high open interest are where other traders are active, which usually means you can get in and out at fair prices.</li>
+      <li><strong>Volume</strong> shows where trading happened in the session of the download. A put with open interest but no volume may be harder to trade on the day you need to.</li>
+    </ul>
+    <p>The contract details that open for each option show whether its quote is reliable enough to read a volatility from, with a yellow or red mark where it is not. Puts with a yellow or red mark are better left alone.</p>
+
+    <h2 id="compare">How to compare cash secured puts in OptionsCone</h2>
+    <p>Click a contract and its tooltip stays open. Then switch between the maps: the same contract shows its values in each of them.</p>
+    <ul>
+      <li><strong>Probability:</strong> how likely NVDA touches the strike, and how likely it finishes below it.</li>
+      <li><strong>Open interest and volume:</strong> how actively this put is traded.</li>
+      <li><strong>Time value per day:</strong> what this put earns you for every day until expiry.</li>
+      <li><strong>Implied volatility:</strong> where IV is higher, the put pays more for the same distance from the price.</li>
+    </ul>
+    <p>You can also step through the contracts with the arrow keys: up and down move to the next listed strike of the same expiry, left and right to the neighbouring expiry. The tooltip follows, so you can scan a whole row of candidates in a few seconds and pick the one that fits best.</p>
+
+    <h2 id="expiry">Which expiry for a cash secured put?</h2>
+    <p>Many put sellers choose expiries between 30 and 45 days, where time value decays quickly while the premium is still worth having. Shorter puts pay more per day, but you sell more often and pay the spread each time. Longer puts pay more in total, but NVDA has more time to fall to the strike. To compare expiries, pick one strike per expiry with a similar probability of finishing in the money, which is where the contour line crosses each expiry, and compare what they pay per day. Check the earnings dates before you choose.</p>
+
+    <h2 id="example">Worked example: three NVDA cash secured puts compared</h2>
+    <p>From a download of NVDA on 19 October 2026 at 14:23, with the stock at $217.33. These figures illustrate the comparison and are not a recommendation.</p>
+    <div class="table-scroll"><table>
+      <tr><th>Put</th><th>Distance</th><th>Finishes below (option prices)</th><th>Finishes below (NVDA's moves)</th><th>Next support above the strike</th><th>Time value per day (per contract)</th><th>Open interest</th></tr>
+      <tr><td>200 put, 13 Nov (25 days)</td><td>&minus;8.0%</td><td>21.4%</td><td>15.7%</td><td>~211</td><td>$9.50</td><td>8,665</td></tr>
+      <tr><td>195 put, 20 Nov (32 days)</td><td>&minus;10.3%</td><td>21.4%</td><td>13.9%</td><td>~195</td><td>$9.16</td><td>27,856</td></tr>
+      <tr><td>185 put, 18 Dec (60 days)</td><td>&minus;14.9%</td><td>19.0%</td><td>11.3%</td><td>~195</td><td>$5.21</td><td>20,102</td></tr>
+    </table></div>
+    <p class="data-note">Data: NVDA option chain, downloaded on 19 October 2026 at 14:23 New York time, quotes delayed about 15 minutes. All figures calculated with OptionsCone.</p>
+    <p><strong>Read it as:</strong> All three puts have about a 20% chance of finishing below the strike from option prices, and NVDA's realized moves put it lower for each of them, between 11% and 16%. The 200 put of 13 November pays the most per day and expires before NVDA's earnings report on 17 November, but it sits only 8% below the price, between the support at about 211 and the one at about 195. The 195 put of 20 November pays almost as much per day from just below the support at about 195, but it expires after the report. If the report disappoints, NVDA can open the next morning well below the strike without ever trading at the prices in between, which leaves no chance to roll or close the put before the drop. The 185 put of 18 December sits below both support levels and gives NVDA the most room to fall, but in exchange it earns only a little more than half as much per day, and the trade stays open about twice as long.</p>
+
+    <h2 id="faq">Cash secured put FAQ</h2>
+    <h3>Which delta should I use for a cash secured put?</h3>
+    <p>Delta is not the probability of being assigned. A put's delta is smaller than its risk-neutral probability of finishing in the money, so a 30-delta put ends in the money more often than 30% of the time. The gap grows with implied volatility and the days to expiry. Delta also comes from option prices alone, so it says nothing about how the stock has actually moved. Reading the assignment probability directly, from option prices and from the stock's own moves, is clearer than a delta rule of thumb. Our study <a href="../research/delta-vs-itm-probability.html">delta is not the probability of finishing in the money</a> shows the gap in numbers.</p>
+    <h3>How do I avoid assignment on a cash secured put?</h3>
+    <p>Choose a strike with a low probability of finishing in the money, ideally below a support level, check whether an earnings date falls before expiry, and defend the position when the strike comes under pressure, by rolling it down and out for a credit or by closing it.</p>
+    <h3>When should I roll a cash secured put?</h3>
+    <p>Many put sellers roll when the stock approaches or touches the strike. Rolling down and out means buying back the put and selling one at a lower strike and a later expiry for a net credit, which gives the trade more time and more room.</p>
+    <h3>What is the difference between a cash secured put and a naked put?</h3>
+    <p>Both are a sold put. With a cash secured put the full cash to buy the shares is set aside. Strictly, a naked put is sold on margin, without the full cash in reserve, which ties up less capital but allows larger losses relative to the account. The term is also used more broadly for any sold put that is not hedged by another option, as opposed to a spread. Either way the largest possible loss is the strike minus the premium, if the stock falls to zero.</p>
+    <h3>Should I sell puts before earnings?</h3>
+    <p>An expiry that includes an earnings report pays a higher premium, because the stock can gap overnight past the strike and past any support level. Whether the put should run across the report is part of choosing the expiry.</p>
+
+    <p class="note end">We use NVDA as an example. The same steps work for any stock with listed options. Nothing on this page is a recommendation to buy or sell NVDA stock or options.</p>
+
+    <h2>Try it on your own stock</h2>
+    <p>Every figure on this page comes from one download and a few clicks. The <a href="manual.html">manual</a> explains each control.</p>
+    <p><a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a></p>
+  </article>
+
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/eVqbJ14of3vwabb4NSbII00" rel="nofollow">Cancel subscription here</a></p>
+      <p>Not financial advice.</p>
+    </div>
+    <div>
+      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="https://github.com/nikkn/OptionsCone/issues">Report a problem</a></p>
+      <p><a href="https://x.com/nikkn_alexander">@nikkn_alexander on X</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

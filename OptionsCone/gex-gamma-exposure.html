@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gamma exposure (GEX): how to read GEX, the gamma flip and the call and put walls, with an SPY example | OptionsCone</title>
+<meta name="description" content="What gamma exposure (GEX) measures, how it is calculated, and how to read the gamma flip and the call and put walls, with a worked example on SPY's option chain.">
+<link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/gex-gamma-exposure.html">
+<link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gamma exposure (GEX): how dealer hedging can damp or amplify moves">
+<meta property="og:description" content="What GEX measures, how the gamma flip and the call and put walls are read, and what they showed on SPY.">
+<meta property="og:url" content="https://nikolai-alexander.com/OptionsCone/gex-gamma-exposure.html">
+<meta property="og:image" content="https://nikolai-alexander.com/OptionsCone/img/social.png?v=6">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="OptionsCone">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=13">
+<style>
+  .byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+  .data-note { font-size: 13.5px; color: var(--ink-3); border-left: 3px solid var(--line); padding: 2px 0 2px 12px; }
+  .note.end { margin-top: 56px; }
+  .formula { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 16px 20px;
+             font: 500 15px/1.7 var(--mono); margin: 18px 0; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Gamma exposure (GEX): how to read GEX, the gamma flip and the call and put walls, with an SPY example",
+  "description": "What gamma exposure measures, how it is calculated, and how to read the gamma flip and the call and put walls.",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "10+ years of quantitative research on financial markets",
+             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+  "publisher": {"@type": "Organization", "name": "OptionsCone"},
+  "datePublished": "2026-10-24",
+  "dateModified": "2026-10-24",
+  "about": ["gamma exposure", "GEX", "gamma flip", "zero gamma", "call wall", "put wall", "dealer hedging", "SPY GEX"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/OptionsCone/gex-gamma-exposure.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What is GEX?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Gamma exposure (GEX) estimates how many dollars of stock the market makers on the other side of all open options would have to buy or sell for a 1% move in the underlying, under the usual assumption that they are long the calls and short the puts customers hold. Positive GEX means their hedging works against moves, negative GEX means it works with them."}},
+    {"@type": "Question", "name": "How is GEX calculated?",
+     "acceptedAnswer": {"@type": "Answer", "text": "For each contract: gamma times open interest times 100 shares times the share price squared times 1%, counted positive for calls and negative for puts, and summed over all contracts."}},
+    {"@type": "Question", "name": "What is the gamma flip?",
+     "acceptedAnswer": {"@type": "Answer", "text": "The share price at which the total GEX of all contracts changes sign. It is found by recomputing every contract's gamma at hypothetical prices. Above the flip, dealer hedging tends to damp moves, below it, it tends to amplify them."}},
+    {"@type": "Question", "name": "What are call walls and put walls?",
+     "acceptedAnswer": {"@type": "Answer", "text": "The strike with the largest call GEX above the price and the strike with the largest put GEX below it. Many traders read the call wall as resistance and the put wall as support, and moves beyond a wall as moves that can run further."}},
+    {"@type": "Question", "name": "Is positive GEX bullish?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Not in itself. Positive GEX points to a market where dealer hedging damps moves in both directions, negative GEX to one where it amplifies them. It describes how the price may move, not in which direction."}},
+    {"@type": "Question", "name": "How often does GEX change?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Open interest is published once a day, from the previous close, so the open positions behind GEX change daily. Gamma changes with every move of the price and of implied volatility, so the walls and the flip move as well."}}
+  ]
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="./"><picture><source media="(prefers-color-scheme: dark)" srcset="brand/optionscone-wordmark-dark.svg"><img src="brand/optionscone-wordmark-light.svg" alt="OptionsCone" width="183" height="34"></picture></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="use-cases.html" aria-current="page">Use cases</a>
+      <a href="manual.html">Manual</a>
+      <a href="methods.html">Methods</a>
+      <a href="https://github.com/nikkn/OptionsCone">GitHub</a>
+      <a class="nav-pro" href="./#pro">Pro</a>
+      <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="doc">
+
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ul>
+      <li><a href="#what">What is GEX?</a></li>
+      <li><a href="#formula">How GEX is calculated</a></li>
+      <li><a href="#sign">Positive and negative GEX</a></li>
+      <li><a href="#flip">The gamma flip</a></li>
+      <li><a href="#walls">Call wall and put wall</a></li>
+      <li><a href="#assumes">What GEX assumes</a></li>
+      <li><a href="#optionscone">GEX in OptionsCone</a></li>
+      <li><a href="#example">Worked example</a></li>
+      <li><a href="#use">How traders use GEX</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <article class="prose">
+    <h1>Gamma exposure (GEX): how dealer hedging can damp or amplify moves</h1>
+    <p class="byline">By <a href="https://nikolai-alexander.com/#about">Nikolai Alexander</a> &middot; 24 October 2026</p>
+    <p class="lede">Market makers who sell options hedge them with the stock, and their hedging can slow a market down or speed it up. Gamma exposure (GEX) estimates which of the two is more likely, and where the levels lie at which that could change. Throughout the guide we work through a real example: SPY's option chain on 20 October 2026, analysed with OptionsCone.</p>
+
+    <p><strong>In short:</strong> GEX adds up, over all open option contracts, how many dollars of stock the market makers on the other side would have to trade for a 1% move. OptionsCone shows it for every strike and expiry on the probability cone, as a profile over all expiries along the price axis, with the gamma flip and the call and put walls drawn into the chart.</p>
+
+    <h2 id="what">What is GEX?</h2>
+    <p>Market makers sell options to customers and hedge the risk with the underlying stock. When the stock moves, the delta of their options changes, and they buy or sell shares to stay hedged. How fast delta changes with the price is called gamma. Gamma exposure (GEX) multiplies each contract's gamma by its open interest and adds up the result over all open contracts. It estimates how many dollars of stock the market makers would have to trade if the price moved by 1%.</p>
+
+    <h2 id="formula">How GEX is calculated</h2>
+    <p>The standard formula for one contract is:</p>
+    <div class="formula">GEX = gamma &times; open interest &times; 100 &times; share price&sup2; &times; 1%</div>
+    <p>Calls count positive and puts negative, and the sum over all contracts is the total GEX. The sign rests on an assumption about who holds what: customers mostly sell calls, for example as covered calls, and buy puts as protection. The market makers on the other side are then long the calls and short the puts. Nobody can see the real positions in public data, so every GEX figure rests on this convention.</p>
+    <p>OptionsCone uses each contract's own gamma, at a volatility read from good quotes only. Open interest counts for every contract, including those whose quote is too wide to read a volatility from.</p>
+
+    <h2 id="sign">Positive and negative GEX</h2>
+    <ul>
+      <li><strong>Positive GEX:</strong> to stay hedged, the market makers buy when the price falls and sell when it rises. Their hedging works against the move and tends to damp it.</li>
+      <li><strong>Negative GEX:</strong> they sell when the price falls and buy when it rises. Their hedging works with the move and can amplify it.</li>
+    </ul>
+    <p>Many traders read positive GEX as a calmer market and negative GEX as a market prone to larger swings. It is a tendency, not a rule, and it says nothing about the direction of the next move.</p>
+
+    <h2 id="flip">The gamma flip: where GEX changes sign</h2>
+    <p>The gamma flip, also called the zero gamma level, is the share price at which the total GEX changes sign. To find it, every contract's gamma is recomputed at hypothetical share prices around the current one, and the total is added up again at each of them. Where the total crosses zero lies the flip. Above it, dealer hedging tends to damp moves, below it, it tends to amplify them. The flip is one of the levels GEX traders watch most closely, because a market that falls through it can change its character.</p>
+
+    <h2 id="walls">Call wall and put wall</h2>
+    <p>The call wall is the strike with the largest call GEX above the price, and the put wall the strike with the largest put GEX below it. How they are read is mostly practitioner experience:</p>
+    <ul>
+      <li><strong>The call wall as resistance:</strong> as the price rises toward it, market makers who are long these calls sell more and more shares to stay hedged, which can slow a rally.</li>
+      <li><strong>The put wall as support:</strong> market makers who are short the puts have to sell as the price falls, so the put wall is also read as the level below which a decline can speed up.</li>
+      <li><strong>Between the walls:</strong> with positive GEX, the price often stays inside the range, which is why many option sellers place their short strikes outside the walls.</li>
+      <li><strong>Beyond a wall:</strong> once the price breaks through, the damping is gone and the move can run further.</li>
+    </ul>
+    <p>One effect has solid support in research: on expiration days, stocks with heavy option open interest close at or near a strike more often than chance would explain, which Ni, Pearson and Poteshman (2005, Journal of Financial Economics) attribute to the hedging of option positions. Walls as support and resistance rest on observation rather than on comparable evidence.</p>
+
+
+    <h2 id="assumes">What GEX assumes</h2>
+    <p>Three things belong to every GEX reading. The dealer positioning is assumed, not measured. Open interest comes from the previous close, so positions opened today are not in it. And the walls and the flip move: open interest changes every day, and gamma changes with every move of the price and of implied volatility. A GEX picture is a snapshot.</p>
+
+    <h2 id="optionscone">GEX in OptionsCone</h2>
+    <p>Download a ticker and click <em>GEX</em>. Three things appear:</p>
+    <ul>
+      <li><strong>The GEX map:</strong> every strike and expiry of the cone colored by its net GEX, calls minus puts at that strike. Blue marks strikes where hedging tends to damp moves, red where it tends to amplify them.</li>
+      <li><strong>The profile:</strong> on the right, the net GEX of every strike summed over all expiries, as horizontal bars, with the total net GEX above it.</li>
+      <li><strong>The levels:</strong> the gamma flip as a dashed line across the chart, and the call wall and the put wall as lines in the colors of the profile.</li>
+    </ul>
+    <p>Hover over a contract to see the call GEX, the put GEX and the net GEX at its strike and expiry, with the open interest of both sides.</p>
+    <figure><img class="shot" src="img/guides/gex-spy-dark.png" width="1821" height="1006" loading="lazy" alt="OptionsCone GEX map for SPY on 20 October 2026 in dark mode: the price chart since December 2025 with a 50-day moving average, the cone colored by net gamma exposure, the GEX profile on the right with net GEX of minus 6.83 billion dollars, the call wall at 780, the gamma flip at 774.1, the put wall at 760 and a pinned tooltip for the 735 strike of 18 December."></figure>
+
+    <h2 id="example">Worked example: SPY on 20 October 2026</h2>
+    <p>From a download of SPY on 20 October 2026 at 15:09 New York time, with SPY at 768.87:</p>
+    <div class="table-scroll"><table>
+      <tr><th>Level</th><th>Price</th><th>Distance from SPY</th></tr>
+      <tr><td>Call wall</td><td>780</td><td>+1.4%</td></tr>
+      <tr><td>Gamma flip</td><td>774.1</td><td>+0.7%</td></tr>
+      <tr><td>Put wall</td><td>760</td><td>&minus;1.2%</td></tr>
+    </table></div>
+    <p class="data-note">Data: SPY option chain, downloaded on 20 October 2026 at 15:09 New York time, quotes delayed about 15 minutes, open interest from the previous close. 21 expiries up to 162 days. All figures calculated with OptionsCone.</p>
+    <p><strong>Read it as:</strong> SPY traded just below the gamma flip, and the total net GEX was about &minus;$6.8 billion per 1% move: a market in which dealer hedging tends to amplify moves rather than damp them. The largest negative strikes sat at 760 and 750, where the puts dominated, and the largest positive ones at 800 and 780, where the calls did. A rise of about 0.7 percent would have taken SPY above the flip, into the range where hedging starts to damp moves, with the call wall less than another percent higher.</p>
+    <p>The day before, the flip had briefly sat above the call wall. That happens in negative-gamma markets with heavy put positioning around the price: the calls at the call wall are then not enough to outweigh all the puts, and the total only turns positive higher up.</p>
+
+    <h2 id="use">How traders use GEX</h2>
+    <ul>
+      <li><strong>Choosing where to sell premium:</strong> with positive GEX, many option sellers place short strikes outside the walls, where hedging has so far held the price back. With negative GEX they are more cautious, because moves tend to run further.</li>
+      <li><strong>Watching the flip:</strong> a market moving from above the flip to below it can change from calm to volatile, which matters for any position that depends on the price staying in a range.</li>
+      <li><strong>Combining GEX with probabilities:</strong> a strike beyond a wall and with a low probability of being touched has two arguments for it, one from positioning and one from the option prices. OptionsCone shows both on the same chart.</li>
+    </ul>
+
+    <h2 id="faq">GEX FAQ</h2>
+    <h3>What is GEX?</h3>
+    <p>Gamma exposure (GEX) estimates how many dollars of stock the market makers on the other side of all open options would have to buy or sell for a 1% move in the underlying, under the usual assumption that they are long the calls and short the puts customers hold. Positive GEX means their hedging works against moves, negative GEX means it works with them.</p>
+    <h3>What is the gamma flip?</h3>
+    <p>The share price at which the total GEX of all contracts changes sign. Above the flip, dealer hedging tends to damp moves, below it, it tends to amplify them.</p>
+    <h3>What are call walls and put walls?</h3>
+    <p>The strike with the largest call GEX above the price and the strike with the largest put GEX below it. Many traders read the call wall as resistance and the put wall as support, and moves beyond a wall as moves that can run further.</p>
+    <h3>Is positive GEX bullish?</h3>
+    <p>Not in itself. Positive GEX points to a market where dealer hedging damps moves in both directions, negative GEX to one where it amplifies them. It describes how the price may move, not in which direction.</p>
+    <h3>How often does GEX change?</h3>
+    <p>Open interest is published once a day, from the previous close, so the open positions behind GEX change daily. Gamma changes with every move of the price and of implied volatility, so the walls and the flip move as well.</p>
+
+    <p class="note end">We use SPY as an example. The same steps work for any stock or ETF with listed options. Nothing on this page is a recommendation to buy or sell SPY or any options on it.</p>
+
+    <h2>Try it on your own ticker</h2>
+    <p>Every figure on this page comes from one download and one click. The <a href="manual.html">manual</a> explains each control.</p>
+    <p><a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a></p>
+  </article>
+
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/eVqbJ14of3vwabb4NSbII00" rel="nofollow">Cancel subscription here</a></p>
+      <p>Not financial advice.</p>
+    </div>
+    <div>
+      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="https://github.com/nikkn/OptionsCone/issues">Report a problem</a></p>
+      <p><a href="https://x.com/nikkn_alexander">@nikkn_alexander on X</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -19,7 +19,7 @@
 <meta property="og:image:alt" content="OptionsCone: a probability cone over the listed option strikes of a stock, with implied and historical contour lines.">
 <meta property="og:site_name" content="OptionsCone">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=13">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -64,7 +64,8 @@
       <a href="manual.html">Manual</a>
       <a href="methods.html">Methods</a>
       <a href="https://github.com/nikkn/OptionsCone">GitHub</a>
-      <span class="btn small primary disabled" aria-disabled="true">Available soon</span>
+      <a class="nav-pro" href="./#pro">Pro</a>
+      <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
     </nav>
   </div>
 </header>
@@ -76,8 +77,9 @@
     <h1>Probability, premium and positioning heatmaps for any stock with options.</h1>
     <p class="lede">OptionsCone turns the option chain into heatmaps on the price chart: touch and expiry probabilities, implied volatility, open interest, spreads, time value and premium relative to risk. It compares what the option market implies with what the stock&#39;s own history says. For option traders and for anyone who holds stocks. Free, for Windows.</p>
     <div class="btn-row">
-      <span class="btn primary disabled" aria-disabled="true">Available soon</span>
-      <span class="btn-note">Windows 10 and 11 &middot; no installation</span>
+      <a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a>
+      <a class="btn" href="#pro">See Pro</a>
+      <span class="btn-note">Windows 10 and 11 &middot; free &middot; installs without admin rights</span>
     </div>
   </div>
 
@@ -86,7 +88,7 @@
     <figure class="mapfig"><a class="map" href="img/avgo/chart-iv.png"><span>Implied volatility</span><img src="img/avgo/cone-iv.png" width="550" height="840" alt="Broadcom (AVGO), Implied volatility per contract: skew and term structure."></a><figcaption>Each contract&#39;s own volatility, so skew and the term structure show at a glance. The badges above each expiry show its overall implied volatility.</figcaption></figure>
     <figure class="mapfig"><a class="map" href="img/avgo/chart-oi.png"><span>Open interest</span><img src="img/avgo/cone-oi.png" width="550" height="840" alt="Broadcom (AVGO), Open interest: where the large positions sit."></a><figcaption>Where traders hold the largest positions, for every strike and expiry.</figcaption></figure>
     <figure class="mapfig"><a class="map" href="img/avgo/chart-tv.png"><span>Time value per day</span><img src="img/avgo/cone-tv.png" width="550" height="840" alt="Broadcom (AVGO), Time value per remaining day, darkest near the money for short expiries."></a><figcaption>Each option&#39;s premium spread over the days it has left, so a seller&#39;s average daily income is visible at a glance.</figcaption></figure>
-    <figure class="mapfig"><a class="map" href="img/avgo/chart-gap.png"><span>Implied vs realized <em class="pro">Pro</em></span><img src="img/avgo/cone-gap.png" width="550" height="840" alt="Broadcom (AVGO), Implied minus realized touch probability: blue where the market prices in a higher probability than the stock realized, red where lower."></a><figcaption>The market&#39;s touch probability against the stock&#39;s own realized moves, measured with industry-standard simulation models. Points to potential trading opportunities.</figcaption></figure>
+    <figure class="mapfig"><a class="map" href="img/avgo/chart-gap.png"><span>Implied vs realized <em class="pro">Pro</em></span><img src="img/avgo/cone-gap.png" width="550" height="840" alt="Broadcom (AVGO), Implied minus realized touch probability: blue where the market prices in a higher probability than the stock realized, red where lower."></a><figcaption>The touch probability from option prices against the Realized Odds 5y and 10y. Points to potential trading opportunities.</figcaption></figure>
     <figure class="mapfig"><a class="map" href="img/avgo/chart-vpr.png"><span>Premium per unit risk <em class="pro">Pro</em></span><img src="img/avgo/cone-vpr.png" width="550" height="840" alt="Broadcom (AVGO), premium relative to realized risk."></a><figcaption>How much premium a seller collects for each dollar of risk the stock&#39;s individual realized moves suggest. Higher means the risk is better paid.</figcaption></figure>
   </div>
 
@@ -101,7 +103,7 @@
       <div class="card">
         <h3>Three models</h3>
         <p><span class="swatch" style="background:var(--track)"></span><strong>Implied</strong> from the option prices, with each contract's own volatility.<br>
-        <span class="swatch" style="background:var(--m5)"></span><strong>5y</strong> and <span class="swatch" style="background:var(--m10)"></span><strong>10y</strong> simulated from the stock's own price history. <em class="pro">Pro</em></p>
+        <span class="swatch" style="background:var(--m5)"></span><strong>5y</strong> and <span class="swatch" style="background:var(--m10)"></span><strong>10y</strong>: the Realized Odds, from industry-standard probability models built on the stock's realized moves of the last five and ten years. <em class="pro">Pro</em></p>
       </div>
       <div class="card">
         <h3>Contour lines</h3>
@@ -151,7 +153,7 @@
         </ul>
       </div>
     </div>
-    <p style="margin-top:22px"><a href="use-cases.html">See worked examples with real numbers</a>. The app shows probabilities, not recommendations.</p>
+    <p style="margin-top:22px"><a href="use-cases.html">See worked examples with real numbers</a> or <a href="use-cases.html#guides">read the guides</a>. The app shows probabilities, not recommendations.</p>
   </section>
 
   <section>
@@ -180,12 +182,83 @@
         <p class="eyebrow">Get started</p>
         <h2>Three steps</h2>
         <ol class="steps">
-          <li><strong>Download</strong> <code>OptionsCone.exe</code> (available soon) and run it. If Windows warns about an unknown app, click <em>More info</em>, then <em>Run anyway</em>.</li>
-          <li><strong>Type a ticker</strong>, for example <code>AAPL</code>, and press <em>download</em>. The first download takes a minute or two.</li>
+          <li><strong>Download</strong> <a href="https://licence.optionscone.com/get/free"><code>OptionsCone-Setup.exe</code></a> and run it. It installs in a few seconds, without admin rights. If Windows warns about an unknown app, click <em>More info</em>, then <em>Run anyway</em>.</li>
+          <li><strong>Type a ticker</strong>, for example <code>AAPL</code>, and press <em>download</em>. The first download takes less than a minute.</li>
           <li><strong>Read the cone.</strong> Set the probability you care about and compare the three lines. The <a href="manual.html">manual</a> explains every control.</li>
         </ol>
       </div>
     </div>
+  </section>
+
+  <section id="gex">
+    <p class="eyebrow">Pro</p>
+    <h2>GEX heatmap</h2>
+    <p class="prose">Gamma exposure on the price chart, for every strike and expiry: where dealer hedging tends to slow moves down, where it can speed them up, and the levels where that could change. With the call wall, the put wall and the gamma flip.</p>
+    <figure class="mapfig gexhome"><a class="map" href="img/pro-gex-spy-dark.png"><span>Gamma exposure <em class="pro">Pro</em></span><img src="img/pro-gex-spy.png" width="1087" height="1006" loading="lazy" alt="OptionsCone Pro GEX heatmap for SPY in dark mode: positive gamma in blue above the price, negative in red below it, with the call wall at 780, the put wall at 760, the gamma flip at 774.1, the exposure profile on the price axis and a pinned tooltip for the 735 strike."></a><figcaption>Blue where dealer hedging tends to slow moves down, red where it can speed them up. How to read it: the <a href="gex-gamma-exposure.html">GEX guide</a>.</figcaption></figure>
+  </section>
+
+  <section id="pro">
+    <p class="eyebrow">Pro version</p>
+    <h2><span class="h-pro">Pro</span> version: for the decisions where option prices alone are not enough</h2>
+    <p class="prose">Everything in the free version, plus the views that weigh option prices against how each stock has actually moved, the gamma exposure map, and every new function as it comes.</p>
+    <div class="grid3 pro-cards">
+      <div class="card">
+        <p class="kind">Map</p>
+        <h3>Gamma exposure (GEX)</h3>
+        <p>See where dealer hedging can slow down or speed up moves, with the levels where that could change.</p>
+      </div>
+      <div class="card">
+        <p class="kind">Models</p>
+        <h3>Realized Odds 5y and 10y</h3>
+        <p>Industry-standard probability models, built on the stock&#39;s realized moves of the last five and ten years. Probabilities for every strike, as their own contour lines and in every tooltip, next to the probability from option prices.</p>
+      </div>
+      <div class="card">
+        <p class="kind">Map</p>
+        <h3>Implied vs realized</h3>
+        <p>The whole cone coloured by where options price in more or less movement than the stock has typically shown, so the differences stand out at a glance.</p>
+      </div>
+      <div class="card">
+        <p class="kind">Map</p>
+        <h3>Premium per unit of risk</h3>
+        <p>Compare which contracts pay you the most for the risk you take.</p>
+      </div>
+      <div class="card">
+        <p class="kind">Updates</p>
+        <h3>Regular updates with new advanced functions</h3>
+        <p>Every new tool comes to Pro at no extra cost, and the app installs it with one click.</p>
+      </div>
+      <div class="card">
+        <p class="kind">Support</p>
+        <h3>Direct support</h3>
+        <p>Questions go straight to the developer.</p>
+      </div>
+    </div>
+
+
+    <h3 class="sub-h">Get Pro today</h3>
+    <div class="grid2 plans">
+      <div class="plan">
+        <h3>Monthly</h3>
+        <p class="price">19.90 USD <span class="per">per month</span></p>
+        <p><a class="btn primary" href="https://licence.optionscone.com/buy?plan=monthly">Get Pro monthly</a></p>
+        <p class="per cancel">Cancel any time</p>
+      </div>
+      <div class="plan">
+        <h3>Yearly <span class="save">save 20%</span></h3>
+        <p class="price">189 USD <span class="per">per year</span></p>
+        <p><a class="btn primary" href="https://licence.optionscone.com/buy?plan=yearly">Get Pro yearly</a></p>
+        <p class="per cancel">Cancel any time</p>
+      </div>
+    </div>
+    <p class="fine">The subscription renews automatically every month or year. You can cancel any time, and Pro keeps working until the end of the paid period. Depending on where you live, sales tax or VAT is included or added, and the checkout shows the final amount before you pay. One key runs on up to two of your own computers. See the <a href="legal.html#terms" rel="nofollow">terms of sale</a>.</p>
+
+    <h3 class="sub-h">From purchase to Pro in a minute</h3>
+    <ol class="steps">
+      <li><strong>Buy</strong> monthly or yearly. The payment runs through Stripe&#39;s secure checkout, and you receive your licence key right after.</li>
+      <li><strong>In OptionsCone</strong>, click <em>Get Pro</em>, paste the key and press <em>Activate and install Pro</em>. Pro downloads and installs itself, and your tickers and settings are kept.</li>
+      <li><strong>Manage it in the app.</strong> Under <em>Pro</em>, <em>Manage subscription</em> lets you switch plans, change your card or cancel.</li>
+    </ol>
+    <p class="after-steps">Don&#39;t have OptionsCone yet? <a href="https://licence.optionscone.com/get/free">Download the free version</a> first, it takes a few seconds to install.</p>
   </section>
 
   <section id="faq">
@@ -197,13 +270,13 @@
       <details class="faq"><summary>Do I need to trade options to use it?</summary>
         <p>No. The option market is only the source of one of the three views. If you hold stocks, the same chart tells you how likely a stop level, a price target or your break-even is to be reached within a given time, by the market's pricing and by the stock's own history. See the <a href="use-cases.html">use cases</a>.</p></details>
       <details class="faq"><summary>What is the difference between the implied and the historical models?</summary>
-        <p>The implied model uses option prices, so it reflects what the market charges for the risk today. The historical models are built with industry-standard simulation models from the stock's own last five or ten years. This lets you compare the market's expectations with the realized moves of each individual stock. Where the two differ, the option market is pricing a move the history did not produce, or the other way round.</p></details>
+        <p>The implied model uses option prices, so it reflects what the market charges for the risk today. The Realized Odds 5y and 10y come from industry-standard probability models, built on the stock's realized moves of the last five or ten years. This lets you compare the market's expectations with the realized moves of each individual stock. Where the two differ, the option market is pricing a move the history did not produce, or the other way round.</p></details>
       <details class="faq"><summary>Is OptionsCone free?</summary>
-        <p>Yes. The probability cone and the implied volatility, open interest, spread and time value maps are free. Pro adds the historical models, implied vs realized, premium per unit risk and the gamma exposure map (GEX).</p></details>
+        <p>Yes. The probability cone and the implied volatility, open interest, spread and time value maps are free. Pro adds the historical models, implied vs realized, premium per unit risk and the gamma exposure map (GEX). See <a href="#pro">OptionsCone Pro</a> for prices.</p></details>
       <details class="faq"><summary>Why does a chart show older data in the evening?</summary>
         <p>Option prices are only meaningful while the US market is open. Outside trading hours, the app shows your most recent download from the trading session, with its date. If a ticker has never been downloaded during trading hours, the app tells you so: download it again between 9:30 and 16:00 New York time, usually 15:30 to 22:00 in Central Europe.</p></details>
       <details class="faq"><summary>Does the app send my data anywhere?</summary>
-        <p>No. Everything you download stays in a folder on your computer.</p></details>
+        <p>No. Everything you download stays in a folder on your computer. The app only asks our server whether a newer version is out, and Pro checks its licence there. Both send just the version, an anonymous computer ID and, for Pro, your key, never any of your data. The <a href="legal.html#privacy" rel="nofollow">privacy notice</a> has the details.</p></details>
       <details class="faq"><summary>Why does Windows show a warning when I start it?</summary>
         <p>The executable is not code-signed, which costs money every year. SmartScreen warns about any unsigned program it has not seen often. Click <em>More info</em>, then <em>Run anyway</em>. Each release lists a SHA-256 checksum of the file, so you can check that it was not altered.</p></details>
       <details class="faq"><summary>Does it run on Mac or Linux?</summary>
