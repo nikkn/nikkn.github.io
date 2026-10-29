@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Probability of touch and expiry, explained | OptionsCone</title>
-<meta name="description" content="Probability of touch vs. probability at expiry, why delta is not a probability, what the Realized Odds and the maps show, and where their limits are.">
+<meta name="description" content="Probability of touch vs. probability at expiry, why delta is not a probability, what the realized odds and the maps show, and where their limits are.">
 <link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/methods.html">
 <link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -50,7 +50,7 @@
       <li><a href="#touch">Probability of touch</a></li>
       <li><a href="#expire">Probability at expiry</a></li>
       <li><a href="#delta">Delta is not a probability</a></li>
-      <li><a href="#history">Realized Odds</a></li>
+      <li><a href="#history">Realized odds</a></li>
       <li><a href="#badges">Expiry badges</a></li>
       <li><a href="#maps">The maps</a></li>
       <li><a href="#limits">Limits</a></li>
@@ -82,8 +82,8 @@
     <p>Delta is often read as the chance of an option expiring in the money. For short-dated options at moderate volatility the two are close. The higher the volatility and the longer the time to expiry, the further they drift apart: a 30-delta put on a volatile stock several months out can have a noticeably higher chance of expiring in the money than 30%. Delta remains the right number for hedging. For odds, use the probability at expiry, or the touch probability if the question is whether a level will be reached.</p>
     <p>How large the gap is in real option chains, and how the skew changes it, is shown in the study <a href="/research/delta-vs-itm-probability.html">Is delta the probability of expiring in the money?</a></p>
 
-    <h2 id="history">Realized Odds (5y, 10y)</h2>
-    <p>The Realized Odds 5y and 10y answer the same questions from the stock&#39;s own history instead of option prices. They come from industry-standard probability models, built on the stock&#39;s realized moves of the last five or ten years, including calm and turbulent periods and intraday moves.</p>
+    <h2 id="history">Realized odds (5y, 10y)</h2>
+    <p>The realized odds 5y and 10y answer the same questions from the stock&#39;s own history instead of option prices. They come from industry-standard probability models, built on the stock&#39;s realized moves of the last five or ten years, including calm and turbulent periods and intraday moves.</p>
     <p>These are historical frequencies. They contain only moves that happened in those years, and they know nothing of what the market expects today, such as an upcoming earnings date.</p>
     <div class="note">Where the implied and historical lines diverge, the option market is pricing a move the history did not produce, or the other way round.</div>
 
@@ -96,7 +96,7 @@
       <li><strong>Probability:</strong> the implied touch probability.</li>
       <li><strong>Implied volatility, open interest and spread:</strong> each contract&#39;s own values. On the spread map, darker means tighter.</li>
       <li><strong>Time value per day:</strong> Each option&#39;s premium spread over the days it has left, so a seller&#39;s average daily income is visible at a glance. It is an average over the remaining life; decay speeds up toward expiry.</li>
-      <li><strong>Implied vs realized:</strong> The touch probability from option prices against the Realized Odds 5y and 10y. Blue where the market prices in a higher probability (a potential opportunity for sellers), red where lower. The historical models do not know the earnings calendar, so an expiry that ends before the next report leans red, and one that spans it leans blue.</li>
+      <li><strong>Implied vs realized:</strong> The touch probability from option prices against the realized odds 5y and 10y. Blue where the market prices in a higher probability (a potential opportunity for sellers), red where lower. The historical models do not know the earnings calendar, so an expiry that ends before the next report leans red, and one that spans it leans blue.</li>
       <li><strong>Premium per unit risk:</strong> How much premium a seller collects for each dollar of risk the stock&#39;s individual realized moves suggest. Higher means the risk is better paid. It is left out where the history gives too little data. It uses the mid price; a seller receives the bid, which on far out-of-the-money contracts is noticeably lower.</li>
     </ul>
     <p>For each expiry and model, the contour lines mark the listed strike whose probability is closest to your target, above and below the current price.</p>

@@ -88,7 +88,7 @@
     <figure class="mapfig"><a class="map" href="img/avgo/chart-iv.png"><span>Implied volatility</span><img src="img/avgo/cone-iv.png" width="550" height="840" alt="Broadcom (AVGO), Implied volatility per contract: skew and term structure."></a><figcaption>Each contract&#39;s own volatility, so skew and the term structure show at a glance. The badges above each expiry show its overall implied volatility.</figcaption></figure>
     <figure class="mapfig"><a class="map" href="img/avgo/chart-oi.png"><span>Open interest</span><img src="img/avgo/cone-oi.png" width="550" height="840" alt="Broadcom (AVGO), Open interest: where the large positions sit."></a><figcaption>Where traders hold the largest positions, for every strike and expiry.</figcaption></figure>
     <figure class="mapfig"><a class="map" href="img/avgo/chart-tv.png"><span>Time value per day</span><img src="img/avgo/cone-tv.png" width="550" height="840" alt="Broadcom (AVGO), Time value per remaining day, darkest near the money for short expiries."></a><figcaption>Each option&#39;s premium spread over the days it has left, so a seller&#39;s average daily income is visible at a glance.</figcaption></figure>
-    <figure class="mapfig"><a class="map" href="img/avgo/chart-gap.png"><span>Implied vs realized <em class="pro">Pro</em></span><img src="img/avgo/cone-gap.png" width="550" height="840" alt="Broadcom (AVGO), Implied minus realized touch probability: blue where the market prices in a higher probability than the stock realized, red where lower."></a><figcaption>The touch probability from option prices against the Realized Odds 5y and 10y. Points to potential trading opportunities.</figcaption></figure>
+    <figure class="mapfig"><a class="map" href="img/avgo/chart-gap.png"><span>Implied vs realized <em class="pro">Pro</em></span><img src="img/avgo/cone-gap.png" width="550" height="840" alt="Broadcom (AVGO), Implied minus realized touch probability: blue where the market prices in a higher probability than the stock realized, red where lower."></a><figcaption>The touch probability from option prices against the realized odds 5y and 10y. Points to potential trading opportunities.</figcaption></figure>
     <figure class="mapfig"><a class="map" href="img/avgo/chart-vpr.png"><span>Premium per unit risk <em class="pro">Pro</em></span><img src="img/avgo/cone-vpr.png" width="550" height="840" alt="Broadcom (AVGO), premium relative to realized risk."></a><figcaption>How much premium a seller collects for each dollar of risk the stock&#39;s individual realized moves suggest. Higher means the risk is better paid.</figcaption></figure>
   </div>
 
@@ -103,7 +103,7 @@
       <div class="card">
         <h3>Three models</h3>
         <p><span class="swatch" style="background:var(--track)"></span><strong>Implied</strong> from the option prices, with each contract's own volatility.<br>
-        <span class="swatch" style="background:var(--m5)"></span><strong>5y</strong> and <span class="swatch" style="background:var(--m10)"></span><strong>10y</strong>: the Realized Odds, from industry-standard probability models built on the stock's realized moves of the last five and ten years. <em class="pro">Pro</em></p>
+        <span class="swatch" style="background:var(--m5)"></span><strong>5y</strong> and <span class="swatch" style="background:var(--m10)"></span><strong>10y</strong>: the realized odds, from industry-standard probability models built on the stock's realized moves of the last five and ten years. <em class="pro">Pro</em></p>
       </div>
       <div class="card">
         <h3>Contour lines</h3>
@@ -209,7 +209,7 @@
       </div>
       <div class="card">
         <p class="kind">Models</p>
-        <h3>Realized Odds 5y and 10y</h3>
+        <h3>Realized odds 5y and 10y</h3>
         <p>Industry-standard probability models, built on the stock&#39;s realized moves of the last five and ten years. Probabilities for every strike, as their own contour lines and in every tooltip, next to the probability from option prices.</p>
       </div>
       <div class="card">
@@ -270,7 +270,7 @@
       <details class="faq"><summary>Do I need to trade options to use it?</summary>
         <p>No. The option market is only the source of one of the three views. If you hold stocks, the same chart tells you how likely a stop level, a price target or your break-even is to be reached within a given time, by the market's pricing and by the stock's own history. See the <a href="use-cases.html">use cases</a>.</p></details>
       <details class="faq"><summary>What is the difference between the implied and the historical models?</summary>
-        <p>The implied model uses option prices, so it reflects what the market charges for the risk today. The Realized Odds 5y and 10y come from industry-standard probability models, built on the stock's realized moves of the last five or ten years. This lets you compare the market's expectations with the realized moves of each individual stock. Where the two differ, the option market is pricing a move the history did not produce, or the other way round.</p></details>
+        <p>The implied model uses option prices, so it reflects what the market charges for the risk today. The realized odds 5y and 10y come from industry-standard probability models, built on the stock's realized moves of the last five or ten years. This lets you compare the market's expectations with the realized moves of each individual stock. Where the two differ, the option market is pricing a move the history did not produce, or the other way round.</p></details>
       <details class="faq"><summary>Is OptionsCone free?</summary>
         <p>Yes. The probability cone and the implied volatility, open interest, spread and time value maps are free. Pro adds the historical models, implied vs realized, premium per unit risk and the gamma exposure map (GEX). See <a href="#pro">OptionsCone Pro</a> for prices.</p></details>
       <details class="faq"><summary>Why does a chart show older data in the evening?</summary>
