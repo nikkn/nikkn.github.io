@@ -6,7 +6,16 @@
     <atom:link href="https://nikolai-alexander.com/research/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Quantitative studies of financial markets and options, with the data and the numbers behind each result.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 01 Nov 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 01 Nov 2026 18:00:00 GMT</lastBuildDate>
+
+    <item>
+      <title>XLP for straddle and strangle sellers: five years of big moves that came back</title>
+      <link>https://nikolai-alexander.com/research/xlp-straddles-mean-reversion.html</link>
+      <guid isPermaLink="true">https://nikolai-alexander.com/research/xlp-straddles-mean-reversion.html</guid>
+      <pubDate>Sun, 01 Nov 2026 18:00:00 GMT</pubDate>
+      <category>Options research</category>
+      <description>Since November 2021 the consumer staples ETF XLP made 26 big turns where random versions of its own returns give 16 to 18, and after a 10% move from the entry day half of it came back in 84% of cases (random: 50%). What that meant for short straddles and strangles, and where the limits are.</description>
+    </item>
 
     <item>
       <title>The S&amp;P 500 before the midterms: 19 of 19 cycles rose into the following year</title>

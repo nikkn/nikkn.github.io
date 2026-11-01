@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>XLP for straddle and strangle sellers: big moves that came back</title>
+<meta name="description" content="Since 2021 the consumer staples ETF XLP made 26 big turns where chance gives 18. After a 10% move, half of it was given back in 84% of cases. What that meant for straddle and strangle sellers.">
+<link rel="canonical" href="https://nikolai-alexander.com/research/xlp-straddles-mean-reversion.html">
+<link rel="alternate" type="application/rss+xml" title="Research | Nikolai Alexander" href="https://nikolai-alexander.com/research/feed.xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XLP for straddle and strangle sellers: five years of big moves that came back">
+<meta property="og:description" content="26 big turns where chance gives 18, and after a 10% move half of it given back in 84% of cases: consumer staples since 2021, measured against shuffled versions of XLP itself.">
+<meta property="og:url" content="https://nikolai-alexander.com/research/xlp-straddles-mean-reversion.html">
+<meta property="og:image" content="https://nikolai-alexander.com/research/img/xlp-straddles-mean-reversion.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="XLP daily closes since November 2021 with the 26 big turning points marked.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "XLP for straddle and strangle sellers: five years of big moves that came back",
+  "description": "The consumer staples ETF XLP since November 2021: how often big moves turned around, how often a move from a straddle entry was given back or extended, how long moves and counter-moves took, and how this compares with random versions of XLP's own returns and with other ETFs.",
+  "datePublished": "2026-11-01",
+  "dateModified": "2026-11-01",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "10+ years of quantitative research on financial markets",
+             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+  "about": ["XLP", "consumer staples", "short straddle", "short strangle", "mean reversion", "option selling"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/research/xlp-straddles-mean-reversion.html"
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="/count.js"></script>
+<style>
+.brand-text { font: 600 17px var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+.article { max-width: 760px; padding: 48px 0 24px; }
+.article h1 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.015em; }
+.article h2 { margin-top: 48px; }
+.article .lede { font-size: 19px; color: var(--ink-2); }
+.byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+.findings { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px 22px; margin: 26px 0 8px; }
+.findings p { font: 600 12.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 10px; }
+.findings ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.article table { font-size: 14.5px; }
+.article td, .article th { white-space: nowrap; padding-right: 14px; }
+.article td.num, .article th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.small { font-size: 14px; color: var(--ink-3); }
+.tnote { margin-top: 4px; }
+
+/* charts */
+.viz { --c-real: #2a78d6; --c-turn: #eb6834; --c-rand: var(--ink-3); --c-grid: var(--line);
+       position: relative; margin: 22px 0 6px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .viz { --c-real: #3987e5; --c-turn: #d95926; }
+}
+:root[data-theme="dark"] .viz { --c-real: #3987e5; --c-turn: #d95926; }
+.viz-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--ink-2); margin-bottom: 6px; }
+.viz-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.viz-legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+.viz-legend i.dot { width: 11px; height: 11px; border-radius: 50%; }
+.viz-legend i.hollow { background: transparent !important; border: 2px solid; box-sizing: border-box; }
+.viz-legend i.band { height: 9px; border-radius: 2px; opacity: .35; }
+.viz-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 640px) { .viz-panels { grid-template-columns: 1fr; } }
+.viz svg { width: 100%; height: auto; display: block; overflow: visible; }
+.viz text { font-family: var(--sans); fill: var(--ink-2); }
+.viz .ttl { font-weight: 600; fill: var(--ink); font-size: 13px; }
+.viz .tick { font-size: 11px; fill: var(--ink-3); }
+.viz-tip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s; background: var(--ink); color: var(--bg);
+           font-size: 12.5px; line-height: 1.45; padding: 7px 10px; border-radius: 4px; white-space: nowrap; z-index: 5; }
+.viz + .table-scroll { margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="brand-text">nikolai-alexander.com</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/research/" aria-current="page">Research</a>
+      <a href="/#projects">Projects</a>
+      <a href="/#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="article">
+  <p class="eyebrow">Options research</p>
+  <h1>XLP for straddle and strangle sellers: five years of big moves that came back</h1>
+  <p class="byline">By <a href="/#about">Nikolai Alexander</a> &middot; 1 November 2026 &middot; data through 30 October 2026</p>
+  <p class="lede">The consumer staples ETF is the calm corner of the market. Yet over the last five years, XLP kept running 7&ndash;15% in one direction and then turning around. A short straddle or strangle wants exactly that: moves that come back. I measured how unusual it was, against random versions of XLP's own returns, and what followed a move from the day a position was opened.</p>
+
+  <div class="findings">
+    <p>Key findings</p>
+    <ul>
+      <li>Since November 2021, XLP made 26 big turns, where chance gives 16 to 18. Only 0.5&ndash;2.5% of random versions of its own returns produced as many. Utilities (XLU) showed the same, the S&amp;P 500 (SPY) did not.</li>
+      <li>After a 10% move from the entry day, XLP gave half of it back in 84% of cases (random: 50%), and ran another 5% first in only 17% (random: 53%). Forty days after the move, half of it was gone on average.</li>
+      <li>Big moves were also rarer: only 57% of entries ever saw a &plusmn;10% move within a year (random: 75%), and moves took longer to form.</li>
+      <li>It is a recent pattern. Over 27 years, XLP's swings looked like chance, even though it was the most mean-reverting of 14 ETFs over two weeks to three months.</li>
+    </ul>
+  </div>
+
+  <h2>The pattern</h2>
+  <figure class="viz" id="viz1" aria-label="Chart: XLP daily closes since November 2021 with 26 big turning points marked.">
+    <div class="viz-legend">
+      <span><i style="background:var(--c-real)"></i>XLP daily close</span>
+      <span><i class="dot" style="background:var(--c-turn)"></i>Big turning point (26)</span>
+      <span><i style="background:none;border-top:2px dashed var(--c-turn);height:0"></i>Open leg since 1 Oct 2026</span>
+    </div>
+    <svg id="viz1-s" viewBox="0 0 760 340" role="img"></svg>
+    <div class="viz-tip"></div>
+    <figcaption>A turning point is where XLP reversed by at least 1.5 times its usual monthly move at the time. The threshold scales with volatility: about 4.3% in calm 2024, 6&ndash;9% in turbulent 2022. Dashed: the current leg, not a turn until XLP reverses by the threshold. Hover for the dates, prices and the size of each leg.</figcaption>
+  </figure>
+  <p>The chart shows what XLP traders know from the screen: a run from 71 to 81 in early 2022, back to 69 by June; 76 to 90 between January and late February 2026, back to 81 within three weeks; 87 to 80 this autumn, then straight up to 90 in October. Measured with a fixed rule, XLP turned around 26 times in five years. The rule scales with XLP's own volatility, so in a calm phase a smaller move counts: the two smallest legs, 4.3% and 4.6% in 2024, came when XLP's usual two-week move was only about 1.9%, and were more than twice that. The median leg was 9%, the largest 19%. The latest run, from 80 on 1 October to almost 90, is still open: it becomes a turn only once XLP falls back by the threshold, currently about 7.5% from the high.</p>
+
+  <h2>More turns than chance</h2>
+  <p>Every price chart has turns, so the number alone means little. The question is how many a random path with the same moves would have. To answer it, I shuffled XLP's own daily returns into random order 200 times. Each version keeps XLP's fat tails and its calm and turbulent phases, but loses any order in the moves. Then I counted the turns in each version with the same rule.</p>
+  <figure class="viz" id="viz2" aria-label="Chart: number of big turns since November 2021 for XLP, XLU, XLV, QQQ and SPY, against the range of shuffled versions of each ETF's own returns.">
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-real)"></i>Actual turns</span>
+      <span><i class="dot hollow" style="border-color:var(--c-rand)"></i>Average of random versions</span>
+      <span><i class="band" style="background:var(--c-rand)"></i>90% of random versions</span>
+    </div>
+    <svg id="viz2-s" viewBox="0 0 760 250" role="img"></svg>
+    <div class="viz-tip"></div>
+    <figcaption>Big turns (at least 1.5 times the usual monthly move), November 2021 to October 2026. 200 shuffles of each ETF's own daily returns.</figcaption>
+  </figure>
+  <p>XLP's 26 turns lie outside the range of the random versions; only 2% of them got as many. A market is not a pure coin flip, though: short runs of rising or falling days, and reversals the next day, are part of how prices move. So I repeated the test with blocks of 5, 10 and 20 consecutive trading days kept together, shuffling only the blocks. The result got stronger: the random versions averaged 16 turns, and only 0.5&ndash;1% reached 26. Utilities, the other defensive sector, came close with 24 (3.5%). Health care and the Nasdaq 100 were within chance, and the S&amp;P 500 had slightly fewer turns than its random versions, also within chance. Small turns of about one monthly move were normal for XLP (33 against 36): what came too often were the big swings.</p>
+
+  <h2>What followed a move from the entry day</h2>
+  <p>For a straddle or strangle seller, the turns matter from the day the position is opened. So I opened a position on every trading day since November 2021 and followed XLP's close until it was 5%, 7.5%, 10% or 12.5% away from the entry, up or down. From that day on, the question is: does the move come back, or does it keep going?</p>
+  <figure class="viz" id="viz3" aria-label="Chart: after moves of 5 to 12.5 percent from the entry day, how often half the move was given back, and how often the move first ran another half further, XLP against random versions.">
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-real)"></i>XLP</span>
+      <span><i class="dot hollow" style="border-color:var(--c-rand)"></i>Random versions of XLP</span>
+    </div>
+    <div class="viz-panels">
+      <svg id="viz3a" viewBox="0 0 360 220" role="img"></svg>
+      <svg id="viz3b" viewBox="0 0 360 220" role="img"></svg>
+    </div>
+    <div class="viz-tip"></div>
+    <figcaption>Entries every trading day since 15 November 2021, followed for up to 120 trading days after the move. Random: XLP's daily returns shuffled 20 times.</figcaption>
+  </figure>
+  <p>From 7.5% on, the difference is large. After a 10% move, half of it came back in 84% of cases, where a random path gives 50%. The move ran another 5% before coming back in only 17%, where a random path gives 53%. Forty days after a 10% move, XLP had given back 51% of it on average; a random path would have moved on by 3%.</p>
+  <div class="table-scroll"><table id="t-moves"><thead><tr><th>Move</th><th class="num">Reached</th><th class="num">Days</th><th class="num">Half back</th><th class="num">Days</th><th class="num">Fully back</th><th class="num">Days</th><th class="num">After 40d</th></tr></thead><tbody></tbody></table></div>
+  <p class="small tnote">Random versions in brackets. Reached: share of entries whose close moved this far within a year (250 trading days). Days: median trading days from entry to the move. Half back / fully back: share of moves that gave back half / all of the distance within 120 trading days, and the median trading days it took. After 40 days: average change 40 trading days after the move, in % of the move (negative = given back).</p>
+  <p>Two more things stand out. Big moves were rarer than chance: only 57% of entries ever saw a 10% move within a year, against 75% for a random path, and the moves that did happen took longer to form. And the counter-moves were not faster than random: half the move came back in a median of about four to six weeks, the full move in about two to three months. The difference was how often they came back, not how quickly.</p>
+
+  <h2>Only the last five years</h2>
+  <p>XLP does not always behave like this. Over the 27 years since 1999, it was the most mean-reverting of 14 sector, index and metal ETFs: its moves over two weeks to three months were smaller than its daily moves added up to (variance ratio 0.83 over two weeks and 0.68 over three months, both statistically significant; SPY 0.86 and 0.77, silver 1.11 and 1.19). But its big swings over those 27 years looked like chance: 3.5 turns a year against 3.7 for random versions, and the share of moves fully reversed by the next one was the same (51%).</p>
+  <p>Big falls were bought back over the whole period, as in most stock ETFs. What made the last five years different was that the rallies came back as well, and that the swings kept coming. From October 2023 to September 2024, XLP rose from 66 to 84 in a mostly clean trend, the exception within the five years. A pattern like this can end at any time.</p>
+
+  <h2>What it means for straddle and strangle sellers</h2>
+  <p>For a short straddle or strangle on XLP, the last five years were a friendly environment on the price side: big moves were rarer than chance, and when one came, the odds favored getting a large part of it back within one to two months, while running much further first was the exception. A seller who held through a 7.5&ndash;10% move against the position was more often relieved than hurt.</p>
+  <p>Prices alone do not decide a straddle; the premium does too. Priced at XLP's own daily volatility, a two-month straddle charged for moves about 14% larger than XLP actually made over the last five years. Over one month there was no such gap. Whether a given position paid still depends on the implied volatility at entry, which this study does not have for the past.</p>
+  <p>Two more limits belong next to that. First, the five-year window was chosen after seeing the chart, which makes the 2% look somewhat better than it is; utilities showing the same pattern makes pure chance less likely, but it is no proof. Second, five years hold only about 8 to 12 independent big moves per size, and daily entries overlap heavily. The numbers describe what happened; they do not promise that it continues.</p>
+
+  <h2>Data and notes</h2>
+  <ul class="small">
+    <li>Daily closes of XLP, XLU, XLV, QQQ and SPY from Yahoo Finance, since 1998&ndash;1999, data through 30 October 2026. The five-year window starts on 15 November 2021.</li>
+    <li>Turning points: a move ends when the price reverses by at least 1.5 times its usual monthly move (the volatility of daily returns with a 42-day half-life, times the square root of 21), counted on dividend-adjusted closes.</li>
+    <li>Random versions: each ETF's daily returns, divided by its volatility on that day, shuffled into random order and rescaled with the same volatility path. 200 shuffles for the turn counts, 20 for the entry statistics. Block version: runs of 5, 10 or 20 consecutive days kept together and drawn at random, 200 versions each (XLP 0.5&ndash;1.0%, XLU 1.5&ndash;2.5%, XLV, QQQ and SPY within chance).</li>
+    <li>Moves from the entry day: closing prices without dividend adjustment, as options settle on the price; a move counts on the first close beyond the distance, up or down.</li>
+    <li>Straddle pricing check: average absolute close-to-close move over 21 and 42 trading days, divided by what the daily volatility at entry implies for that horizon (volatility &times; &radic;days &times; &radic;(2/&pi;)). XLP since November 2021: 0.99 over one month, 0.86 over two months; since 1999: 0.86 and 0.83.</li>
+    <li>Variance ratios and the 27-year comparison: 14 ETFs (9 sector ETFs, SPY, QQQ, IWM, GLD, SLV), daily returns divided by their volatility.</li>
+    <li>All numbers count what happened in the past. They are not probabilities for the future, not forecasts and not financial advice.</li>
+  </ul>
+  <aside class="signup" aria-label="Newsletter">
+    <p class="signup-title">New studies by email</p>
+    <p class="signup-text">One email when a new study is out. No spam, unsubscribe anytime.</p>
+    <form class="signup-form" action="https://app.kit.com/forms/10127955/subscriptions" method="post">
+      <input type="email" name="email_address" required placeholder="Your email address" aria-label="Email address" autocomplete="email">
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="signup-msg" role="status" aria-live="polite"></p>
+    <p class="signup-note">Also available as an <a href="/research/feed.xml">RSS feed</a> &middot; <a href="/OptionsCone/legal.html#privacy">Privacy</a></p>
+  </aside>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p class="about"><strong>About.</strong> Nikolai Alexander. 10+ years of quantitative research on financial markets. Former product lead and associate commercial director in biotech. I build research tools for market analysis.</p>
+    </div>
+    <div>
+      <p><a href="/research/">Research</a> &middot; <a href="/OptionsCone/">OptionsCone</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const D = {"counts":[{"sym":"XLP","big":{"real":26,"mean":18.0,"lo":12,"hi":24,"share":0.02},"small":{"real":33,"mean":35.9,"lo":30,"hi":43,"share":0.79}},{"sym":"XLU","big":{"real":24,"mean":17.8,"lo":13,"hi":23,"share":0.035},"small":{"real":40,"mean":35.1,"lo":27,"hi":44,"share":0.21}},{"sym":"XLV","big":{"real":20,"mean":17.8,"lo":12,"hi":23,"share":0.325},"small":{"real":34,"mean":35.8,"lo":27,"hi":44,"share":0.68}},{"sym":"QQQ","big":{"real":20,"mean":17.8,"lo":12,"hi":23,"share":0.32},"small":{"real":34,"mean":35.2,"lo":27,"hi":42,"share":0.645}},{"sym":"SPY","big":{"real":15,"mean":17.5,"lo":12,"hi":22,"share":0.825},"small":{"real":31,"mean":34.4,"lo":27,"hi":43,"share":0.765}}],"price":{"d":["2021-11-15","2021-11-16","2021-11-17","2021-11-18","2021-11-19","2021-11-22","2021-11-23","2021-11-24","2021-11-26","2021-11-29","2021-11-30","2021-12-01","2021-12-02","2021-12-03","2021-12-06","2021-12-07","2021-12-08","2021-12-09","2021-12-10","2021-12-13","2021-12-14","2021-12-15","2021-12-16","2021-12-17","2021-12-20","2021-12-21","2021-12-22","2021-12-23","2021-12-27","2021-12-28","2021-12-29","2021-12-30","2021-12-31","2022-01-03","2022-01-04","2022-01-05","2022-01-06","2022-01-07","2022-01-10","2022-01-11","2022-01-12","2022-01-13","2022-01-14","2022-01-18","2022-01-19","2022-01-20","2022-01-21","2022-01-24","2022-01-25","2022-01-26","2022-01-27","2022-01-28","2022-01-31","2022-02-01","2022-02-02","2022-02-03","2022-02-04","2022-02-07","2022-02-08","2022-02-09","2022-02-10","2022-02-11","2022-02-14","2022-02-15","2022-02-16","2022-02-17","2022-02-18","2022-02-22","2022-02-23","2022-02-24","2022-02-25","2022-02-28","2022-03-01","2022-03-02","2022-03-03","2022-03-04","2022-03-07","2022-03-08","2022-03-09","2022-03-10","2022-03-11","2022-03-14","2022-03-15","2022-03-16","2022-03-17","2022-03-18","2022-03-21","2022-03-22","2022-03-23","2022-03-24","2022-03-25","2022-03-28","2022-03-29","2022-03-30","2022-03-31","2022-04-01","2022-04-04","2022-04-05","2022-04-06","2022-04-07","2022-04-08","2022-04-11","2022-04-12","2022-04-13","2022-04-14","2022-04-18","2022-04-19","2022-04-20","2022-04-21","2022-04-22","2022-04-25","2022-04-26","2022-04-27","2022-04-28","2022-04-29","2022-05-02","2022-05-03","2022-05-04","2022-05-05","2022-05-06","2022-05-09","2022-05-10","2022-05-11","2022-05-12","2022-05-13","2022-05-16","2022-05-17","2022-05-18","2022-05-19","2022-05-20","2022-05-23","2022-05-24","2022-05-25","2022-05-26","2022-05-27","2022-05-31","2022-06-01","2022-06-02","2022-06-03","2022-06-06","2022-06-07","2022-06-08","2022-06-09","2022-06-10","2022-06-13","2022-06-14","2022-06-15","2022-06-16","2022-06-17","2022-06-21","2022-06-22","2022-06-23","2022-06-24","2022-06-27","2022-06-28","2022-06-29","2022-06-30","2022-07-01","2022-07-05","2022-07-06","2022-07-07","2022-07-08","2022-07-11","2022-07-12","2022-07-13","2022-07-14","2022-07-15","2022-07-18","2022-07-19","2022-07-20","2022-07-21","2022-07-22","2022-07-25","2022-07-26","2022-07-27","2022-07-28","2022-07-29","2022-08-01","2022-08-02","2022-08-03","2022-08-04","2022-08-05","2022-08-08","2022-08-09","2022-08-10","2022-08-11","2022-08-12","2022-08-15","2022-08-16","2022-08-17","2022-08-18","2022-08-19","2022-08-22","2022-08-23","2022-08-24","2022-08-25","2022-08-26","2022-08-29","2022-08-30","2022-08-31","2022-09-01","2022-09-02","2022-09-06","2022-09-07","2022-09-08","2022-09-09","2022-09-12","2022-09-13","2022-09-14","2022-09-15","2022-09-16","2022-09-19","2022-09-20","2022-09-21","2022-09-22","2022-09-23","2022-09-26","2022-09-27","2022-09-28","2022-09-29","2022-09-30","2022-10-03","2022-10-04","2022-10-05","2022-10-06","2022-10-07","2022-10-10","2022-10-11","2022-10-12","2022-10-13","2022-10-14","2022-10-17","2022-10-18","2022-10-19","2022-10-20","2022-10-21","2022-10-24","2022-10-25","2022-10-26","2022-10-27","2022-10-28","2022-10-31","2022-11-01","2022-11-02","2022-11-03","2022-11-04","2022-11-07","2022-11-08","2022-11-09","2022-11-10","2022-11-11","2022-11-14","2022-11-15","2022-11-16","2022-11-17","2022-11-18","2022-11-21","2022-11-22","2022-11-23","2022-11-25","2022-11-28","2022-11-29","2022-11-30","2022-12-01","2022-12-02","2022-12-05","2022-12-06","2022-12-07","2022-12-08","2022-12-09","2022-12-12","2022-12-13","2022-12-14","2022-12-15","2022-12-16","2022-12-19","2022-12-20","2022-12-21","2022-12-22","2022-12-23","2022-12-27","2022-12-28","2022-12-29","2022-12-30","2023-01-03","2023-01-04","2023-01-05","2023-01-06","2023-01-09","2023-01-10","2023-01-11","2023-01-12","2023-01-13","2023-01-17","2023-01-18","2023-01-19","2023-01-20","2023-01-23","2023-01-24","2023-01-25","2023-01-26","2023-01-27","2023-01-30","2023-01-31","2023-02-01","2023-02-02","2023-02-03","2023-02-06","2023-02-07","2023-02-08","2023-02-09","2023-02-10","2023-02-13","2023-02-14","2023-02-15","2023-02-16","2023-02-17","2023-02-21","2023-02-22","2023-02-23","2023-02-24","2023-02-27","2023-02-28","2023-03-01","2023-03-02","2023-03-03","2023-03-06","2023-03-07","2023-03-08","2023-03-09","2023-03-10","2023-03-13","2023-03-14","2023-03-15","2023-03-16","2023-03-17","2023-03-20","2023-03-21","2023-03-22","2023-03-23","2023-03-24","2023-03-27","2023-03-28","2023-03-29","2023-03-30","2023-03-31","2023-04-03","2023-04-04","2023-04-05","2023-04-06","2023-04-10","2023-04-11","2023-04-12","2023-04-13","2023-04-14","2023-04-17","2023-04-18","2023-04-19","2023-04-20","2023-04-21","2023-04-24","2023-04-25","2023-04-26","2023-04-27","2023-04-28","2023-05-01","2023-05-02","2023-05-03","2023-05-04","2023-05-05","2023-05-08","2023-05-09","2023-05-10","2023-05-11","2023-05-12","2023-05-15","2023-05-16","2023-05-17","2023-05-18","2023-05-19","2023-05-22","2023-05-23","2023-05-24","2023-05-25","2023-05-26","2023-05-30","2023-05-31","2023-06-01","2023-06-02","2023-06-05","2023-06-06","2023-06-07","2023-06-08","2023-06-09","2023-06-12","2023-06-13","2023-06-14","2023-06-15","2023-06-16","2023-06-20","2023-06-21","2023-06-22","2023-06-23","2023-06-26","2023-06-27","2023-06-28","2023-06-29","2023-06-30","2023-07-03","2023-07-05","2023-07-06","2023-07-07","2023-07-10","2023-07-11","2023-07-12","2023-07-13","2023-07-14","2023-07-17","2023-07-18","2023-07-19","2023-07-20","2023-07-21","2023-07-24","2023-07-25","2023-07-26","2023-07-27","2023-07-28","2023-07-31","2023-08-01","2023-08-02","2023-08-03","2023-08-04","2023-08-07","2023-08-08","2023-08-09","2023-08-10","2023-08-11","2023-08-14","2023-08-15","2023-08-16","2023-08-17","2023-08-18","2023-08-21","2023-08-22","2023-08-23","2023-08-24","2023-08-25","2023-08-28","2023-08-29","2023-08-30","2023-08-31","2023-09-01","2023-09-05","2023-09-06","2023-09-07","2023-09-08","2023-09-11","2023-09-12","2023-09-13","2023-09-14","2023-09-15","2023-09-18","2023-09-19","2023-09-20","2023-09-21","2023-09-22","2023-09-25","2023-09-26","2023-09-27","2023-09-28","2023-09-29","2023-10-02","2023-10-03","2023-10-04","2023-10-05","2023-10-06","2023-10-09","2023-10-10","2023-10-11","2023-10-12","2023-10-13","2023-10-16","2023-10-17","2023-10-18","2023-10-19","2023-10-20","2023-10-23","2023-10-24","2023-10-25","2023-10-26","2023-10-27","2023-10-30","2023-10-31","2023-11-01","2023-11-02","2023-11-03","2023-11-06","2023-11-07","2023-11-08","2023-11-09","2023-11-10","2023-11-13","2023-11-14","2023-11-15","2023-11-16","2023-11-17","2023-11-20","2023-11-21","2023-11-22","2023-11-24","2023-11-27","2023-11-28","2023-11-29","2023-11-30","2023-12-01","2023-12-04","2023-12-05","2023-12-06","2023-12-07","2023-12-08","2023-12-11","2023-12-12","2023-12-13","2023-12-14","2023-12-15","2023-12-18","2023-12-19","2023-12-20","2023-12-21","2023-12-22","2023-12-26","2023-12-27","2023-12-28","2023-12-29","2024-01-02","2024-01-03","2024-01-04","2024-01-05","2024-01-08","2024-01-09","2024-01-10","2024-01-11","2024-01-12","2024-01-16","2024-01-17","2024-01-18","2024-01-19","2024-01-22","2024-01-23","2024-01-24","2024-01-25","2024-01-26","2024-01-29","2024-01-30","2024-01-31","2024-02-01","2024-02-02","2024-02-05","2024-02-06","2024-02-07","2024-02-08","2024-02-09","2024-02-12","2024-02-13","2024-02-14","2024-02-15","2024-02-16","2024-02-20","2024-02-21","2024-02-22","2024-02-23","2024-02-26","2024-02-27","2024-02-28","2024-02-29","2024-03-01","2024-03-04","2024-03-05","2024-03-06","2024-03-07","2024-03-08","2024-03-11","2024-03-12","2024-03-13","2024-03-14","2024-03-15","2024-03-18","2024-03-19","2024-03-20","2024-03-21","2024-03-22","2024-03-25","2024-03-26","2024-03-27","2024-03-28","2024-04-01","2024-04-02","2024-04-03","2024-04-04","2024-04-05","2024-04-08","2024-04-09","2024-04-10","2024-04-11","2024-04-12","2024-04-15","2024-04-16","2024-04-17","2024-04-18","2024-04-19","2024-04-22","2024-04-23","2024-04-24","2024-04-25","2024-04-26","2024-04-29","2024-04-30","2024-05-01","2024-05-02","2024-05-03","2024-05-06","2024-05-07","2024-05-08","2024-05-09","2024-05-10","2024-05-13","2024-05-14","2024-05-15","2024-05-16","2024-05-17","2024-05-20","2024-05-21","2024-05-22","2024-05-23","2024-05-24","2024-05-28","2024-05-29","2024-05-30","2024-05-31","2024-06-03","2024-06-04","2024-06-05","2024-06-06","2024-06-07","2024-06-10","2024-06-11","2024-06-12","2024-06-13","2024-06-14","2024-06-17","2024-06-18","2024-06-20","2024-06-21","2024-06-24","2024-06-25","2024-06-26","2024-06-27","2024-06-28","2024-07-01","2024-07-02","2024-07-03","2024-07-05","2024-07-08","2024-07-09","2024-07-10","2024-07-11","2024-07-12","2024-07-15","2024-07-16","2024-07-17","2024-07-18","2024-07-19","2024-07-22","2024-07-23","2024-07-24","2024-07-25","2024-07-26","2024-07-29","2024-07-30","2024-07-31","2024-08-01","2024-08-02","2024-08-05","2024-08-06","2024-08-07","2024-08-08","2024-08-09","2024-08-12","2024-08-13","2024-08-14","2024-08-15","2024-08-16","2024-08-19","2024-08-20","2024-08-21","2024-08-22","2024-08-23","2024-08-26","2024-08-27","2024-08-28","2024-08-29","2024-08-30","2024-09-03","2024-09-04","2024-09-05","2024-09-06","2024-09-09","2024-09-10","2024-09-11","2024-09-12","2024-09-13","2024-09-16","2024-09-17","2024-09-18","2024-09-19","2024-09-20","2024-09-23","2024-09-24","2024-09-25","2024-09-26","2024-09-27","2024-09-30","2024-10-01","2024-10-02","2024-10-03","2024-10-04","2024-10-07","2024-10-08","2024-10-09","2024-10-10","2024-10-11","2024-10-14","2024-10-15","2024-10-16","2024-10-17","2024-10-18","2024-10-21","2024-10-22","2024-10-23","2024-10-24","2024-10-25","2024-10-28","2024-10-29","2024-10-30","2024-10-31","2024-11-01","2024-11-04","2024-11-05","2024-11-06","2024-11-07","2024-11-08","2024-11-11","2024-11-12","2024-11-13","2024-11-14","2024-11-15","2024-11-18","2024-11-19","2024-11-20","2024-11-21","2024-11-22","2024-11-25","2024-11-26","2024-11-27","2024-11-29","2024-12-02","2024-12-03","2024-12-04","2024-12-05","2024-12-06","2024-12-09","2024-12-10","2024-12-11","2024-12-12","2024-12-13","2024-12-16","2024-12-17","2024-12-18","2024-12-19","2024-12-20","2024-12-23","2024-12-24","2024-12-26","2024-12-27","2024-12-30","2024-12-31","2025-01-02","2025-01-03","2025-01-06","2025-01-07","2025-01-08","2025-01-10","2025-01-13","2025-01-14","2025-01-15","2025-01-16","2025-01-17","2025-01-21","2025-01-22","2025-01-23","2025-01-24","2025-01-27","2025-01-28","2025-01-29","2025-01-30","2025-01-31","2025-02-03","2025-02-04","2025-02-05","2025-02-06","2025-02-07","2025-02-10","2025-02-11","2025-02-12","2025-02-13","2025-02-14","2025-02-18","2025-02-19","2025-02-20","2025-02-21","2025-02-24","2025-02-25","2025-02-26","2025-02-27","2025-02-28","2025-03-03","2025-03-04","2025-03-05","2025-03-06","2025-03-07","2025-03-10","2025-03-11","2025-03-12","2025-03-13","2025-03-14","2025-03-17","2025-03-18","2025-03-19","2025-03-20","2025-03-21","2025-03-24","2025-03-25","2025-03-26","2025-03-27","2025-03-28","2025-03-31","2025-04-01","2025-04-02","2025-04-03","2025-04-04","2025-04-07","2025-04-08","2025-04-09","2025-04-10","2025-04-11","2025-04-14","2025-04-15","2025-04-16","2025-04-17","2025-04-21","2025-04-22","2025-04-23","2025-04-24","2025-04-25","2025-04-28","2025-04-29","2025-04-30","2025-05-01","2025-05-02","2025-05-05","2025-05-06","2025-05-07","2025-05-08","2025-05-09","2025-05-12","2025-05-13","2025-05-14","2025-05-15","2025-05-16","2025-05-19","2025-05-20","2025-05-21","2025-05-22","2025-05-23","2025-05-27","2025-05-28","2025-05-29","2025-05-30","2025-06-02","2025-06-03","2025-06-04","2025-06-05","2025-06-06","2025-06-09","2025-06-10","2025-06-11","2025-06-12","2025-06-13","2025-06-16","2025-06-17","2025-06-18","2025-06-20","2025-06-23","2025-06-24","2025-06-25","2025-06-26","2025-06-27","2025-06-30","2025-07-01","2025-07-02","2025-07-03","2025-07-07","2025-07-08","2025-07-09","2025-07-10","2025-07-11","2025-07-14","2025-07-15","2025-07-16","2025-07-17","2025-07-18","2025-07-21","2025-07-22","2025-07-23","2025-07-24","2025-07-25","2025-07-28","2025-07-29","2025-07-30","2025-07-31","2025-08-01","2025-08-04","2025-08-05","2025-08-06","2025-08-07","2025-08-08","2025-08-11","2025-08-12","2025-08-13","2025-08-14","2025-08-15","2025-08-18","2025-08-19","2025-08-20","2025-08-21","2025-08-22","2025-08-25","2025-08-26","2025-08-27","2025-08-28","2025-08-29","2025-09-02","2025-09-03","2025-09-04","2025-09-05","2025-09-08","2025-09-09","2025-09-10","2025-09-11","2025-09-12","2025-09-15","2025-09-16","2025-09-17","2025-09-18","2025-09-19","2025-09-22","2025-09-23","2025-09-24","2025-09-25","2025-09-26","2025-09-29","2025-09-30","2025-10-01","2025-10-02","2025-10-03","2025-10-06","2025-10-07","2025-10-08","2025-10-09","2025-10-10","2025-10-13","2025-10-14","2025-10-15","2025-10-16","2025-10-17","2025-10-20","2025-10-21","2025-10-22","2025-10-23","2025-10-24","2025-10-27","2025-10-28","2025-10-29","2025-10-30","2025-10-31","2025-11-03","2025-11-04","2025-11-05","2025-11-06","2025-11-07","2025-11-10","2025-11-11","2025-11-12","2025-11-13","2025-11-14","2025-11-17","2025-11-18","2025-11-19","2025-11-20","2025-11-21","2025-11-24","2025-11-25","2025-11-26","2025-11-28","2025-12-01","2025-12-02","2025-12-03","2025-12-04","2025-12-05","2025-12-08","2025-12-09","2025-12-10","2025-12-11","2025-12-12","2025-12-15","2025-12-16","2025-12-17","2025-12-18","2025-12-19","2025-12-22","2025-12-23","2025-12-24","2025-12-26","2025-12-29","2025-12-30","2025-12-31","2026-01-02","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-20","2026-04-21","2026-04-22","2026-04-23","2026-04-24","2026-04-27","2026-04-28","2026-04-29","2026-04-30","2026-05-01","2026-05-04","2026-05-05","2026-05-06","2026-05-07","2026-05-08","2026-05-11","2026-05-12","2026-05-13","2026-05-14","2026-05-15","2026-05-18","2026-05-19","2026-05-20","2026-05-21","2026-05-22","2026-05-26","2026-05-27","2026-05-28","2026-05-29","2026-06-01","2026-06-02","2026-06-03","2026-06-04","2026-06-05","2026-06-08","2026-06-09","2026-06-10","2026-06-11","2026-06-12","2026-06-15","2026-06-16","2026-06-17","2026-06-18","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-06","2026-07-07","2026-07-08","2026-07-09","2026-07-10","2026-07-13","2026-07-14","2026-07-15","2026-07-16","2026-07-17","2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-27","2026-07-28","2026-07-29","2026-07-30","2026-07-31","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-07","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14","2026-08-17","2026-08-18","2026-08-19","2026-08-20","2026-08-21","2026-08-24","2026-08-25","2026-08-26","2026-08-27","2026-08-28","2026-08-31","2026-09-01","2026-09-02","2026-09-03","2026-09-04","2026-09-08","2026-09-09","2026-09-10","2026-09-11","2026-09-14","2026-09-15","2026-09-16","2026-09-17","2026-09-18","2026-09-21","2026-09-22","2026-09-23","2026-09-24","2026-09-25","2026-09-28","2026-09-29","2026-09-30","2026-10-01","2026-10-02","2026-10-05","2026-10-06","2026-10-07","2026-10-08","2026-10-09","2026-10-12","2026-10-13","2026-10-14","2026-10-15","2026-10-16","2026-10-19","2026-10-20","2026-10-21","2026-10-22","2026-10-23","2026-10-26","2026-10-27","2026-10-28","2026-10-29","2026-10-30"],"p":[73.19,72.73,72.57,72.31,72.05,72.62,73.1,72.88,71.96,72.14,70.29,69.95,70.69,71.57,72.83,72.99,72.76,72.96,74.19,75.16,75.21,75.97,76.51,75.2,74.71,74.61,75.08,75.25,76.05,76.48,76.83,76.59,77.11,77.1,77.62,77.55,77.34,77.42,76.81,76.72,76.75,76.89,77.03,75.92,76.4,75.9,75.96,75.71,74.87,74.3,74.8,75.68,75.97,75.9,76.81,76.83,75.89,76.03,76.32,76.34,75.52,75.25,75.04,75.17,75.31,75.89,76.03,75.44,74.83,73.54,75.91,74.9,74.46,75.25,75.86,75.87,74.49,72.48,72.97,72.28,71.44,71.82,73.43,73.51,74.02,74.19,73.95,74.5,73.9,74.42,75.04,75.35,76.02,76.07,75.89,76.65,76.41,76.48,77.45,78.39,78.72,78.4,78.42,78.86,78.84,78.19,79.38,80.57,80.5,79.24,79.59,78.36,78.65,79.81,77.64,76.62,76.4,78.12,76.64,76.72,76.69,76.16,75.83,75.81,76.95,77.3,76.77,71.83,70.55,70.7,72.16,73.34,73.36,74.14,75.0,74.47,73.5,74.57,73.82,73.85,74.24,73.33,72.23,71.92,70.37,69.54,69.61,69.08,68.83,70.14,70.09,71.45,72.85,72.65,71.68,72.13,72.18,73.22,72.75,72.96,73.03,72.9,72.8,72.59,72.64,72.7,72.94,72.23,72.99,72.5,72.72,73.2,73.56,73.39,73.89,75.07,74.49,75.42,74.82,75.31,74.81,74.64,74.6,74.49,75.04,74.86,75.51,76.26,77.12,76.9,77.16,76.91,76.13,75.8,75.99,76.34,74.45,74.33,73.56,73.11,73.52,72.56,72.15,73.45,73.26,73.98,74.27,71.79,71.76,71.16,71.33,71.34,70.95,70.68,70.58,69.38,69.43,68.23,69.05,67.91,66.73,67.88,68.91,68.51,67.51,66.5,66.74,67.29,67.65,68.77,67.53,68.26,69.15,68.83,67.87,68.91,70.15,71.07,71.54,71.6,73.17,72.74,72.51,71.25,71.01,71.85,72.49,72.7,71.91,73.6,73.52,72.94,73.55,73.91,73.89,74.68,75.39,75.94,76.2,76.25,75.96,75.67,77.19,76.84,77.19,76.22,75.75,76.07,76.48,75.89,76.69,76.58,76.53,75.23,74.86,74.28,74.22,74.96,74.79,75.18,75.54,74.6,74.92,74.55,74.27,74.56,73.81,75.78,75.04,74.94,74.98,74.39,74.74,74.79,72.75,72.06,72.62,72.85,73.15,73.33,73.07,72.86,72.95,73.74,74.33,73.69,73.4,73.49,73.18,72.62,72.3,72.97,73.8,73.13,73.27,72.74,73.68,73.4,73.29,73.2,72.71,72.63,72.03,71.5,72.48,72.54,72.73,72.01,72.13,71.46,71.11,71.47,72.12,72.59,72.64,72.11,72.76,72.7,72.03,71.75,72.97,73.36,73.49,73.9,74.11,74.71,75.1,74.95,75.3,75.36,75.36,75.58,75.24,75.66,75.18,75.66,75.89,75.84,76.02,76.57,76.88,76.78,76.18,77.03,77.44,77.5,77.29,76.66,76.47,77.18,76.95,76.71,76.59,76.82,77.12,76.93,76.28,76.24,75.87,75.92,74.77,74.22,73.74,73.18,73.43,72.59,72.67,72.61,73.61,73.34,72.97,72.73,73.23,73.11,73.09,73.39,73.84,74.58,74.67,73.58,73.84,74.27,73.78,73.88,74.1,73.6,73.53,74.17,74.75,74.62,74.43,73.46,73.44,73.55,73.72,74.03,74.28,74.06,73.98,74.73,75.37,75.63,75.92,75.9,75.99,75.32,76.1,75.75,75.34,75.61,75.4,74.65,75.26,74.72,74.83,74.68,74.8,74.43,73.63,73.46,72.75,73.02,72.53,72.12,72.6,72.02,72.42,72.75,73.01,73.13,72.76,72.14,71.52,71.44,71.61,71.7,72.32,71.7,71.92,72.65,72.05,71.54,71.37,71.44,70.52,70.14,69.89,69.37,68.8,69.01,68.81,68.34,67.85,68.39,67.04,66.67,66.73,67.41,66.95,66.22,66.8,67.49,67.78,68.03,67.53,67.27,67.14,67.71,67.94,67.5,66.58,67.62,67.86,67.79,68.67,68.75,68.86,69.03,68.76,68.48,68.96,69.18,69.89,70.45,69.58,69.49,69.44,69.65,70.15,70.41,70.21,70.53,69.96,70.66,70.95,71.04,70.48,70.3,70.6,70.11,70.78,71.01,72.3,71.24,71.24,71.44,71.58,70.19,70.68,71.22,71.52,71.85,71.88,72.03,72.84,72.27,72.17,72.01,72.54,72.73,72.58,72.57,72.8,72.4,72.35,72.26,72.05,71.7,72.48,71.59,72.28,72.63,73.05,73.46,72.92,74.41,74.17,73.71,73.88,73.81,73.79,73.11,73.63,72.84,72.7,73.17,73.28,74.05,74.32,74.55,74.78,74.48,74.49,74.57,74.45,74.46,74.52,74.7,75.33,75.76,75.16,75.57,75.96,76.15,75.56,75.53,75.46,75.74,75.97,76.01,75.64,75.43,75.47,76.26,76.36,75.75,75.36,74.53,74.21,74.33,74.22,74.58,74.31,74.13,73.38,73.08,73.11,73.38,73.72,74.44,75.15,75.36,75.93,75.75,75.59,75.83,75.5,75.02,75.65,75.88,75.92,76.75,76.52,77.18,77.62,77.4,77.25,77.3,78.4,78.21,77.67,78.13,77.82,76.9,77.1,76.5,75.95,76.15,77.34,77.31,77.98,77.81,78.05,77.66,77.6,77.56,76.71,76.81,76.95,77.68,77.78,77.61,77.67,77.91,77.41,77.25,76.92,76.58,76.04,76.57,76.44,77.38,77.26,77.06,77.4,77.11,77.45,77.0,77.74,78.74,78.35,78.09,78.14,77.86,77.79,77.7,78.49,78.52,77.99,77.85,78.57,79.26,77.7,78.24,78.32,79.03,79.15,78.75,79.11,79.47,80.29,80.51,80.78,81.18,81.73,81.61,81.84,82.42,82.62,82.27,81.86,82.51,83.09,83.48,83.16,82.99,83.63,83.61,82.83,83.34,83.93,84.26,83.46,83.14,82.65,83.05,83.09,82.89,82.68,82.87,83.02,83.0,82.72,82.02,81.2,81.47,80.66,81.06,81.55,81.19,81.64,81.97,82.49,82.43,82.06,82.24,81.55,82.01,81.85,81.74,81.06,81.21,80.41,80.28,80.12,80.15,80.37,80.88,79.56,79.85,80.82,80.54,80.63,80.87,80.67,79.96,80.52,80.63,80.22,81.09,81.84,82.29,82.63,82.8,83.22,83.12,82.69,82.46,82.79,82.38,82.25,82.64,82.01,82.25,82.04,81.61,81.47,80.23,79.66,79.94,78.92,79.44,79.69,79.3,78.37,78.61,78.37,78.33,77.51,77.24,77.38,76.34,76.47,76.49,76.23,76.8,77.24,77.6,77.22,77.5,77.9,80.01,78.76,78.95,79.73,78.98,79.29,78.62,79.11,79.47,79.35,79.84,80.61,80.55,81.42,80.61,80.9,81.55,81.23,82.18,82.43,83.6,82.0,81.99,83.08,83.52,82.1,82.44,82.59,82.86,82.68,81.47,79.7,79.33,79.51,80.67,79.75,79.75,79.36,79.33,79.4,78.68,79.9,80.81,80.41,81.67,81.79,81.55,82.02,78.46,77.55,76.35,79.31,79.35,80.35,81.72,81.03,80.16,81.87,81.09,82.24,81.77,81.05,80.84,80.57,81.24,81.83,81.12,81.56,81.49,81.35,81.48,81.38,80.91,81.03,79.94,79.51,81.14,82.07,82.31,82.6,81.64,81.3,81.6,82.34,81.78,82.11,82.83,82.88,82.8,82.22,81.43,81.69,81.58,81.76,81.48,81.96,80.96,81.22,80.53,80.43,81.02,81.4,81.33,80.24,80.17,80.55,80.97,81.98,82.22,82.18,82.11,81.35,80.82,81.11,80.81,80.88,80.07,80.35,81.11,80.89,80.88,81.62,81.65,81.36,81.5,80.66,81.19,80.47,79.78,80.16,80.55,80.47,81.62,82.24,82.48,82.41,82.63,82.63,81.89,82.02,81.91,82.75,83.22,82.47,82.47,81.06,80.53,80.77,80.26,80.78,80.65,80.59,80.64,80.87,80.57,80.73,79.94,80.59,80.32,79.4,79.76,80.24,79.54,79.38,77.96,78.35,78.52,77.77,77.96,78.11,78.37,78.25,77.94,78.03,77.46,78.18,77.79,78.04,78.1,77.84,79.09,79.23,78.68,79.73,79.66,79.29,79.74,79.35,79.09,79.22,78.43,76.58,76.5,76.28,75.68,75.99,75.94,75.6,76.71,76.43,77.43,77.32,77.32,77.26,76.77,77.1,76.51,77.06,77.9,77.0,78.06,78.91,79.37,79.29,78.77,78.83,78.45,78.46,77.81,77.99,78.22,78.8,79.42,79.64,79.28,79.65,79.19,78.78,77.88,77.51,78.12,78.23,78.28,78.15,77.68,77.69,77.35,77.47,76.62,78.44,79.25,80.18,81.11,82.23,82.37,82.11,82.36,82.44,82.27,82.91,82.78,83.16,82.32,82.13,83.51,84.5,85.87,86.99,86.92,87.94,87.43,87.15,88.4,89.21,89.51,88.2,88.04,87.67,87.89,88.97,89.74,89.01,88.86,90.01,88.71,87.74,87.16,85.41,85.78,85.97,85.72,84.59,84.25,84.74,84.98,84.7,82.64,81.97,81.29,81.18,81.11,81.51,81.14,81.78,81.88,81.98,81.46,81.89,82.66,81.26,82.78,83.45,82.37,81.55,81.47,81.06,81.43,82.46,82.39,81.84,82.11,83.48,83.23,82.34,83.08,82.92,84.31,84.17,83.54,84.06,84.24,83.98,84.18,83.37,84.44,84.72,84.98,84.64,85.9,86.09,85.52,84.66,84.8,83.63,84.58,84.43,82.91,82.03,81.83,82.16,82.04,83.44,83.07,84.1,85.49,85.27,85.82,85.48,85.59,83.68,83.3,82.18,83.72,84.44,83.94,84.71,84.37,83.07,83.3,84.99,84.1,84.86,84.39,83.2,84.12,84.59,83.42,83.47,85.81,85.19,84.86,84.06,84.38,83.21,84.13,85.36,87.06,87.36,85.47,85.05,84.86,85.37,85.33,85.11,85.12,84.95,84.69,85.08,86.0,86.09,84.68,85.58,86.54,85.32,85.99,87.45,86.52,86.27,85.08,85.45,84.98,85.25,85.53,85.26,84.58,84.02,83.05,83.09,83.38,84.42,83.73,83.33,83.49,82.8,81.92,82.73,82.43,81.7,82.06,82.28,81.85,80.6,80.33,80.53,81.04,81.8,81.7,83.42,83.43,84.41,84.19,86.06,86.68,87.62,87.21,87.75,87.11,89.99,88.26,87.96,87.15,86.84,88.18,89.42]},"turns":[{"d":"2022-01-04","p":77.62,"k":"top"},{"d":"2022-03-11","p":71.44,"k":"bottom"},{"d":"2022-04-20","p":80.57,"k":"top"},{"d":"2022-06-17","p":68.83,"k":"bottom"},{"d":"2022-08-18","p":77.16,"k":"top"},{"d":"2022-10-07","p":66.5,"k":"bottom"},{"d":"2022-11-30","p":77.19,"k":"top"},{"d":"2023-03-10","p":71.11,"k":"bottom"},{"d":"2023-05-01","p":77.5,"k":"top"},{"d":"2023-05-30","p":72.59,"k":"bottom"},{"d":"2023-07-28","p":76.1,"k":"top"},{"d":"2023-10-12","p":66.22,"k":"bottom"},{"d":"2024-03-28","p":76.36,"k":"top"},{"d":"2024-04-15","p":73.08,"k":"bottom"},{"d":"2024-09-16","p":84.26,"k":"top"},{"d":"2024-11-06","p":79.56,"k":"bottom"},{"d":"2024-11-29","p":83.22,"k":"top"},{"d":"2025-01-15","p":76.23,"k":"bottom"},{"d":"2025-02-25","p":83.6,"k":"top"},{"d":"2025-04-08","p":76.35,"k":"bottom"},{"d":"2025-08-20","p":83.22,"k":"top"},{"d":"2025-11-06","p":75.6,"k":"bottom"},{"d":"2026-02-27","p":90.01,"k":"top"},{"d":"2026-03-20","p":81.29,"k":"bottom"},{"d":"2026-08-24","p":87.45,"k":"top"},{"d":"2026-10-01","p":80.33,"k":"bottom"}],"moves":{"XLP":[{"period":"since 1999","x":0.05,"kind":"real","entries":6946.0,"hit":0.979,"days":42.0,"days25":22.0,"days75":77.0,"up_share":0.629,"half":0.736,"half_days":19.0,"back":0.551,"back_days":38.0,"extend":0.612,"r20":-0.044,"r40":-0.135},{"period":"since 1999","x":0.05,"kind":"shuffled","entries":6946.0,"hit":0.988,"days":33.375,"days25":16.6,"days75":64.6,"up_share":0.584,"half":0.707,"half_days":17.45,"back":0.504,"back_days":37.55,"extend":0.628,"r20":0.021,"r40":0.023},{"period":"since 1999","x":0.075,"kind":"real","entries":6946.0,"hit":0.893,"days":80.0,"days25":43.0,"days75":130.0,"up_share":0.646,"half":0.623,"half_days":28.0,"back":0.393,"back_days":54.0,"extend":0.572,"r20":0.008,"r40":-0.112},{"period":"since 1999","x":0.075,"kind":"shuffled","entries":6946.0,"hit":0.915,"days":62.7,"days25":31.5,"days75":114.412,"up_share":0.625,"half":0.613,"half_days":25.95,"back":0.361,"back_days":49.85,"extend":0.603,"r20":0.021,"r40":0.031},{"period":"since 1999","x":0.1,"kind":"real","entries":6946.0,"hit":0.738,"days":116.0,"days25":67.0,"days75":168.0,"up_share":0.659,"half":0.535,"half_days":29.0,"back":0.297,"back_days":60.0,"extend":0.498,"r20":-0.027,"r40":-0.143},{"period":"since 1999","x":0.1,"kind":"shuffled","entries":6946.0,"hit":0.783,"days":88.1,"days25":46.888,"days75":145.925,"up_share":0.654,"half":0.537,"half_days":32.225,"back":0.272,"back_days":56.15,"extend":0.555,"r20":0.025,"r40":0.036},{"period":"since 1999","x":0.125,"kind":"real","entries":6946.0,"hit":0.54,"days":136.0,"days25":84.0,"days75":185.0,"up_share":0.644,"half":0.479,"half_days":28.0,"back":0.241,"back_days":60.0,"extend":0.399,"r20":-0.082,"r40":-0.163},{"period":"since 1999","x":0.125,"kind":"shuffled","entries":6946.0,"hit":0.648,"days":107.85,"days25":60.513,"days75":165.85,"up_share":0.679,"half":0.475,"half_days":37.65,"back":0.212,"back_days":59.65,"extend":0.505,"r20":0.034,"r40":0.037},{"period":"since 1999","x":0.15,"kind":"real","entries":6946.0,"hit":0.386,"days":151.0,"days25":93.0,"days75":195.0,"up_share":0.596,"half":0.451,"half_days":26.0,"back":0.233,"back_days":64.0,"extend":0.341,"r20":-0.121,"r40":-0.166},{"period":"since 1999","x":0.15,"kind":"shuffled","entries":6946.0,"hit":0.524,"days":122.0,"days25":72.225,"days75":178.625,"up_share":0.708,"half":0.434,"half_days":44.225,"back":0.173,"back_days":63.75,"extend":0.466,"r20":0.035,"r40":0.031},{"period":"last 5y","x":0.05,"kind":"real","entries":1244.0,"hit":0.99,"days":36.0,"days25":19.0,"days75":66.0,"up_share":0.509,"half":0.861,"half_days":20.0,"back":0.673,"back_days":40.0,"extend":0.575,"r20":-0.091,"r40":-0.361},{"period":"last 5y","x":0.05,"kind":"shuffled","entries":1244.0,"hit":0.974,"days":33.175,"days25":17.55,"days75":61.65,"up_share":0.618,"half":0.715,"half_days":17.75,"back":0.508,"back_days":35.225,"extend":0.623,"r20":-0.018,"r40":0.008},{"period":"last 5y","x":0.075,"kind":"real","entries":1244.0,"hit":0.863,"days":77.0,"days25":37.0,"days75":116.75,"up_share":0.563,"half":0.868,"half_days":29.0,"back":0.583,"back_days":49.0,"extend":0.354,"r20":-0.117,"r40":-0.474},{"period":"last 5y","x":0.075,"kind":"shuffled","entries":1244.0,"hit":0.899,"days":64.225,"days25":34.875,"days75":111.412,"up_share":0.676,"half":0.599,"half_days":26.825,"back":0.352,"back_days":52.45,"extend":0.59,"r20":-0.003,"r40":0.022},{"period":"last 5y","x":0.1,"kind":"real","entries":1244.0,"hit":0.571,"days":109.0,"days25":65.0,"days75":153.0,"up_share":0.631,"half":0.836,"half_days":27.0,"back":0.411,"back_days":40.0,"extend":0.17,"r20":-0.215,"r40":-0.513},{"period":"last 5y","x":0.1,"kind":"shuffled","entries":1244.0,"hit":0.75,"days":91.075,"days25":53.8,"days75":141.7,"up_share":0.711,"half":0.497,"half_days":33.05,"back":0.217,"back_days":61.925,"extend":0.529,"r20":0.008,"r40":0.027},{"period":"last 5y","x":0.125,"kind":"real","entries":1244.0,"hit":0.302,"days":117.0,"days25":82.0,"days75":166.0,"up_share":0.715,"half":0.777,"half_days":29.0,"back":0.184,"back_days":42.0,"extend":0.13,"r20":-0.207,"r40":-0.397},{"period":"last 5y","x":0.125,"kind":"shuffled","entries":1244.0,"hit":0.602,"days":111.525,"days25":71.3,"days75":161.938,"up_share":0.733,"half":0.419,"half_days":42.2,"back":0.122,"back_days":71.275,"extend":0.491,"r20":0.013,"r40":0.034},{"period":"last 5y","x":0.15,"kind":"real","entries":1244.0,"hit":0.141,"days":147.0,"days25":97.5,"days75":179.5,"up_share":0.92,"half":0.657,"half_days":29.0,"back":0.011,"back_days":74.0,"extend":0.074,"r20":-0.151,"r40":-0.261},{"period":"last 5y","x":0.15,"kind":"shuffled","entries":1244.0,"hit":0.472,"days":129.075,"days25":86.888,"days75":178.8,"up_share":0.754,"half":0.359,"half_days":45.575,"back":0.084,"back_days":74.333,"extend":0.446,"r20":0.008,"r40":0.022}],"SPY":[{"period":"since 1999","x":0.05,"kind":"real","entries":6961.0,"hit":0.986,"days":30.0,"days25":15.0,"days75":55.0,"up_share":0.608,"half":0.742,"half_days":15.0,"back":0.52,"back_days":30.0,"extend":0.661,"r20":-0.05,"r40":-0.049},{"period":"since 1999","x":0.05,"kind":"shuffled","entries":6961.0,"hit":0.99,"days":24.75,"days25":12.0,"days75":50.675,"up_share":0.595,"half":0.728,"half_days":15.15,"back":0.546,"back_days":31.25,"extend":0.647,"r20":0.036,"r40":0.064},{"period":"since 1999","x":0.075,"kind":"real","entries":6961.0,"hit":0.959,"days":59.0,"days25":31.0,"days75":102.0,"up_share":0.655,"half":0.646,"half_days":20.0,"back":0.373,"back_days":42.0,"extend":0.677,"r20":-0.011,"r40":-0.006},{"period":"since 1999","x":0.075,"kind":"shuffled","entries":6961.0,"hit":0.949,"days":47.25,"days25":22.85,"days75":91.475,"up_share":0.628,"half":0.647,"half_days":22.2,"back":0.419,"back_days":43.3,"extend":0.633,"r20":0.034,"r40":0.066},{"period":"since 1999","x":0.1,"kind":"real","entries":6961.0,"hit":0.908,"days":89.0,"days25":51.0,"days75":139.0,"up_share":0.645,"half":0.563,"half_days":22.0,"back":0.282,"back_days":48.0,"extend":0.636,"r20":-0.041,"r40":-0.053},{"period":"since 1999","x":0.1,"kind":"shuffled","entries":6961.0,"hit":0.867,"days":69.8,"days25":35.1,"days75":124.0,"up_share":0.66,"half":0.582,"half_days":27.45,"back":0.343,"back_days":49.675,"extend":0.603,"r20":0.027,"r40":0.058},{"period":"since 1999","x":0.125,"kind":"real","entries":6961.0,"hit":0.81,"days":118.0,"days25":70.0,"days75":167.0,"up_share":0.641,"half":0.479,"half_days":22.0,"back":0.238,"back_days":51.5,"extend":0.527,"r20":-0.056,"r40":-0.089},{"period":"since 1999","x":0.125,"kind":"shuffled","entries":6961.0,"hit":0.765,"days":89.15,"days25":46.45,"days75":147.75,"up_share":0.694,"half":0.523,"half_days":30.9,"back":0.286,"back_days":53.65,"extend":0.561,"r20":0.029,"r40":0.058},{"period":"since 1999","x":0.15,"kind":"real","entries":6961.0,"hit":0.657,"days":131.0,"days25":82.0,"days75":181.0,"up_share":0.634,"half":0.427,"half_days":27.0,"back":0.189,"back_days":54.0,"extend":0.442,"r20":-0.045,"r40":-0.084},{"period":"since 1999","x":0.15,"kind":"shuffled","entries":6961.0,"hit":0.663,"days":104.4,"days25":57.0,"days75":163.562,"up_share":0.729,"half":0.482,"half_days":32.9,"back":0.237,"back_days":57.8,"extend":0.52,"r20":0.025,"r40":0.049},{"period":"last 5y","x":0.05,"kind":"real","entries":1244.0,"hit":0.923,"days":25.0,"days25":14.0,"days75":44.0,"up_share":0.58,"half":0.768,"half_days":14.0,"back":0.613,"back_days":26.0,"extend":0.633,"r20":-0.051,"r40":-0.33},{"period":"last 5y","x":0.05,"kind":"shuffled","entries":1244.0,"hit":0.957,"days":24.825,"days25":12.85,"days75":46.475,"up_share":0.579,"half":0.739,"half_days":15.7,"back":0.535,"back_days":29.525,"extend":0.648,"r20":0.016,"r40":0.003},{"period":"last 5y","x":0.075,"kind":"real","entries":1244.0,"hit":0.901,"days":49.0,"days25":27.0,"days75":77.0,"up_share":0.656,"half":0.683,"half_days":20.0,"back":0.446,"back_days":30.0,"extend":0.653,"r20":-0.04,"r40":-0.167},{"period":"last 5y","x":0.075,"kind":"shuffled","entries":1244.0,"hit":0.904,"days":46.875,"days25":24.363,"days75":87.525,"up_share":0.606,"half":0.652,"half_days":23.15,"back":0.388,"back_days":40.05,"extend":0.629,"r20":0.002,"r40":0.04},{"period":"last 5y","x":0.1,"kind":"real","entries":1244.0,"hit":0.888,"days":77.0,"days25":48.0,"days75":115.0,"up_share":0.711,"half":0.626,"half_days":26.0,"back":0.334,"back_days":39.0,"extend":0.654,"r20":-0.111,"r40":-0.124},{"period":"last 5y","x":0.1,"kind":"shuffled","entries":1244.0,"hit":0.809,"days":71.95,"days25":38.8,"days75":120.338,"up_share":0.634,"half":0.568,"half_days":30.2,"back":0.293,"back_days":57.0,"extend":0.597,"r20":0.02,"r40":0.034},{"period":"last 5y","x":0.125,"kind":"real","entries":1244.0,"hit":0.858,"days":110.0,"days25":72.0,"days75":153.0,"up_share":0.748,"half":0.516,"half_days":31.0,"back":0.258,"back_days":45.0,"extend":0.541,"r20":-0.065,"r40":-0.085},{"period":"last 5y","x":0.125,"kind":"shuffled","entries":1244.0,"hit":0.693,"days":92.05,"days25":52.65,"days75":141.9,"up_share":0.666,"half":0.501,"half_days":36.6,"back":0.235,"back_days":69.0,"extend":0.556,"r20":0.021,"r40":0.024},{"period":"last 5y","x":0.15,"kind":"real","entries":1244.0,"hit":0.744,"days":133.0,"days25":89.0,"days75":177.0,"up_share":0.789,"half":0.437,"half_days":46.0,"back":0.174,"back_days":54.0,"extend":0.459,"r20":-0.026,"r40":-0.045},{"period":"last 5y","x":0.15,"kind":"shuffled","entries":1244.0,"hit":0.577,"days":106.45,"days25":64.575,"days75":155.838,"up_share":0.701,"half":0.454,"half_days":40.55,"back":0.182,"back_days":69.8,"extend":0.499,"r20":-0.002,"r40":0.003}]},"vr":[{"sym":"XLP","vr10":0.83,"t10":-4.2,"vr63":0.68,"t63":-3.0},{"sym":"XLU","vr10":0.92,"t10":-1.9,"vr63":0.81,"t63":-1.7},{"sym":"XLV","vr10":0.93,"t10":-1.8,"vr63":0.83,"t63":-1.6},{"sym":"XLK","vr10":0.87,"t10":-3.3,"vr63":0.82,"t63":-1.6},{"sym":"XLF","vr10":0.91,"t10":-2.2,"vr63":0.83,"t63":-1.6},{"sym":"XLE","vr10":1.0,"t10":0.1,"vr63":1.01,"t63":0.1},{"sym":"XLI","vr10":0.95,"t10":-1.3,"vr63":0.83,"t63":-1.5},{"sym":"XLY","vr10":0.93,"t10":-1.6,"vr63":0.84,"t63":-1.5},{"sym":"XLB","vr10":0.98,"t10":-0.6,"vr63":0.78,"t63":-2.0},{"sym":"SPY","vr10":0.86,"t10":-3.4,"vr63":0.77,"t63":-2.1},{"sym":"QQQ","vr10":0.87,"t10":-3.1,"vr63":0.84,"t63":-1.5},{"sym":"IWM","vr10":0.93,"t10":-1.6,"vr63":0.89,"t63":-1.0},{"sym":"GLD","vr10":1.02,"t10":0.5,"vr63":1.05,"t63":0.4},{"sym":"SLV","vr10":1.11,"t10":2.3,"vr63":1.19,"t63":1.5}],"xlp_all":{"legs_real":3.5,"legs_shuf":3.7,"cancel_real":0.51,"cancel_shuf":0.512}};
+const NS = 'http://www.w3.org/2000/svg';
+const pc = v => (v * 100).toFixed(0) + '%';
+function el(tag, attrs, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) if (attrs[k] != null) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function tipFor(fig) {
+  const tip = fig.querySelector('.viz-tip');
+  return {
+    show(html, evt) {
+      tip.innerHTML = html; tip.style.opacity = 1;
+      const r = fig.getBoundingClientRect();
+      let x = evt.clientX - r.left + 14, y = evt.clientY - r.top - 12;
+      if (x + tip.offsetWidth > r.width) x = evt.clientX - r.left - tip.offsetWidth - 14;
+      tip.style.left = Math.max(0, x) + 'px'; tip.style.top = Math.max(0, y - tip.offsetHeight) + 'px';
+    },
+    hide() { tip.style.opacity = 0; }
+  };
+}
+const fmtD = s => new Date(s + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+// Chart 1: price and turning points
+(function () {
+  const fig = document.getElementById('viz1'), tip = tipFor(fig), s = document.getElementById('viz1-s');
+  const W = 760, H = 340, L = 44, R = 12, T = 12, B = 28;
+  const t = D.price.d.map(d => Date.parse(d)), p = D.price.p;
+  const t0 = t[0], t1 = t[t.length - 1], y0 = 62, y1 = 94;
+  const xs = v => L + (v - t0) / (t1 - t0) * (W - L - R);
+  const ys = v => T + (y1 - v) / (y1 - y0) * (H - T - B);
+  for (let v = 65; v <= 90; v += 5) {
+    el('line', { x1: L, x2: W - R, y1: ys(v), y2: ys(v), stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+    el('text', { x: L - 8, y: ys(v) + 4, 'text-anchor': 'end', class: 'tick' }, s, '$' + v);
+  }
+  for (let y = 2022; y <= 2026; y++) {
+    const x = xs(Date.parse(y + '-01-01'));
+    el('line', { x1: x, x2: x, y1: H - B, y2: H - B + 4, stroke: 'var(--ink-3)' }, s);
+    el('text', { x: x, y: H - B + 17, 'text-anchor': 'middle', class: 'tick' }, s, y);
+  }
+  el('path', { d: 'M' + t.map((v, i) => xs(v).toFixed(1) + ',' + ys(p[i]).toFixed(1)).join('L'), fill: 'none', stroke: 'var(--c-real)', 'stroke-width': 1.6 }, s);
+  const tt = D.turns.map(r => ({ x: xs(Date.parse(r.d)), y: ys(r.p), r }));
+  el('path', { d: 'M' + tt.map(q => q.x.toFixed(1) + ',' + q.y.toFixed(1)).join('L'), fill: 'none', stroke: 'var(--c-turn)', 'stroke-width': 1, 'stroke-opacity': 0.6 }, s);
+  const lt = D.turns[D.turns.length - 1], ex = xs(t[t.length - 1]), ey = ys(p[p.length - 1]), lx = xs(Date.parse(lt.d)), ly = ys(lt.p);
+  el('line', { x1: lx, y1: ly, x2: ex, y2: ey, stroke: 'var(--c-turn)', 'stroke-width': 1.5, 'stroke-dasharray': '4 3' }, s);
+  el('text', { x: ex - 4, y: ey - 10, 'text-anchor': 'end', class: 'tick' }, s, 'open leg ' + ((p[p.length - 1] / lt.p - 1) * 100 >= 0 ? '+' : '') + ((p[p.length - 1] / lt.p - 1) * 100).toFixed(1) + '%');
+  tt.forEach((q, i) => {
+    el('circle', { cx: q.x, cy: q.y, r: 4.5, fill: 'var(--c-turn)', stroke: 'var(--bg)', 'stroke-width': 1.8 }, s);
+    const prev = i ? D.turns[i - 1] : null;
+    const leg = prev ? ((q.r.p / prev.p - 1) * 100) : null;
+    const hit = el('circle', { cx: q.x, cy: q.y, r: 11, fill: 'transparent' }, s);
+    hit.addEventListener('mousemove', e => tip.show('<b>' + (q.r.k === 'top' ? 'Top' : 'Bottom') + ', ' + fmtD(q.r.d) + '</b><br>close $' + q.r.p.toFixed(2) +
+      (prev ? '<br>leg since ' + fmtD(prev.d) + ': ' + (leg >= 0 ? '+' : '−') + Math.abs(leg).toFixed(1) + '%' : ''), e));
+    hit.addEventListener('mouseleave', () => tip.hide());
+  });
+})();
+
+// Chart 2: turns against random versions
+(function () {
+  const fig = document.getElementById('viz2'), tip = tipFor(fig), s = document.getElementById('viz2-s');
+  const W = 760, H = 250, L = 150, R = 20, T = 10, B = 30, x0 = 8, x1 = 30;
+  const xs = v => L + (v - x0) / (x1 - x0) * (W - L - R);
+  const NAME = { XLP: 'XLP (staples)', XLU: 'XLU (utilities)', XLV: 'XLV (health care)', QQQ: 'QQQ (Nasdaq 100)', SPY: 'SPY (S&P 500)' };
+  for (let v = 10; v <= 30; v += 5) {
+    el('line', { x1: xs(v), x2: xs(v), y1: T, y2: H - B, stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+    el('text', { x: xs(v), y: H - B + 17, 'text-anchor': 'middle', class: 'tick' }, s, v);
+  }
+  el('text', { x: (L + W - R) / 2, y: H - 2, 'text-anchor': 'middle', class: 'tick' }, s, 'number of big turns, Nov 2021 to Oct 2026');
+  const step = (H - T - B) / D.counts.length;
+  D.counts.forEach((c, i) => {
+    const y = T + step * (i + 0.5), b = c.big;
+    el('text', { x: L - 12, y: y + 4, 'text-anchor': 'end', 'font-size': 13 }, s, NAME[c.sym]);
+    el('rect', { x: xs(b.lo), y: y - 6, width: xs(b.hi) - xs(b.lo), height: 12, rx: 3, fill: 'var(--c-rand)', 'fill-opacity': 0.22 }, s);
+    el('circle', { cx: xs(b.mean), cy: y, r: 5.5, fill: 'var(--bg)', stroke: 'var(--c-rand)', 'stroke-width': 2 }, s);
+    el('circle', { cx: xs(b.real), cy: y, r: 6.5, fill: 'var(--c-real)', stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+    el('text', { x: xs(Math.max(b.real, b.hi)) + 12, y: y + 4, class: 'tick' }, s, b.real + ' vs ' + b.mean.toFixed(0) + (b.share <= 0.05 ? ' (' + (b.share * 100).toFixed(1).replace('.0', '') + '%)' : ''));
+    const hit = el('rect', { x: 0, y: y - step / 2, width: W, height: step, fill: 'transparent' }, s);
+    hit.addEventListener('mousemove', e => tip.show('<b>' + NAME[c.sym] + '</b><br>actual big turns: ' + b.real + '<br>random versions: ' + b.mean.toFixed(1) +
+      ' on average, 90% between ' + b.lo + ' and ' + b.hi + '<br>random versions with at least as many: ' + (b.share * 100).toFixed(1) + '%', e));
+    hit.addEventListener('mouseleave', () => tip.hide());
+  });
+})();
+
+// Chart 3: half back and extended first, after moves of 5-12.5%
+(function () {
+  const fig = document.getElementById('viz3'), tip = tipFor(fig);
+  const m = D.moves.XLP.filter(r => r.period === 'last 5y' && r.x <= 0.13);
+  const sizes = [...new Set(m.map(r => r.x))];
+  const get = (x, k) => m.find(r => r.x === x && r.kind === k);
+  [['viz3a', 'half', 'Half of the move given back'], ['viz3b', 'extend', 'Ran another half further first']].forEach(([id, key, title]) => {
+    const s = document.getElementById(id), W = 360, H = 220, L = 50, R = 16, T = 26, B = 28;
+    const xs = v => L + v * (W - L - R);
+    el('text', { x: 0, y: 13, class: 'ttl' }, s, title);
+    for (let v = 0; v <= 1.0001; v += 0.25) {
+      el('line', { x1: xs(v), x2: xs(v), y1: T, y2: H - B, stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+      el('text', { x: xs(v), y: H - B + 17, 'text-anchor': 'middle', class: 'tick' }, s, Math.round(v * 100) + '%');
+    }
+    const step = (H - T - B) / sizes.length;
+    sizes.forEach((x, i) => {
+      const y = T + step * (i + 0.5), a = get(x, 'real')[key], b = get(x, 'shuffled')[key];
+      el('text', { x: L - 10, y: y + 4, 'text-anchor': 'end', 'font-size': 13 }, s, (x * 100).toFixed(1).replace('.0', '') + '%');
+      el('line', { x1: xs(Math.min(a, b)), x2: xs(Math.max(a, b)), y1: y, y2: y, stroke: 'var(--ink-3)', 'stroke-width': 1.5 }, s);
+      el('circle', { cx: xs(b), cy: y, r: 5.5, fill: 'var(--bg)', stroke: 'var(--c-rand)', 'stroke-width': 2 }, s);
+      el('circle', { cx: xs(a), cy: y, r: 6, fill: 'var(--c-real)', stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+      const hit = el('rect', { x: 0, y: y - step / 2, width: W, height: step, fill: 'transparent' }, s);
+      hit.addEventListener('mousemove', e => tip.show('<b>After a ' + (x * 100).toFixed(1).replace('.0', '') + '% move</b><br>' + title.toLowerCase() + ':<br>XLP ' + pc(a) + ' · random ' + pc(b), e));
+      hit.addEventListener('mouseleave', () => tip.hide());
+    });
+  });
+})();
+
+// table
+(function () {
+  const tb = document.querySelector('#t-moves tbody');
+  const m = D.moves.XLP.filter(r => r.period === 'last 5y' && r.x <= 0.13);
+  const sg = v => (v >= 0 ? '+' : '−') + Math.abs(v * 100).toFixed(0) + '%';
+  [...new Set(m.map(r => r.x))].forEach(x => {
+    const a = m.find(r => r.x === x && r.kind === 'real'), b = m.find(r => r.x === x && r.kind === 'shuffled');
+    tb.insertAdjacentHTML('beforeend', '<tr><td>' + (x * 100).toFixed(1).replace('.0', '') + '%</td><td class="num">' + pc(a.hit) + ' (' + pc(b.hit) + ')</td><td class="num">' + Math.round(a.days) +
+      '</td><td class="num">' + pc(a.half) + ' (' + pc(b.half) + ')</td><td class="num">' + Math.round(a.half_days) + '</td><td class="num">' + pc(a.back) + ' (' + pc(b.back) + ')</td><td class="num">' +
+      Math.round(a.back_days) + '</td><td class="num">' + sg(a.r40) + ' (' + sg(b.r40) + ')</td></tr>');
+  });
+})();
+</script>
+<script src="/signup.js" defer></script>
+</body>
+</html>
