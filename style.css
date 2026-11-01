@@ -168,3 +168,14 @@ td:first-child { width: 34%; min-width: 9em; }
 .signup-msg:empty { display: none; }
 .signup-note { margin: 10px 0 0; font-size: 13.5px; color: var(--ink-3); }
 .signup-note a { color: var(--ink-3); }
+
+/* more research */
+.more { margin: 26px 0 8px; }
+.more h2, .article .more h2 { font-size: 22px; margin: 0 0 6px; }
+.more-list { display: grid; }
+.more-card { display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 18px; align-items: center; border-top: 1px solid var(--line); padding: 14px 0; text-decoration: none; color: inherit; }
+.more-card img { width: 120px; aspect-ratio: 700 / 368; object-fit: cover; object-position: top; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); display: block; }
+.more-meta { font: 600 11.5px var(--mono); text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-3); margin: 0 0 3px; }
+.more-title { font-weight: 600; font-size: 15.5px; line-height: 1.35; margin: 0; color: var(--ink); }
+.more-card:hover .more-title { color: var(--accent); }
+@media (max-width: 640px) { .more-card { grid-template-columns: minmax(0, 1fr) 96px; gap: 14px; } .more-card img { width: 96px; } }

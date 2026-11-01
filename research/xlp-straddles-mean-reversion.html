@@ -18,7 +18,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/style.css?v=2">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -180,6 +180,10 @@
     <p class="signup-msg" role="status" aria-live="polite"></p>
     <p class="signup-note">Also available as an <a href="/research/feed.xml">RSS feed</a> &middot; <a href="/OptionsCone/legal.html#privacy">Privacy</a></p>
   </aside>
+  <section class="more" hidden>
+    <h2>More research</h2>
+    <div class="more-list"></div>
+  </section>
 </article>
 </main>
 
@@ -321,6 +325,7 @@ const fmtD = s => new Date(s + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 
   });
 })();
 </script>
-<script src="/signup.js" defer></script>
+<script src="/signup.js?v=2" defer></script>
+<script src="/related.js?v=2" defer></script>
 </body>
 </html>
