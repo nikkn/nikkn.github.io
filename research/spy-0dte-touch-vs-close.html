@@ -26,7 +26,7 @@
   "headline": "0DTE odds on SPY: how often a level is touched, and how often it closes beyond it",
   "description": "Ten years of SPY trading days, from the open to the close: how often a distance of 0.5%, 1% or 2% is touched, how often the close ends beyond it, and how the VIX, the weekday and the last day of the month change the odds.",
   "datePublished": "2026-10-20",
-  "dateModified": "2026-10-20",
+  "dateModified": "2026-11-01",
   "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
              "description": "10+ years of quantitative research on financial markets",
              "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
@@ -119,7 +119,7 @@
 
   <h2>Touched or closed beyond: why the difference matters for 0DTE</h2>
   <p>Take a 0DTE iron condor on SPY with its short strikes 1% above and below the opening price. Two numbers decide how it goes. The <strong>touch</strong>: does SPY reach one of the short strikes at some point during the session? A trader with a stop at the short strike is stopped out on those days. The <strong>close</strong>: does SPY finish beyond a short strike at 16:00, when the options settle? A trader who holds to the close only loses on those days.</p>
-  <p>The two can be far apart. A level touched at 11:00 can be far away again by the close, and the history shows how often that happens.</p>
+  <p>The two can be far apart. A level touched at 11:00 can be far away again by the close, and the history shows how often that happens. The close is also what decides whether an option finishes in the money. Delta is often read as the probability of that, but the two are not the same: <a href="/research/delta-vs-itm-probability.html">is delta the probability of expiring in the money?</a></p>
 
   <h2>How the days were counted</h2>
   <ul>
@@ -158,7 +158,7 @@
   <div class="table-scroll"><table><thead><tr><th>Distance from the open</th><th class="num">Touched</th><th class="num">Closed beyond</th></tr></thead><tbody>
     <tr><td>0.5 &times; the VIX move</td><td class="num">65.0%</td><td class="num">35.6%</td></tr><tr><td>1.0 &times; the VIX move</td><td class="num">18.4%</td><td class="num">9.4%</td></tr><tr><td>1.5 &times; the VIX move</td><td class="num">5.2%</td><td class="num">2.7%</td></tr><tr><td>2.0 &times; the VIX move</td><td class="num">1.5%</td><td class="num">0.7%</td></tr>
   </tbody></table></div>
-  <p>Two things lie behind the gap. First, the VIX covers whole days, from one close to the next, and about 41% of SPY's daily movement happens overnight, between the close and the next open. A trade opened at the open no longer faces that part. Second, even from close to close SPY ended beyond one VIX move on only 18.0% of days: option prices tend to charge for more movement than follows, which is the premium option sellers are paid for.</p>
+  <p>Two things lie behind the gap. First, the VIX covers whole days, from one close to the next, and about 41% of SPY's daily movement happens overnight, between the close and the next open. A trade opened at the open no longer faces that part. Second, even from close to close SPY ended beyond one VIX move on only 18.0% of days: option prices tend to charge for more movement than follows, which is the premium option sellers are paid for. Option prices are not the only thing that can overstate a move: in XLP, two-month moves since 2021 were about 14% smaller than even its own daily volatility implied, because its swings kept coming back (<a href="/research/xlp-straddles-mean-reversion.html">XLP for straddle and strangle sellers</a>).</p>
 
   <h2>The VIX level at the open decides almost everything</h2>
   <figure class="viz" id="viz2" aria-label="Chart: share of SPY days on which plus or minus 1% from the open was touched and closed beyond, by the VIX level at the open.">
