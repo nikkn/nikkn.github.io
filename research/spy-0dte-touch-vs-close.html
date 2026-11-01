@@ -212,6 +212,16 @@
     <li>The probabilities are frequencies from the past. They are not forecasts and not financial advice.</li>
   </ul>
   <p class="small">OptionsCone answers the same two questions, touched and closed beyond, for every strike and expiry of a stock's option chain, from the option prices and from the stock's own realized moves: <a href="/OptionsCone/">OptionsCone</a>.</p>
+  <aside class="signup" aria-label="Newsletter">
+    <p class="signup-title">New studies by email</p>
+    <p class="signup-text">One email when a new study is out. No spam, unsubscribe anytime.</p>
+    <form class="signup-form" action="https://app.kit.com/forms/10127955/subscriptions" method="post">
+      <input type="email" name="email_address" required placeholder="Your email address" aria-label="Email address" autocomplete="email">
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="signup-msg" role="status" aria-live="polite"></p>
+    <p class="signup-note">Also available as an <a href="/research/feed.xml">RSS feed</a> &middot; <a href="/OptionsCone/legal.html#privacy">Privacy</a></p>
+  </aside>
 </article>
 </main>
 
@@ -305,5 +315,6 @@ function rows(id, list, max) {
 rows('viz2', D.vix, 1);
 rows('viz3', D.eom, 0.4);
 </script>
+<script src="/signup.js" defer></script>
 </body>
 </html>

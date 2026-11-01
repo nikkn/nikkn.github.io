@@ -186,7 +186,16 @@
     <li>Volume: daily S&amp;P 500 volume since 1950, divided by its trailing and by its centered four-year mean; one and three months before each midterm compared with the same windows in other years.</li>
     <li>All numbers count what happened in past cycles. They are not probabilities for the future, not forecasts and not financial advice.</li>
   </ul>
-  <p class="small">New studies by RSS: <a href="/research/feed.xml">research feed</a>.</p>
+  <aside class="signup" aria-label="Newsletter">
+    <p class="signup-title">New studies by email</p>
+    <p class="signup-text">One email when a new study is out. No spam, unsubscribe anytime.</p>
+    <form class="signup-form" action="https://app.kit.com/forms/10127955/subscriptions" method="post">
+      <input type="email" name="email_address" required placeholder="Your email address" aria-label="Email address" autocomplete="email">
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="signup-msg" role="status" aria-live="polite"></p>
+    <p class="signup-note">Also available as an <a href="/research/feed.xml">RSS feed</a> &middot; <a href="/OptionsCone/legal.html#privacy">Privacy</a></p>
+  </aside>
 </article>
 </main>
 
@@ -329,5 +338,6 @@ const YEARS = ['Post-election year', 'Midterm year', 'Pre-election year', 'Elect
   D.lows.forEach(r => tl.insertAdjacentHTML('beforeend', '<tr><td>' + r.midterm + '</td><td>' + d(r.low) + '</td><td class="num">' + sg(r.ret) + '</td></tr>'));
 })();
 </script>
+<script src="/signup.js" defer></script>
 </body>
 </html>
