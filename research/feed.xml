@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Research | Nikolai Alexander</title>
+    <link>https://nikolai-alexander.com/research/</link>
+    <atom:link href="https://nikolai-alexander.com/research/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>Quantitative studies of financial markets and options, with the data and the numbers behind each result.</description>
+    <language>en</language>
+    <lastBuildDate>Sun, 01 Nov 2026 12:00:00 GMT</lastBuildDate>
+
+    <item>
+      <title>The S&amp;P 500 before the midterms: 19 of 19 cycles rose into the following year</title>
+      <link>https://nikolai-alexander.com/research/presidential-cycle-midterms.html</link>
+      <guid isPermaLink="true">https://nikolai-alexander.com/research/presidential-cycle-midterms.html</guid>
+      <pubDate>Sun, 01 Nov 2026 12:00:00 GMT</pubDate>
+      <category>Market research</category>
+      <description>Every US presidential cycle since 1949: the 2025-28 cycle is up 27.6% one week before the midterm, the third-highest of 19. From this point, the S&amp;P 500 rose into the end of the following year in all 19 cycles. Strong starts gained less on average, but the link is weak.</description>
+    </item>
+
+    <item>
+      <title>0DTE SPY odds: touched vs closed beyond, ten years of data</title>
+      <link>https://nikolai-alexander.com/research/spy-0dte-touch-vs-close.html</link>
+      <guid isPermaLink="true">https://nikolai-alexander.com/research/spy-0dte-touch-vs-close.html</guid>
+      <pubDate>Tue, 20 Oct 2026 12:00:00 GMT</pubDate>
+      <category>Options research</category>
+      <description>Ten years of SPY trading days, from the open to the close: how often a distance of 0.5%, 1% or 2% is touched, how often the close ends beyond it, and how the VIX, the weekday and the last day of the month change the odds.</description>
+    </item>
+
+    <item>
+      <title>Is delta the probability of expiring in the money?</title>
+      <link>https://nikolai-alexander.com/research/delta-vs-itm-probability.html</link>
+      <guid isPermaLink="true">https://nikolai-alexander.com/research/delta-vs-itm-probability.html</guid>
+      <pubDate>Tue, 13 Oct 2026 12:00:00 GMT</pubDate>
+      <category>Options research</category>
+      <description>Delta is often read as the chance of an option finishing in the money. The textbook model and four real option chains (SPY, Apple, Broadcom, Bloom Energy) show when that holds and when it does not.</description>
+    </item>
+
+  </channel>
+</rss>

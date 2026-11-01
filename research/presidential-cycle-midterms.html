@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S&amp;P 500 before the midterms: every presidential cycle since 1949</title>
+<meta name="description" content="From the week before the midterm to the end of the following year, the S&amp;P 500 rose in 19 of 19 presidential cycles since 1949. The 2025-28 cycle starts from the third-highest level of all.">
+<link rel="canonical" href="https://nikolai-alexander.com/research/presidential-cycle-midterms.html">
+<link rel="alternate" type="application/rss+xml" title="Research | Nikolai Alexander" href="https://nikolai-alexander.com/research/feed.xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The S&amp;P 500 before the midterms: 19 of 19 cycles rose into the following year">
+<meta property="og:description" content="Every presidential cycle since 1949: where the current one stands one week before the midterm, and what followed in history.">
+<meta property="og:url" content="https://nikolai-alexander.com/research/presidential-cycle-midterms.html">
+<meta property="og:image" content="https://nikolai-alexander.com/research/img/presidential-cycle-midterms.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Cumulative S&amp;P 500 return over every four-year presidential cycle since 1949, with the average, the middle 50% and the current 2025-28 cycle.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The S&P 500 before the midterms: 19 of 19 cycles rose into the following year",
+  "description": "Every US presidential cycle since 1949: where the 2025-28 cycle stands one week before the midterm election, what followed from the same point in history, how strong starts compare, and what happened after the midterm-year low.",
+  "datePublished": "2026-11-01",
+  "dateModified": "2026-11-01",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "10+ years of quantitative research on financial markets",
+             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+  "about": ["presidential cycle", "midterm elections", "S&P 500", "stock market seasonality", "election year"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/research/presidential-cycle-midterms.html"
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="/count.js"></script>
+<style>
+.brand-text { font: 600 17px var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+.article { max-width: 760px; padding: 48px 0 24px; }
+.article h1 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.015em; }
+.article h2 { margin-top: 48px; }
+.article .lede { font-size: 19px; color: var(--ink-2); }
+.byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+.findings { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px 22px; margin: 26px 0 8px; }
+.findings p { font: 600 12.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 10px; }
+.findings ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.article table { font-size: 14.5px; }
+.article td, .article th { white-space: nowrap; padding-right: 14px; }
+.article td.num, .article th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.article details { margin: 10px 0 18px; }
+.article details summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+.small { font-size: 14px; color: var(--ink-3); }
+.tnote { margin-top: 4px; }
+
+/* charts */
+.viz { --c-hist: #2a78d6; --c-cur: #eb6834; --c-ref: var(--ink-3); --c-grid: var(--line);
+       position: relative; margin: 22px 0 6px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .viz { --c-hist: #3987e5; --c-cur: #d95926; }
+}
+:root[data-theme="dark"] .viz { --c-hist: #3987e5; --c-cur: #d95926; }
+.viz-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--ink-2); margin-bottom: 6px; }
+.viz-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.viz-legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+.viz-legend i.band { height: 11px; border-radius: 2px; }
+.viz-legend i.dot { width: 11px; height: 11px; border-radius: 50%; }
+.viz svg { width: 100%; height: auto; display: block; overflow: visible; }
+.viz text { font-family: var(--sans); fill: var(--ink-2); }
+.viz .tick { font-size: 11px; fill: var(--ink-3); }
+.viz .lab { font-size: 12px; font-weight: 600; fill: var(--ink-2); }
+.viz .cur-lab { font-size: 13px; font-weight: 700; fill: var(--ink); }
+.viz-tip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s; background: var(--ink); color: var(--bg);
+           font-size: 12.5px; line-height: 1.45; padding: 7px 10px; border-radius: 4px; white-space: nowrap; z-index: 5; }
+.viz + .table-scroll { margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="brand-text">nikolai-alexander.com</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/research/" aria-current="page">Research</a>
+      <a href="/#projects">Projects</a>
+      <a href="/#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="article">
+  <p class="eyebrow">Market research</p>
+  <h1>The S&amp;P 500 before the midterms: 19 of 19 cycles rose into the following year</h1>
+  <p class="byline">By <a href="/#about">Nikolai Alexander</a> &middot; 1 November 2026 &middot; data through 30 October 2026</p>
+  <p class="lede">The US midterm elections are on Tuesday. The presidential cycle is one of the oldest seasonal patterns in the stock market: weak first and second years, strong third years. I lined up every four-year cycle since 1949 to see where the current one stands, and what followed from the same point in the past.</p>
+
+  <div class="findings">
+    <p>Key findings</p>
+    <ul>
+      <li>One week before the midterm, the 2025&ndash;28 cycle is up 27.6%. The average cycle stood at +8.9% at this point. Only 3 of 19 cycles were higher: 1985, 1997 and 2013.</li>
+      <li>From the week before the midterm to the end of the following year, the S&amp;P 500 rose in all 19 cycles: +20.3% on average, between +1.3% and +43.6%.</li>
+      <li>The five cycles that were furthest ahead at this point gained 12.6% on average afterwards, the other fourteen 23.1%. Across all 19 cycles, though, the starting level explains little of what followed (R&sup2; = 0.06, not statistically significant), and all of them still gained.</li>
+      <li>From the midterm-year low, the S&amp;P 500 was higher one year later in all 19 cycles, by 31% in the median. The low is only known in hindsight, though.</li>
+    </ul>
+  </div>
+
+  <h2>Every cycle since 1949</h2>
+  <figure class="viz" id="viz1" aria-label="Chart: cumulative S&amp;P 500 return over every four-year presidential cycle since 1949, with the average, the middle 50%, the full range and the current 2025-28 cycle.">
+    <div class="viz-legend">
+      <span><i style="background:var(--c-hist)"></i>Average of 19 cycles, 1949&ndash;2024</span>
+      <span><i class="band" style="background:var(--c-hist);opacity:.3"></i>Middle 50%</span>
+      <span><i class="band" style="background:var(--c-hist);opacity:.1"></i>Full range</span>
+      <span><i style="background:var(--c-cur)"></i>2025&ndash;28 cycle so far</span>
+    </div>
+    <svg id="viz1-s" viewBox="0 0 760 420" role="img"></svg>
+    <div class="viz-tip"></div>
+    <figcaption>Weekly closes of the S&amp;P 500 price index (no dividends), rebased to 0% in the first week of the post-election year. Thin gray lines: the individual cycles. Hover for the values of a week.</figcaption>
+  </figure>
+  <p>The average path shows the classic pattern: little progress in the first two years, a typical low around the midterm, then the strongest stretch of the cycle into the pre-election year. The spread is wide, though. Within the midterm year alone, cycles ranged from 48% down (1973&ndash;76, at the bottom of 1974) to 64% up (1997&ndash;2000).</p>
+
+  <h2>Where the current cycle stands</h2>
+  <p>In the last week before the midterm, the cycle that began in January 2025 is up <strong>27.6%</strong>, from the weekly close of 3 January 2025 (5,942) to the close of 30 October 2026 (7,580). At the same point, the average cycle stood at +8.9% and the median at +10.0%, and the middle half of all cycles ranged from &minus;3.6% to +23.3%. Only three cycles were further ahead: 1985&ndash;88 (+49.1%), 1997&ndash;2000 (+46.9%) and 2013&ndash;16 (+37.6%).</p>
+  <p>The usual weakness of the midterm year did not show up this time. The dip in the spring of 2025 was deep, but short, and the market spent the rest of the cycle well above the typical path.</p>
+
+  <h2>What followed the week before the midterm</h2>
+  <p>Measured from the same week of each cycle, the last week before the midterm:</p>
+  <div class="table-scroll"><table><thead><tr><th>From the week before the midterm to</th><th class="num">Average</th><th class="num">Median</th><th class="num">Positive</th><th class="num">Range</th></tr></thead><tbody>
+    <tr><td>the end of the midterm year (about 2 months)</td><td class="num">+3.6%</td><td class="num">+3.1%</td><td class="num">15 of 19</td><td class="num">&minus;7.0% to +13.6%</td></tr>
+    <tr><td>the end of the pre-election year (about 14 months)</td><td class="num">+20.3%</td><td class="num">+22.3%</td><td class="num">19 of 19</td><td class="num">+1.3% to +43.6%</td></tr>
+  </tbody></table></div>
+  <p>Not a single cycle since 1949 was lower at the end of the pre-election year than in the week before the midterm. The weakest outcomes, +1.3% in 1985&ndash;88 and 2013&ndash;16, were flat years, not losses.</p>
+
+  <h2>Did strong starts leave less for later? A weak hint, not a rule</h2>
+  <p>Does a strong run into the midterm use up part of what usually follows? The chart puts every cycle's level in the week before the midterm next to what came after.</p>
+  <figure class="viz" id="viz2" aria-label="Chart: for each cycle, the return up to the week before the midterm against the return from there to the end of the pre-election year.">
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-hist)"></i>One completed cycle</span>
+      <span><i style="background:var(--c-cur)"></i>2025&ndash;28 cycle today (+27.6%)</span>
+      <span><i style="background:none;border-top:2px dashed var(--c-hist);height:0"></i>Fitted line: r = &minus;0.24, R&sup2; = 0.06, p = 0.33</span>
+    </div>
+    <svg id="viz2-s" viewBox="0 0 760 380" role="img"></svg>
+    <div class="viz-tip"></div>
+    <figcaption>Each dot is one cycle, 1949&ndash;2024. Horizontal: cumulative return from the start of the cycle to the week before the midterm. Vertical: return from there to the end of the pre-election year. Dashed: least-squares line.</figcaption>
+  </figure>
+  <div class="table-scroll"><table><thead><tr><th>Strongest starts</th><th class="num">Before midterm</th><th class="num">Then to end of next year</th></tr></thead><tbody>
+    <tr><td>1985&ndash;88</td><td class="num">+49.1%</td><td class="num">+1.3%</td></tr>
+    <tr><td>1997&ndash;2000</td><td class="num">+46.9%</td><td class="num">+33.7%</td></tr>
+    <tr><td>2013&ndash;16</td><td class="num">+37.6%</td><td class="num">+1.3%</td></tr>
+    <tr><td>1949&ndash;52</td><td class="num">+27.2%</td><td class="num">+20.5%</td></tr>
+    <tr><td>2009&ndash;12</td><td class="num">+27.0%</td><td class="num">+6.3%</td></tr>
+    <tr><td><strong>Average of these five</strong></td><td class="num"></td><td class="num"><strong>+12.6%</strong></td></tr>
+    <tr><td>Average of the other fourteen</td><td class="num"></td><td class="num">+23.1%</td></tr>
+  </tbody></table></div>
+  <p>Three of the five strong starts went on to small gains, and the two flattest outcomes of all came from this group. Across all 19 cycles, though, the pattern is weak:</p>
+  <ul>
+    <li>The correlation between the level before the midterm and the following return is &minus;0.24, so R&sup2; = 0.06: the starting level explains about 6% of the differences in what came after.</li>
+    <li>The fitted line is almost flat: about 21% after a flat start, about 18% after a start like the current +27.6%.</li>
+    <li>It is not statistically significant: p = 0.33 (permutation test), rank correlation &minus;0.27 (p = 0.26), and the 95% bootstrap interval for the correlation runs from &minus;0.66 to +0.26, which includes zero.</li>
+    <li>The sign stays negative when any single cycle is left out (&minus;0.09 to &minus;0.39). The five strongest starts against the rest: p = 0.13.</li>
+  </ul>
+  <p>With 19 cycles, the data cannot tell a weaker continuation after strong starts from chance. It is a reason for caution, not a rule, and the current cycle, at +27.6%, sits right among the strong starts.</p>
+  <details><summary>All 19 cycles</summary>
+  <div class="table-scroll"><table id="t-all"><thead><tr><th>Cycle</th><th class="num">Before midterm</th><th class="num">Then to Dec</th><th class="num">Then to end of next year</th></tr></thead><tbody></tbody></table></div>
+  </details>
+
+  <h2>After the midterm-year low</h2>
+  <p>A popular version of the pattern starts at the lowest point of the midterm year. In all 19 cycles, the S&amp;P 500 was higher one year after that low, by between 10.9% (1978) and 56.0% (1982), and by 31.0% in the median.</p>
+  <p>The number looks better than it can be traded: the low of a year is only known once the year is over, and buying exactly at the bottom is a best case. In 2026 the low of the year came in the spring, so this version says little about the months ahead.</p>
+  <details><summary>Midterm-year lows and the year after</summary>
+  <div class="table-scroll"><table id="t-lows"><thead><tr><th>Midterm year</th><th>Low (weekly close)</th><th class="num">One year later</th></tr></thead><tbody></tbody></table></div>
+  </details>
+
+  <h2>And trading volume?</h2>
+  <p>A related claim is that markets get quieter or busier before midterms. I checked the S&amp;P 500's volume in the one and three months before each midterm since 1950, normalized by its four-year average. Midterm years did not differ from other years in any version of the test (p-values between 0.24 and 0.88).</p>
+
+  <h2>What it means, and what it does not</h2>
+  <p>The presidential cycle has an unusually clean record for the stretch from the midterm into the pre-election year: 19 out of 19. Two things limit what that record can say. It is 19 cases, overlapping with every other force of those years, from interest rates to recessions, and there is no mechanism that forces the pattern to repeat. And the current cycle starts from a level that only three cycles had reached at this point; strong starts were followed by gains too, on average smaller ones, though that difference is within what chance can produce.</p>
+  <p>Read it as a base rate, not as a forecast: historically, the 14 months after a midterm have been the most reliable stretch of the cycle.</p>
+
+  <h2>Data and notes</h2>
+  <ul class="small">
+    <li>S&amp;P 500 price index (^GSPC) from Yahoo Finance, weekly closes (Fridays) since 1949, data through 30 October 2026. Price index without dividends; with dividends, all returns would be higher.</li>
+    <li>A cycle starts with the first weekly close of the post-election year (for the current cycle the close of Friday, 3 January 2025) and runs four calendar years. 19 completed cycles, 1949&ndash;2024, plus the current one. Measured from the last close of 2024 instead, the current cycle would be up 28.9%.</li>
+    <li>&ldquo;The week before the midterm&rdquo; is week 95 of each cycle, the last full week before election day in early November. The end of the pre-election year is week 156.</li>
+    <li>Volume: daily S&amp;P 500 volume since 1950, divided by its trailing and by its centered four-year mean; one and three months before each midterm compared with the same windows in other years.</li>
+    <li>All numbers count what happened in past cycles. They are not probabilities for the future, not forecasts and not financial advice.</li>
+  </ul>
+  <p class="small">New studies by RSS: <a href="/research/feed.xml">research feed</a>.</p>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p class="about"><strong>About.</strong> Nikolai Alexander. 10+ years of quantitative research on financial markets. Former product lead and associate commercial director in biotech. I build research tools for market analysis.</p>
+    </div>
+    <div>
+      <p><a href="/research/">Research</a> &middot; <a href="/OptionsCone/">OptionsCone</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const D = {"asof":"2026-10-30","cur":2025,"now_week":95,"weeks":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208],"min":[0.0,-4.4,-8.8,-10.7,-11.4,-7.2,-11.3,-17.4,-21.1,-26.7,-18.8,-17.5,-12.4,-13.1,-8.8,-7.2,-10.5,-7.4,-9.8,-13.4,-10.0,-13.3,-11.5,-12.3,-13.5,-13.0,-15.5,-13.2,-10.6,-11.5,-11.2,-12.6,-14.6,-15.2,-13.0,-16.4,-15.9,-25.6,-19.8,-17.5,-15.9,-17.3,-14.9,-16.3,-13.9,-13.5,-17.0,-19.9,-19.5,-22.2,-22.0,-18.6,-17.5,-21.9,-20.3,-19.4,-20.5,-23.0,-23.0,-20.4,-20.3,-19.8,-20.3,-18.9,-21.6,-22.4,-23.2,-21.8,-24.8,-23.8,-23.7,-26.4,-30.5,-27.2,-26.8,-29.0,-27.0,-29.3,-30.2,-30.6,-34.7,-34.3,-34.4,-32.5,-36.9,-40.3,-39.8,-40.4,-45.6,-41.5,-45.8,-48.0,-40.7,-39.7,-41.5,-38.4,-37.5,-40.0,-42.5,-41.6,-45.8,-44.0,-44.2,-44.0,-41.0,-39.4,-40.8,-39.1,-35.8,-36.1,-35.7,-34.7,-35.2,-36.2,-35.8,-31.0,-33.5,-32.5,-33.1,-31.2,-30.8,-28.4,-28.1,-27.3,-28.1,-25.8,-23.9,-24.5,-23.3,-24.8,-24.1,-23.1,-23.5,-25.5,-26.6,-28.2,-28.0,-29.7,-27.5,-28.6,-30.5,-28.4,-28.1,-28.3,-26.4,-25.9,-25.1,-25.7,-25.5,-24.1,-25.3,-23.9,-27.6,-26.7,-25.9,-24.7,-24.2,-20.8,-19.1,-17.2,-15.9,-17.0,-16.9,-14.8,-16.8,-17.3,-15.9,-16.1,-14.7,-14.7,-16.3,-16.0,-14.7,-15.2,-15.4,-15.6,-15.8,-16.4,-17.3,-15.8,-13.4,-13.5,-13.3,-14.3,-15.2,-16.3,-15.1,-18.1,-18.0,-15.4,-15.3,-14.2,-13.4,-13.1,-14.5,-13.1,-24.2,-20.7,-26.1,-18.3,-21.5,-26.4,-32.6,-24.4,-26.1,-25.8,-25.1,-26.4,-10.4],"q25":[0.0,-1.6,-1.6,-2.7,-3.2,-4.3,-4.2,-5.4,-5.3,-4.9,-4.8,-5.1,-4.9,-4.8,-3.9,-5.0,-4.6,-3.5,-3.7,-4.2,-4.2,-2.8,-2.8,-5.0,-4.6,-5.2,-5.3,-5.5,-4.4,-5.8,-5.0,-5.0,-5.0,-6.5,-7.7,-9.1,-8.8,-9.0,-9.1,-8.5,-10.4,-8.5,-7.7,-9.1,-7.9,-8.4,-8.6,-9.0,-9.1,-9.7,-9.4,-9.8,-9.9,-11.5,-12.2,-11.7,-11.2,-12.3,-13.2,-13.9,-12.7,-10.1,-9.7,-10.3,-10.6,-12.3,-11.0,-9.3,-7.4,-7.2,-6.1,-6.8,-7.0,-6.0,-4.6,-5.8,-9.3,-7.6,-6.7,-4.5,-4.8,-3.4,-1.2,-1.2,-1.1,-3.1,-5.6,-4.3,-5.4,-4.3,-6.0,-7.1,-3.5,-5.8,-7.2,-3.6,-2.1,-0.5,-1.8,-2.8,-1.9,-0.4,-1.4,-0.8,-1.5,0.3,3.1,3.5,3.8,5.1,5.8,6.1,4.4,5.9,3.8,5.4,6.5,7.9,7.4,8.4,9.5,11.0,10.8,10.0,10.1,9.7,10.0,11.2,13.3,12.2,12.7,12.7,13.2,14.2,15.1,15.9,15.6,14.1,13.3,15.4,15.0,16.0,14.7,14.1,14.7,14.2,12.5,10.8,12.2,13.2,14.4,16.1,16.4,16.8,15.6,16.0,16.4,15.7,12.9,12.3,14.0,12.3,11.9,11.8,10.2,7.1,6.8,4.5,7.6,7.9,11.2,14.6,14.5,15.6,16.6,16.2,14.3,12.9,13.6,14.2,10.2,11.9,12.1,11.9,13.4,12.4,13.2,15.9,17.1,18.2,16.5,17.8,19.5,18.6,17.7,17.7,17.6,19.0,19.2,17.9,19.6,21.2,20.0,21.4,19.3,20.2,21.0,22.2,21.9],"mean":[0.0,-0.3,-0.2,0.1,0.3,0.5,0.3,-1.1,-0.6,-0.8,-0.4,-0.9,-0.0,-0.3,0.4,0.9,0.8,2.0,2.6,2.9,2.9,2.9,3.1,2.6,2.2,2.2,2.8,3.5,4.1,4.4,4.9,4.6,3.9,4.0,3.9,3.6,3.8,3.2,3.3,3.9,3.9,4.5,4.9,4.8,5.8,6.2,6.6,6.6,6.9,6.7,6.7,7.3,7.9,6.7,7.0,6.0,6.3,6.2,6.6,6.8,7.3,7.9,8.4,8.5,8.6,8.5,8.8,9.5,8.8,8.6,8.0,7.7,7.0,8.0,8.0,7.1,6.4,6.2,6.1,6.6,6.5,7.0,6.9,6.7,7.0,7.3,7.1,6.9,6.5,6.9,6.3,6.2,6.4,7.2,7.4,8.9,10.3,10.6,10.8,11.5,11.6,11.1,11.8,12.3,13.2,14.7,15.6,15.8,17.1,18.1,19.0,19.3,18.5,19.9,19.5,20.4,20.6,21.7,22.4,23.1,23.9,24.8,24.6,24.0,23.4,24.0,24.4,24.7,25.9,25.5,27.2,28.2,28.1,27.7,27.5,26.5,27.0,26.6,27.6,27.4,27.7,28.4,27.2,27.6,27.5,25.9,25.1,25.9,26.0,26.2,25.8,26.7,27.5,28.0,28.6,30.1,30.4,30.2,30.5,30.4,30.1,30.9,30.5,30.5,30.1,30.4,29.5,30.3,31.1,31.4,32.7,31.3,31.7,32.3,32.1,31.8,31.7,31.9,33.2,33.8,33.9,33.8,34.7,35.4,36.0,35.0,35.3,36.6,36.8,37.2,37.3,37.4,36.8,37.6,36.9,36.3,36.1,35.8,36.1,35.6,36.8,37.3,37.2,38.8,38.5,39.5,39.4,39.7,40.3],"median":[0.0,-0.1,-0.2,0.1,0.7,1.6,1.3,-0.3,1.5,1.2,0.3,-1.2,-1.1,-0.4,-1.4,-1.2,-0.9,0.0,1.0,1.1,1.2,1.7,2.6,2.6,0.7,0.7,2.2,2.8,2.3,3.8,2.9,3.0,2.8,2.3,2.9,4.7,5.2,5.3,5.0,5.9,5.6,7.8,6.3,7.4,5.5,6.8,6.9,6.7,6.7,6.8,7.0,7.6,8.8,8.6,9.0,9.0,10.1,10.0,9.9,9.0,8.5,8.0,10.2,9.8,9.2,9.2,8.7,10.5,10.5,10.0,8.0,7.1,4.4,8.6,5.6,5.3,4.9,4.1,2.4,3.8,4.2,5.5,7.9,6.8,9.8,9.2,8.7,8.1,8.3,8.1,6.4,8.0,6.9,10.3,8.6,10.0,11.8,13.0,12.3,12.5,12.4,14.1,7.3,9.2,11.2,12.3,17.3,17.0,18.8,16.5,16.6,19.0,16.9,18.3,16.9,20.9,19.5,21.0,20.5,24.1,24.2,23.6,22.8,24.6,24.1,21.2,23.3,22.8,24.1,26.2,27.0,28.4,28.5,27.1,28.8,28.2,26.5,24.7,26.3,25.5,25.1,28.6,24.3,24.7,25.3,26.5,29.4,27.3,25.6,23.9,22.1,24.9,26.8,26.8,27.2,27.5,29.3,30.5,28.2,30.0,31.9,32.0,32.7,32.9,32.8,34.1,35.5,35.1,35.6,36.9,36.7,36.4,32.2,35.8,36.5,38.9,38.2,37.6,37.2,36.3,38.5,38.9,41.4,42.7,43.9,42.9,43.7,42.3,42.3,47.8,47.8,48.6,44.0,45.8,44.9,46.2,45.9,45.4,46.0,45.0,45.9,47.6,47.7,50.9,49.5,52.2,51.7,53.5,50.5],"q75":[0.0,1.3,1.9,2.7,3.6,3.5,4.2,3.7,3.6,4.3,4.7,3.8,4.4,4.7,5.3,5.0,6.4,9.1,10.8,11.0,11.6,11.6,12.3,11.3,9.8,10.1,12.0,13.2,13.1,14.8,16.2,15.2,13.3,13.9,13.3,13.9,13.5,14.4,13.2,13.3,15.6,16.6,16.4,18.0,19.5,21.4,22.8,22.6,22.0,22.2,22.2,23.9,22.7,22.6,22.7,17.1,18.8,19.3,19.3,19.6,19.0,21.4,21.6,20.4,21.0,21.1,21.1,18.4,17.3,18.8,19.5,20.8,19.6,20.2,22.7,21.8,21.8,17.5,17.2,19.4,18.7,21.1,20.5,20.0,18.2,18.2,17.2,19.3,21.3,22.7,23.9,24.9,24.1,23.9,23.9,23.3,25.5,26.8,27.4,26.8,27.1,27.0,31.0,32.1,34.3,34.2,34.9,34.9,36.2,39.7,40.9,39.7,39.1,40.9,36.8,36.8,38.4,39.2,41.1,41.4,43.3,43.4,42.9,39.4,38.5,40.9,38.6,38.8,37.3,35.2,40.1,41.2,40.7,43.1,41.1,39.8,40.0,37.4,38.3,34.8,35.2,36.0,35.5,35.0,36.7,39.2,39.2,40.6,41.6,37.5,40.1,40.2,38.7,40.4,41.5,43.6,45.7,45.7,47.7,46.4,44.2,46.3,49.5,47.5,48.0,47.4,46.3,49.0,49.6,49.7,50.3,47.6,48.0,50.3,47.7,47.9,50.3,50.4,50.4,50.3,48.7,49.3,50.3,49.6,48.9,47.5,49.9,50.7,51.4,52.4,53.6,50.7,52.4,56.7,57.2,55.8,57.0,54.9,55.0,55.9,56.4,59.1,59.1,61.5,63.3,64.5,65.1,65.4,69.7],"max":[0.0,2.6,4.7,8.4,9.1,11.3,10.9,9.6,11.9,9.4,9.6,10.3,11.4,12.9,13.6,12.6,11.8,13.9,13.9,15.2,15.0,16.0,16.4,19.4,20.1,18.6,22.6,22.5,22.4,25.5,26.6,24.8,23.3,24.9,26.0,24.3,23.5,27.1,26.4,29.0,29.3,26.2,25.9,22.6,25.1,24.7,28.8,27.7,31.5,28.3,28.9,28.1,30.3,25.8,28.5,28.0,31.0,35.4,36.4,38.3,40.3,41.1,44.5,46.9,46.4,50.1,48.5,50.1,48.1,49.9,48.1,48.2,48.5,51.1,50.1,50.1,51.3,52.5,53.8,55.7,58.7,52.5,49.8,45.6,51.0,52.9,54.5,53.0,40.9,41.9,41.9,42.8,43.9,45.9,45.6,49.1,52.5,50.5,55.5,59.4,57.3,55.9,58.8,63.9,64.3,70.5,66.2,65.0,71.1,71.1,70.9,74.4,73.6,77.6,77.1,82.2,80.9,83.5,80.3,76.3,81.4,78.5,79.8,78.8,77.8,77.2,79.3,84.3,87.5,87.7,86.7,88.4,92.2,88.9,94.7,97.3,104.1,105.2,99.8,93.5,96.7,92.4,95.6,100.4,90.0,72.7,74.0,82.2,83.2,86.6,90.1,89.4,91.6,89.4,90.0,95.0,96.4,92.7,95.9,92.7,81.8,90.4,85.4,80.0,78.2,88.4,86.5,95.8,104.2,100.3,102.7,81.4,91.8,94.2,91.5,90.0,88.1,84.2,97.5,94.8,95.8,92.7,94.5,97.7,101.9,97.9,89.8,95.6,96.8,99.4,101.4,103.3,99.8,96.0,93.7,92.0,88.4,83.7,86.7,84.4,90.7,82.6,82.8,79.4,75.8,83.1,75.4,74.7,76.5],"cycles":{"1949":[0.0,-2.4,-0.9,-2.6,-3.3,-6.7,-5.3,-7.9,-6.0,-3.8,-4.3,-4.6,-4.3,-4.1,-4.0,-5.8,-5.8,-4.4,-4.7,-5.6,-7.0,-10.0,-11.5,-11.1,-9.5,-8.6,-7.0,-5.4,-4.6,-3.7,-1.7,-1.9,-1.3,-2.1,-2.0,-1.3,0.3,-0.3,-0.2,1.5,1.9,1.5,3.0,3.8,3.4,3.4,3.1,4.3,5.2,6.7,6.6,7.6,8.8,6.8,8.3,7.8,10.8,10.4,9.9,10.7,10.8,9.5,11.8,12.5,10.8,13.9,15.1,15.1,15.1,16.7,16.5,19.7,19.6,20.4,23.4,21.5,22.6,13.3,13.2,8.1,12.7,13.3,16.2,17.1,19.7,18.8,18.8,20.1,23.6,24.5,24.6,28.9,27.2,27.9,26.6,27.2,27.7,27.2,30.2,25.9,24.3,23.8,28.6,30.9,33.7,35.2,36.8,36.2,40.7,42.0,41.8,40.4,40.5,40.6,38.6,39.2,37.6,39.1,41.5,41.2,43.4,45.9,43.0,37.8,34.7,37.6,37.7,41.2,38.1,34.3,38.6,40.8,40.2,44.3,46.4,46.0,47.0,46.6,49.1,50.7,51.8,49.9,49.0,52.3,51.8,49.4,46.1,46.9,45.7,46.2,43.5,46.6,49.8,49.7,50.6,51.8,53.2,53.6,55.3,57.3,55.7,55.3,52.9,48.4,49.0,52.0,52.1,53.3,54.9,53.9,54.5,50.5,50.8,50.9,52.7,50.9,53.0,52.9,55.4,56.1,57.5,59.1,60.5,60.0,59.2,61.2,63.0,63.7,61.4,60.1,60.3,61.5,58.3,57.4,58.4,57.0,57.3,55.0,53.9,57.1,58.7,58.6,61.9,64.4,64.1,66.8,67.5,68.2,null],"1953":[0.0,-1.7,-2.0,-1.8,-0.6,-0.1,-3.0,-3.4,-2.4,-2.6,-1.4,-1.4,-2.1,-4.9,-6.5,-7.2,-8.8,-6.8,-6.2,-6.4,-5.7,-7.5,-9.2,-10.2,-10.2,-8.8,-8.2,-8.0,-8.3,-8.7,-6.7,-6.6,-7.2,-8.3,-10.6,-11.2,-12.8,-13.5,-12.2,-11.1,-10.9,-9.0,-8.3,-7.5,-7.3,-7.5,-7.9,-7.1,-5.9,-6.7,-5.8,-6.6,-6.5,-6.1,-4.2,-2.6,-1.7,-0.9,-1.6,-2.3,-1.5,-0.1,0.6,1.0,0.1,2.5,3.2,5.3,4.7,6.5,8.0,8.5,9.2,10.0,9.6,7.7,9.4,10.0,11.5,13.6,13.3,14.2,16.4,14.5,15.7,17.6,15.5,14.9,16.2,19.5,22.1,21.7,23.1,19.5,21.1,19.4,23.2,26.4,26.0,30.2,30.0,30.2,35.3,33.3,35.6,33.1,32.9,33.5,36.4,39.3,40.0,39.0,37.8,41.4,35.0,36.3,39.3,39.2,40.7,43.0,43.2,43.0,42.8,41.1,42.2,42.9,44.6,47.9,51.1,54.3,55.2,60.7,59.8,62.0,64.0,60.4,59.0,58.3,62.0,64.3,65.4,69.9,71.9,64.5,59.7,55.3,60.5,59.6,65.6,70.5,71.6,72.1,71.2,72.9,70.0,71.4,71.4,70.1,68.3,62.8,63.3,68.7,64.4,67.7,70.8,72.6,76.0,81.4,84.0,82.7,84.1,80.7,80.0,80.8,82.8,77.5,74.8,68.1,71.7,70.1,74.7,75.5,77.0,81.0,83.6,85.9,84.9,87.0,85.0,83.9,80.7,79.0,80.1,77.9,75.5,70.9,75.0,77.1,74.2,74.3,77.0,74.6,72.3,70.1,69.9,77.2,75.4,74.7,75.4],"1957":[0.0,-1.0,-4.3,-3.9,-4.4,-7.2,-6.8,-6.8,-6.3,-5.6,-5.6,-5.6,-5.5,-4.7,-3.6,-2.7,-2.5,-0.7,-0.2,1.1,1.2,1.7,2.6,3.2,1.1,1.5,4.4,5.2,4.1,3.8,2.2,0.6,-1.8,-4.6,-3.1,-4.2,-4.0,-6.4,-8.8,-8.3,-12.3,-13.6,-13.0,-13.3,-13.9,-13.5,-12.4,-10.6,-11.5,-12.7,-15.4,-14.7,-12.4,-13.5,-11.9,-10.6,-10.6,-10.6,-11.4,-12.4,-12.5,-9.8,-9.3,-9.1,-9.6,-11.1,-10.5,-8.5,-7.1,-6.4,-5.5,-7.1,-6.0,-5.5,-4.3,-3.5,-3.9,-3.8,-2.6,-2.0,-1.9,0.7,1.8,3.0,1.8,2.3,2.3,2.8,4.0,5.9,6.4,8.0,10.1,10.3,8.9,10.0,12.0,13.8,12.9,12.5,12.4,14.1,15.9,16.0,18.8,19.5,19.6,20.0,18.8,16.5,16.6,19.0,18.8,20.5,21.5,20.9,19.5,21.0,20.5,24.1,24.2,23.6,22.8,24.6,25.0,25.8,23.3,22.8,22.4,24.3,27.0,28.4,26.9,27.8,29.7,28.3,27.1,26.6,27.7,25.5,23.0,20.4,21.6,22.6,22.2,22.9,21.2,23.3,23.4,21.8,22.1,23.7,26.1,26.2,26.7,26.4,28.4,27.5,25.1,23.0,19.2,20.0,18.9,20.5,20.4,17.0,16.2,17.9,20.0,18.8,20.9,20.9,18.8,16.5,17.3,18.5,19.4,19.5,20.5,24.2,23.1,23.6,22.3,23.0,20.1,17.3,19.0,18.8,21.4,22.2,23.4,22.2,20.3,18.1,15.5,14.7,15.8,17.6,15.1,14.5,17.7,19.7,19.6,20.3,18.7,21.4,22.6,23.1,24.5],"1961":[0.0,2.1,2.7,4.9,6.5,5.3,6.3,7.6,9.5,8.7,9.6,10.3,11.4,12.9,13.6,12.6,11.8,13.9,13.9,15.2,13.7,14.3,14.1,11.6,11.6,10.7,12.6,11.8,11.1,14.2,15.9,16.5,16.9,15.9,16.8,16.2,15.8,14.2,14.3,14.7,16.5,16.4,17.0,19.0,21.7,22.6,23.0,22.9,23.4,23.3,21.4,22.5,19.3,19.2,17.7,16.7,19.5,20.7,20.9,20.1,20.1,20.6,21.5,20.6,19.1,17.9,16.3,17.4,13.5,13.4,7.3,9.3,1.8,1.7,0.1,-4.3,-9.8,-6.3,-3.8,-1.0,-2.7,-2.1,-0.5,-1.5,1.0,2.0,1.2,-0.0,0.8,-1.2,-3.6,-2.3,-2.5,-4.8,-6.6,-1.1,0.7,3.0,5.4,6.6,8.0,7.1,7.3,7.8,9.8,11.0,11.6,12.9,13.5,13.3,13.7,12.9,9.8,11.9,12.9,13.3,14.0,16.9,17.8,18.5,19.3,19.9,20.8,20.4,19.9,21.2,20.6,20.3,20.3,18.8,20.2,19.2,17.0,17.4,18.7,20.7,22.4,22.9,24.1,24.7,25.3,25.5,23.5,24.7,23.7,25.5,26.7,26.4,25.6,23.9,19.2,25.4,26.7,26.8,27.2,27.5,29.3,30.5,31.1,32.0,31.9,32.2,32.7,32.9,33.2,34.1,35.5,35.1,35.6,36.9,36.7,37.9,36.6,37.3,38.7,38.9,38.2,37.6,35.3,36.3,38.5,39.5,41.4,42.7,43.9,42.9,42.4,40.2,41.0,40.5,40.4,41.7,42.9,42.9,44.2,44.5,45.9,45.3,45.8,45.3,45.9,45.9,47.7,45.8,44.4,43.3,44.3,44.1,null],"1965":[0.0,0.7,1.7,2.3,3.3,3.0,1.7,1.7,3.2,2.4,2.9,2.5,1.7,2.1,3.3,4.0,4.9,5.1,6.0,6.3,4.7,4.3,2.8,0.4,0.7,-2.0,0.5,1.1,1.1,-0.8,0.6,1.6,2.4,2.3,2.9,3.9,5.2,6.3,6.2,6.1,7.2,7.8,8.5,9.1,9.0,9.2,8.8,8.6,7.7,8.3,8.6,8.8,9.1,9.9,10.3,10.3,10.1,10.0,10.7,9.0,7.5,5.3,4.8,4.5,5.7,6.1,8.3,8.5,8.9,7.4,3.6,0.8,0.8,3.0,1.5,2.0,2.1,2.2,1.0,3.4,2.7,0.8,-1.4,-0.9,-1.9,-6.1,-9.8,-8.6,-10.0,-5.6,-8.4,-9.7,-13.6,-9.6,-7.7,-5.3,-4.6,-3.3,-4.1,-4.6,-5.5,-3.1,-3.7,-3.9,-5.2,-3.0,-0.3,1.6,1.7,3.1,3.4,3.7,3.1,4.2,4.9,6.5,7.3,6.4,5.4,6.7,8.9,10.9,11.4,10.3,8.6,7.4,5.9,8.0,9.2,8.6,6.9,8.2,9.4,11.0,11.5,13.1,12.3,11.8,9.4,10.5,11.3,13.6,14.5,14.1,14.8,13.3,12.5,12.0,8.3,8.8,9.5,10.8,11.5,12.6,12.1,12.3,13.8,13.2,14.1,12.4,10.3,8.9,6.0,6.1,7.2,5.1,5.1,5.1,4.3,6.4,10.1,13.9,13.1,14.7,16.4,16.2,14.3,14.6,16.4,19.5,19.3,18.8,17.5,19.1,20.8,18.5,16.0,14.0,14.5,16.4,16.4,16.6,19.4,19.0,20.0,20.7,22.4,21.7,23.7,22.9,21.6,22.7,24.8,25.4,27.9,27.4,26.9,25.5,23.6],"1969":[0.0,-2.9,-1.9,-1.5,-0.9,-0.4,-0.4,-4.0,-5.6,-5.1,-5.8,-4.2,-2.4,-3.2,-2.3,-2.6,-2.2,0.0,1.0,1.9,0.6,-0.5,-1.8,-5.1,-7.0,-6.4,-4.2,-7.9,-8.7,-11.5,-10.1,-9.7,-9.6,-7.8,-8.2,-10.0,-9.5,-8.5,-9.5,-10.4,-10.0,-7.4,-5.6,-6.6,-5.5,-6.7,-9.3,-9.8,-11.8,-12.7,-12.1,-11.6,-10.6,-11.1,-12.6,-14.1,-18.2,-17.0,-16.8,-15.3,-13.9,-14.0,-15.5,-16.3,-13.5,-14.0,-15.1,-17.6,-20.4,-21.7,-23.6,-26.1,-30.5,-26.4,-26.8,-29.0,-25.9,-29.3,-29.9,-28.4,-25.3,-25.2,-24.9,-25.7,-27.7,-23.8,-21.3,-20.3,-20.6,-20.6,-20.3,-18.1,-18.2,-19.0,-19.4,-19.9,-19.0,-19.8,-19.5,-17.4,-14.0,-13.2,-13.2,-12.9,-11.4,-11.3,-10.5,-8.8,-7.8,-6.8,-5.3,-7.0,-7.0,-4.8,-4.3,-2.9,-3.9,-3.3,-1.8,-0.5,0.1,-0.0,-1.1,-1.7,-2.9,-4.2,-2.6,-2.8,-4.8,-5.8,-4.0,-3.2,-4.7,-4.9,-8.1,-9.4,-8.0,-5.4,-3.4,-3.2,-3.4,-3.9,-5.6,-4.9,-4.5,-6.0,-8.1,-9.4,-9.2,-11.4,-11.9,-11.6,-6.7,-6.1,-3.6,-3.1,-1.8,-0.5,-0.6,-0.3,0.2,0.8,1.0,1.2,2.1,3.8,4.2,3.8,3.4,3.1,5.4,5.6,4.7,3.5,2.5,2.3,4.8,6.4,5.5,2.8,4.2,4.1,3.0,4.5,2.7,2.6,3.3,6.2,7.7,7.5,6.4,7.2,5.9,4.6,4.4,6.3,5.4,3.8,5.0,6.4,9.8,9.4,11.1,12.8,12.9,14.3,13.7,11.4,13.5],"1973":[0.0,-0.5,-0.9,-2.9,-4.6,-4.3,-4.1,-5.6,-6.3,-5.1,-5.3,-9.2,-7.0,-8.8,-6.5,-6.4,-10.5,-7.4,-9.8,-13.4,-10.0,-13.3,-10.7,-12.3,-13.5,-13.0,-15.5,-13.2,-10.6,-8.6,-11.2,-12.6,-14.6,-15.2,-13.0,-12.6,-12.9,-10.6,-9.5,-8.4,-7.0,-8.1,-7.1,-10.7,-12.2,-13.3,-17.0,-19.9,-19.5,-22.2,-22.0,-18.6,-17.5,-21.9,-20.3,-19.4,-20.5,-23.0,-23.0,-20.4,-20.3,-18.4,-17.2,-18.9,-21.6,-22.4,-23.2,-21.8,-24.8,-23.8,-23.7,-26.4,-26.1,-27.2,-22.8,-23.8,-27.0,-28.3,-30.2,-30.6,-30.3,-31.3,-34.4,-32.5,-36.9,-40.3,-39.8,-40.4,-45.6,-41.5,-45.8,-48.0,-40.7,-39.7,-41.5,-38.4,-37.5,-40.0,-42.5,-41.6,-45.8,-44.0,-44.2,-44.0,-41.0,-39.4,-40.8,-39.1,-35.8,-34.4,-32.0,-31.1,-31.9,-29.7,-29.3,-30.4,-30.0,-32.5,-29.8,-28.0,-27.7,-25.6,-24.5,-24.6,-24.4,-24.0,-22.8,-24.5,-22.7,-20.9,-21.3,-21.0,-22.2,-25.5,-26.6,-28.2,-28.0,-29.7,-27.5,-28.6,-30.5,-28.4,-28.1,-28.3,-26.4,-25.9,-25.1,-25.7,-25.5,-24.1,-25.3,-23.9,-27.6,-26.7,-25.9,-24.7,-24.2,-20.8,-19.1,-17.2,-15.9,-17.0,-16.9,-14.8,-16.8,-17.3,-15.9,-16.1,-14.2,-14.7,-16.3,-16.0,-14.7,-15.2,-15.0,-15.5,-15.5,-16.4,-17.3,-15.8,-13.4,-13.5,-13.1,-12.4,-12.7,-13.2,-13.7,-13.4,-13.0,-14.6,-15.3,-13.0,-12.7,-11.3,-10.9,-13.1,-14.4,-15.8,-16.6,-14.2,-15.9,-17.2,-15.0,-13.9,-14.3,-12.7,-13.0,-12.5,-10.4],"1977":[0.0,-1.0,-1.6,-2.9,-3.0,-4.6,-4.3,-5.3,-3.6,-4.2,-3.0,-5.7,-5.5,-6.3,-3.8,-6.3,-6.3,-5.3,-5.7,-5.3,-8.3,-7.0,-6.2,-4.8,-3.6,-4.7,-5.0,-4.6,-3.2,-5.9,-6.0,-6.8,-7.1,-8.5,-7.2,-8.2,-8.1,-9.5,-8.1,-8.6,-10.9,-12.1,-11.8,-12.8,-8.6,-9.2,-7.9,-9.8,-10.8,-11.1,-9.8,-9.4,-12.8,-14.6,-14.4,-15.6,-14.7,-14.2,-16.2,-15.7,-16.7,-15.4,-14.1,-14.9,-15.0,-14.1,-11.5,-10.2,-7.8,-8.1,-6.6,-6.6,-8.0,-6.5,-4.8,-7.2,-8.7,-9.0,-9.6,-7.1,-6.9,-4.8,-1.0,-1.0,-0.3,-0.1,-1.3,1.7,-0.8,-3.0,-2.4,-1.4,-0.3,-6.7,-9.9,-8.4,-9.8,-10.1,-8.8,-8.3,-8.0,-9.2,-8.3,-8.5,-5.6,-4.8,-5.0,-3.0,-5.2,-6.8,-6.0,-6.9,-7.7,-5.2,-4.1,-3.2,-3.3,-1.7,-2.9,-3.6,-3.1,-4.1,-6.2,-4.8,-4.6,-5.6,-3.4,-2.8,-2.3,-2.0,-1.3,-2.6,-3.0,-1.8,-0.9,1.3,3.1,3.4,4.1,2.5,3.6,5.2,4.1,6.0,-0.5,-3.2,-4.2,-2.4,-3.3,-1.2,-0.3,1.1,2.4,3.7,2.5,2.7,1.4,4.7,5.8,8.2,9.6,12.3,9.9,9.6,8.2,1.8,0.4,-2.6,-4.1,-2.7,-1.2,-4.2,0.1,0.5,-0.3,2.2,5.3,5.9,7.8,10.3,8.6,10.5,11.9,12.2,16.2,15.0,15.4,17.7,19.7,20.0,16.5,18.9,19.6,23.1,20.3,23.2,24.1,25.2,23.7,21.4,23.0,30.6,32.5,33.8,27.6,23.1,27.3,30.1,null],"1981":[0.0,-2.1,-1.2,-4.5,-5.0,-4.2,-6.9,-7.2,-3.7,-4.8,-2.4,-1.7,-1.2,-0.6,-1.3,-1.2,-0.9,-2.7,-3.4,-3.1,-3.7,-2.8,-3.0,-2.1,-3.0,-2.8,-5.6,-5.1,-4.1,-5.8,-4.0,-3.4,-2.8,-5.2,-9.0,-11.9,-10.8,-14.7,-17.3,-12.5,-10.9,-12.6,-13.0,-10.6,-10.0,-10.8,-10.7,-8.3,-7.4,-8.4,-9.1,-10.1,-10.1,-12.3,-14.7,-15.4,-11.7,-14.0,-16.1,-17.0,-17.0,-19.8,-20.3,-18.9,-17.9,-15.6,-14.8,-14.3,-13.0,-14.6,-12.4,-13.4,-15.7,-17.9,-19.3,-18.4,-21.3,-20.0,-21.0,-20.2,-18.5,-18.5,-21.5,-23.9,-23.8,-17.1,-14.1,-10.0,-11.3,-10.1,-9.5,-10.5,-3.9,-2.0,1.8,-1.9,4.3,2.3,0.5,-1.1,1.7,2.4,0.8,2.5,3.2,6.5,7.6,5.5,6.0,7.2,8.3,8.6,9.8,12.7,10.9,9.9,12.0,12.2,12.1,16.4,17.7,20.6,21.8,21.0,18.9,20.6,20.6,19.3,24.1,25.0,23.7,22.5,20.5,23.9,19.2,18.6,18.9,20.3,18.9,21.0,22.4,21.9,24.3,21.8,25.3,24.6,21.7,19.8,19.1,22.0,21.1,22.6,21.3,21.1,19.1,19.7,21.0,24.2,22.5,21.9,20.2,18.0,14.6,14.2,15.5,16.8,13.2,16.8,15.1,16.8,14.0,15.4,15.9,17.3,16.7,16.2,14.3,11.2,12.4,13.8,9.3,13.3,12.4,11.7,10.7,9.7,10.9,19.1,21.3,20.4,22.9,22.3,20.6,23.8,21.5,21.8,19.3,20.4,23.2,21.2,22.8,22.9,20.4,22.4,20.0,19.0,19.3,21.4,21.9],"1985":[0.0,2.6,4.7,8.4,9.1,11.3,10.9,9.6,11.9,9.4,7.9,9.4,10.4,9.4,10.3,10.6,11.3,10.0,12.6,14.5,15.0,15.8,15.9,14.3,15.8,17.2,17.6,18.1,19.2,17.5,17.0,15.1,13.7,14.4,15.2,15.0,11.7,11.2,10.8,11.9,12.6,14.3,14.6,17.0,18.4,21.0,23.1,23.5,24.0,28.3,28.9,28.1,28.8,25.8,27.3,26.1,29.4,31.1,34.3,37.2,38.6,37.8,44.5,42.6,46.0,39.7,44.2,48.1,48.0,43.4,45.3,42.2,47.5,51.1,50.1,50.1,51.3,52.5,53.8,48.0,44.4,46.8,43.5,44.7,51.0,52.9,54.5,53.0,40.9,41.9,41.9,42.8,43.9,45.9,45.6,49.1,50.2,49.4,50.2,52.3,53.5,51.1,52.6,50.9,50.6,58.1,62.7,65.0,67.4,71.1,70.9,74.4,73.6,77.6,77.1,82.2,80.9,83.5,78.7,75.3,72.0,76.0,79.2,75.6,72.4,77.2,79.3,84.3,87.5,87.7,86.7,88.4,92.2,88.9,94.7,97.3,104.1,105.2,99.8,93.5,96.7,92.4,95.6,100.4,90.0,72.7,51.6,53.8,53.0,50.1,47.8,46.8,36.8,43.8,52.2,54.0,51.0,48.7,54.0,50.6,57.1,53.3,57.4,59.8,60.3,63.3,61.9,65.6,57.9,58.2,64.6,58.7,58.9,59.7,57.3,56.9,54.6,54.8,62.8,65.7,65.4,67.3,66.0,65.0,66.2,61.0,66.2,65.7,60.4,59.0,58.7,61.6,63.0,65.4,64.8,66.1,69.9,68.3,73.3,70.2,68.8,63.7,62.8,63.3,66.1,69.3,68.8,69.8,69.7],"1989":[0.0,1.1,2.1,4.7,5.8,4.0,5.7,2.3,3.7,4.4,4.3,3.0,5.1,5.9,7.4,10.3,10.3,9.6,11.8,14.5,14.6,16.0,16.4,14.5,16.9,13.3,15.8,18.2,19.7,21.9,22.5,22.8,23.3,24.9,26.0,24.3,22.9,23.7,24.4,27.8,18.9,23.7,19.4,20.3,20.8,21.7,22.6,24.9,24.2,24.8,23.8,25.9,25.5,21.1,20.8,16.1,17.9,18.9,18.5,15.5,19.5,20.4,21.8,20.1,21.1,21.2,22.7,19.4,17.3,20.6,25.4,26.4,26.3,29.4,27.8,29.3,26.6,27.6,27.7,30.9,28.8,25.9,22.9,19.5,16.8,11.0,14.9,15.2,12.9,10.9,9.0,11.0,6.9,11.3,8.6,11.1,11.8,13.0,12.3,14.8,16.8,16.4,18.2,17.1,14.4,12.3,18.4,19.7,22.2,28.0,31.5,30.3,32.0,33.6,33.1,30.9,33.7,33.7,35.5,36.9,35.0,35.7,33.9,32.7,34.5,38.9,35.2,36.2,34.6,32.2,33.3,35.5,36.9,35.7,37.9,37.9,37.4,40.4,40.9,38.6,36.7,38.2,37.5,35.8,35.9,39.8,36.9,39.4,40.0,36.3,34.0,33.7,35.1,37.0,37.9,44.8,49.4,47.9,49.2,48.0,45.6,46.5,47.0,46.6,47.0,44.1,44.6,46.5,43.8,43.1,44.0,48.2,45.7,47.0,48.2,46.1,47.5,48.0,47.3,46.0,43.8,43.7,46.7,47.7,48.1,46.6,51.1,49.2,49.6,47.8,47.8,48.6,49.5,50.7,47.6,46.2,43.5,46.7,47.5,49.2,48.8,50.5,52.0,53.3,53.9,54.5,57.2,56.7,null],"1993":[0.0,-1.5,0.3,0.1,0.7,3.0,2.0,-0.3,1.8,2.4,3.2,3.3,2.8,1.3,1.4,3.0,0.3,1.0,1.5,0.9,2.3,3.3,3.3,2.7,1.8,2.7,2.3,2.8,2.3,2.6,2.9,3.0,3.3,4.7,5.7,5.9,6.0,5.3,5.0,5.9,5.6,7.8,6.3,7.4,5.5,6.8,6.2,6.3,6.7,6.5,7.0,7.3,7.1,7.8,9.0,9.0,9.9,7.8,7.9,7.3,7.0,6.7,7.1,8.1,5.7,2.3,2.6,2.4,2.7,3.5,2.8,1.9,4.4,5.0,5.6,5.3,5.2,1.6,2.4,3.2,4.2,4.0,5.2,4.9,6.0,6.4,8.7,8.1,7.5,8.1,5.5,6.2,4.5,7.7,6.7,8.7,6.1,6.1,5.9,3.8,4.0,2.6,5.3,5.5,5.4,5.7,6.9,6.7,8.0,9.9,10.5,10.6,12.0,11.4,12.4,13.7,15.0,14.9,16.2,16.9,16.7,18.1,19.4,20.6,19.2,20.2,22.2,21.2,23.9,26.2,25.0,27.7,28.5,27.1,29.2,28.3,27.4,28.3,28.5,29.4,31.4,33.9,33.5,34.1,33.7,34.1,34.8,33.0,35.5,36.0,37.7,37.7,39.3,41.7,41.5,40.4,41.4,41.5,38.1,40.4,42.7,45.9,50.6,48.7,51.3,47.9,45.4,47.2,49.3,48.1,50.5,46.1,48.1,50.0,47.3,49.7,53.5,55.7,53.6,54.5,52.8,53.0,53.9,50.9,48.3,46.6,45.9,52.0,52.0,52.7,53.1,49.6,50.5,56.2,57.7,57.5,61.0,60.8,63.1,60.9,61.5,67.7,69.3,71.8,73.7,69.7,67.2,71.9,73.7],"1997":[0.0,1.5,3.8,3.0,5.1,5.6,8.1,7.2,5.7,7.6,6.0,4.8,3.5,1.3,-1.4,2.4,2.3,8.7,10.3,10.9,13.2,13.4,14.7,19.4,20.1,18.6,22.6,22.5,22.4,25.5,26.6,24.8,20.4,23.5,20.2,24.2,23.5,27.1,26.4,29.0,29.3,26.2,25.9,22.3,24.0,24.1,28.8,27.7,31.5,27.5,26.6,25.2,30.3,24.0,28.5,28.0,31.0,35.4,36.4,38.3,40.3,41.1,42.9,46.9,46.4,50.1,48.5,50.1,48.1,49.9,48.1,48.2,48.5,45.8,48.9,46.9,47.1,51.5,53.3,55.7,58.7,52.5,49.8,45.6,42.1,44.5,37.3,30.2,34.9,36.4,39.7,34.0,31.6,41.2,43.1,46.9,52.5,50.5,55.5,59.4,57.3,55.9,58.8,63.9,64.3,70.5,66.2,63.8,71.1,65.7,64.4,65.7,65.5,70.5,73.1,73.7,71.5,73.0,80.3,76.3,81.4,78.5,79.8,78.8,77.8,74.0,77.5,72.9,79.5,75.8,86.0,87.6,89.7,81.4,77.6,73.8,77.5,78.7,80.2,81.4,80.7,78.5,70.8,71.5,78.6,66.8,74.0,82.2,83.2,86.6,90.1,89.4,91.6,89.4,90.0,95.0,96.4,92.7,95.9,92.7,81.8,90.4,85.4,80.0,78.2,88.4,86.5,95.8,104.2,100.3,102.7,81.4,91.8,94.2,91.5,90.0,88.1,84.2,97.5,94.8,95.8,92.7,94.5,97.7,101.9,97.9,89.8,95.6,96.8,99.4,101.4,103.3,99.8,96.0,93.7,92.0,88.4,83.7,86.7,84.4,90.7,82.6,82.8,79.4,75.8,83.1,75.4,74.6,76.5],"2001":[0.0,1.6,3.4,4.4,3.9,1.3,0.2,-4.0,-4.9,-5.0,-11.4,-12.2,-10.6,-13.1,-8.8,-4.3,-3.5,-2.4,-4.1,-0.5,-1.6,-2.9,-2.6,-6.5,-5.6,-5.7,-8.3,-6.4,-6.7,-7.1,-6.5,-8.3,-10.5,-8.7,-12.7,-16.4,-15.9,-25.6,-19.8,-17.5,-15.9,-17.3,-14.9,-16.3,-13.7,-12.3,-11.4,-12.2,-10.8,-13.5,-11.8,-10.6,-9.7,-11.8,-13.2,-12.7,-13.6,-15.6,-15.0,-16.1,-12.8,-10.3,-10.2,-11.5,-11.6,-13.5,-14.4,-13.3,-17.1,-17.3,-18.7,-14.8,-16.5,-17.8,-20.9,-22.4,-23.8,-23.8,-23.8,-29.0,-34.7,-34.3,-33.4,-30.0,-28.5,-27.5,-29.4,-31.1,-31.5,-34.9,-36.3,-38.3,-35.7,-31.9,-30.9,-30.6,-31.1,-29.9,-28.3,-27.9,-29.7,-31.5,-31.0,-32.6,-30.0,-28.6,-30.5,-33.7,-34.1,-36.1,-35.7,-34.7,-35.2,-36.2,-35.8,-31.0,-33.5,-32.3,-33.1,-31.2,-30.8,-28.4,-28.1,-27.3,-28.1,-25.8,-23.9,-23.9,-23.3,-24.8,-24.1,-23.1,-23.5,-23.1,-24.5,-24.7,-23.7,-23.5,-22.4,-21.3,-21.5,-20.2,-23.2,-20.7,-20.0,-20.0,-20.8,-19.1,-18.9,-19.1,-20.3,-18.5,-18.2,-17.3,-16.2,-15.6,-14.6,-13.6,-12.2,-12.1,-12.9,-12.0,-11.7,-11.9,-11.8,-10.9,-13.7,-14.5,-14.7,-12.1,-12.2,-12.6,-12.2,-14.7,-15.4,-15.6,-15.8,-13.7,-13.5,-12.5,-12.6,-12.6,-13.3,-14.3,-15.2,-16.3,-15.1,-18.1,-18.0,-15.4,-14.7,-14.2,-13.4,-13.1,-14.5,-12.9,-13.6,-14.6,-15.6,-13.0,-10.2,-8.8,-9.9,-8.9,-8.3,-8.5,-8.0,-6.8,-6.7],"2005":[0.0,-0.1,-1.5,-1.3,1.4,1.6,1.3,2.1,3.0,1.2,0.3,-1.2,-1.1,-0.4,-3.7,-2.9,-2.5,-1.3,-2.7,0.3,1.1,0.8,1.0,2.6,0.5,0.7,2.2,3.5,4.0,4.0,3.4,3.7,2.8,1.6,2.7,4.7,4.4,2.5,3.6,0.8,0.0,-0.6,1.0,2.9,4.1,5.2,6.9,6.7,6.2,6.8,7.0,5.2,8.4,8.6,6.3,8.2,6.6,6.8,8.5,8.7,8.5,8.0,10.2,9.8,9.2,9.2,8.7,10.5,10.5,11.8,8.9,6.8,7.9,8.6,5.6,5.5,4.9,7.1,6.7,4.2,4.6,7.8,7.9,6.8,9.8,9.2,10.5,9.5,11.3,10.8,12.6,13.8,15.1,15.4,16.1,15.0,16.4,18.1,18.1,17.7,18.9,20.3,18.9,19.6,18.8,20.6,20.6,19.9,22.1,21.2,22.7,22.3,16.9,18.3,16.9,21.1,19.8,21.7,22.5,25.1,26.0,26.9,26.9,28.4,27.8,29.5,27.1,29.2,26.7,26.7,29.0,30.9,29.3,23.0,20.8,22.5,21.9,24.7,24.3,22.5,25.1,28.6,28.7,31.3,31.7,26.5,29.4,27.3,22.6,23.0,21.5,24.9,26.8,23.8,25.1,24.6,19.0,18.1,11.7,12.2,17.6,12.2,13.8,14.1,12.2,9.0,8.6,12.1,10.9,15.5,12.4,17.2,17.8,19.2,17.0,20.2,16.0,18.1,14.7,14.7,11.1,7.8,6.5,4.5,6.3,6.0,6.2,9.3,9.4,8.9,8.1,4.7,5.5,5.8,2.3,-7.3,-24.2,-20.7,-26.1,-18.3,-21.5,-26.4,-32.6,-24.4,-26.1,-25.8,-25.1,-26.4,null],"2009":[0.0,-4.4,-8.8,-10.7,-11.4,-6.8,-11.3,-17.4,-21.1,-26.7,-18.8,-17.5,-12.4,-9.6,-8.1,-6.7,-7.0,-5.8,-0.3,-5.3,-4.8,-1.4,0.9,1.5,-1.1,-1.4,-3.8,-5.7,0.9,5.1,6.0,8.4,7.8,10.1,10.4,9.1,11.9,14.6,12.1,10.0,15.0,16.7,15.9,11.2,14.8,17.4,17.1,17.1,18.7,18.7,18.3,20.9,19.7,22.9,21.9,17.2,15.2,14.4,15.4,19.0,18.5,22.2,23.4,24.5,25.2,26.4,28.2,27.9,30.6,27.4,19.2,21.9,16.7,16.9,14.3,17.1,19.9,15.6,9.7,15.7,14.3,18.3,18.2,20.4,15.8,15.0,14.3,18.5,19.1,20.8,23.3,23.0,25.0,26.2,27.0,27.0,31.6,28.7,28.8,27.6,31.4,33.1,33.5,34.9,35.0,36.5,38.8,37.7,37.0,40.7,42.6,44.1,41.6,41.8,40.0,37.3,41.0,43.0,42.5,41.6,43.5,46.3,43.8,43.6,43.1,42.9,39.5,36.4,36.5,36.1,43.8,44.2,41.2,44.3,38.7,28.7,26.5,20.6,26.3,26.0,23.9,30.5,22.0,21.4,24.0,31.4,32.9,37.9,34.5,35.6,30.5,24.3,33.5,34.7,30.9,35.8,35.0,37.1,38.3,41.2,41.3,44.3,44.1,46.1,46.6,47.0,47.1,50.7,49.9,51.2,50.0,47.1,47.9,50.6,46.9,45.2,39.0,41.4,37.2,42.3,44.1,43.3,46.2,45.4,45.6,46.2,48.7,49.3,50.9,52.2,51.4,51.0,54.3,57.3,56.7,54.6,56.8,53.3,53.8,51.5,51.8,48.1,45.9,51.2,52.0,52.2,51.7,53.5,50.5],"2013":[0.0,0.4,1.3,2.5,3.2,3.5,3.6,3.4,3.5,5.8,6.4,6.2,7.0,5.9,8.3,6.1,7.9,10.1,11.4,13.7,12.5,11.2,12.1,10.9,8.6,9.5,11.3,14.6,15.4,15.4,16.6,15.3,12.9,13.4,11.4,12.9,15.1,16.6,15.4,15.3,16.1,19.0,20.0,20.1,20.7,22.6,23.1,23.1,23.1,21.1,24.0,25.6,24.9,25.6,25.4,22.1,21.6,22.5,25.4,25.2,26.8,28.1,25.5,27.3,26.7,27.2,23.8,27.2,27.1,28.3,28.1,28.1,29.6,31.2,32.9,32.0,33.8,33.7,35.4,34.2,34.9,34.9,31.3,31.7,33.3,35.6,36.6,36.9,35.4,37.1,35.2,34.2,30.0,28.7,34.0,37.6,38.6,39.1,40.7,41.0,41.5,36.5,41.2,42.4,40.4,39.4,37.7,39.9,36.0,40.2,43.0,43.9,43.5,41.2,40.0,43.8,40.5,40.9,43.3,41.9,44.4,43.8,44.3,44.8,45.0,43.7,42.7,42.8,43.9,43.3,41.6,41.6,45.0,41.8,43.5,41.7,42.6,34.4,35.6,31.0,33.7,33.5,31.7,33.1,37.4,38.6,41.5,41.8,43.1,38.0,42.5,42.5,42.6,37.2,36.8,40.5,39.4,31.1,28.2,30.0,32.3,28.2,27.2,30.8,32.8,36.4,37.9,39.8,38.8,41.3,39.6,41.9,42.6,40.8,40.3,39.6,39.9,43.1,43.1,42.9,41.2,38.9,43.4,45.2,47.4,48.3,48.2,48.9,48.9,48.9,47.9,48.7,45.1,45.9,47.6,47.9,46.9,45.4,46.0,45.0,42.2,47.6,48.8,50.9,49.5,54.1,54.0,54.4,52.7],"2017":[0.0,-0.1,-0.2,0.8,0.9,1.7,3.3,4.0,4.7,4.2,4.4,2.9,3.8,3.5,2.3,3.1,4.7,5.4,5.0,4.6,6.1,7.1,6.8,6.9,7.1,6.4,6.5,8.0,8.6,8.6,8.8,7.2,6.5,7.3,8.8,8.1,9.8,9.9,10.6,12.0,12.1,13.1,13.4,13.7,13.4,13.3,14.3,16.0,16.4,17.5,17.8,17.4,20.5,22.4,23.4,26.2,21.3,15.0,20.0,20.7,18.2,22.4,20.9,13.7,16.0,14.4,16.7,17.3,17.3,17.0,19.8,19.1,19.5,20.1,22.0,22.1,21.0,19.4,21.2,23.0,23.1,23.8,24.7,24.4,25.2,26.3,27.4,26.1,27.6,28.7,28.0,26.7,21.5,21.6,16.8,19.6,22.1,20.2,15.6,21.2,15.6,14.2,6.1,9.2,11.2,14.0,17.3,17.0,18.9,18.9,21.9,22.6,23.1,20.5,24.0,23.0,24.5,27.0,27.7,27.6,29.1,29.4,26.5,25.6,24.1,20.9,26.2,26.8,29.6,29.2,31.3,32.4,30.7,32.9,28.8,28.2,26.9,25.0,28.5,30.8,32.1,31.4,30.1,29.6,30.4,31.1,32.7,34.7,35.8,37.0,36.6,37.9,38.2,39.2,41.5,42.3,42.1,43.4,46.2,44.7,41.7,46.1,48.4,46.6,29.7,30.5,19.1,1.2,11.6,9.3,22.5,26.2,24.6,24.3,28.7,25.8,29.8,33.7,40.3,33.6,36.0,32.2,37.5,39.9,41.6,41.2,43.7,47.2,48.1,49.2,54.1,50.5,46.7,45.8,44.9,47.1,52.7,53.0,52.2,43.6,54.1,57.5,56.2,59.8,62.5,60.9,62.9,62.6,null],"2021":[0.0,1.8,0.3,2.3,-1.1,3.5,4.8,4.0,1.5,2.3,5.0,4.2,5.8,7.0,9.9,11.4,11.3,11.3,12.7,11.1,10.6,11.9,12.6,13.1,10.9,14.0,15.9,16.3,15.2,17.5,17.0,18.1,19.0,18.3,20.1,20.7,18.7,18.0,18.6,16.0,16.9,19.0,21.0,22.6,25.1,24.7,25.1,22.3,20.8,25.5,23.0,25.8,26.9,24.5,24.1,17.1,18.0,19.8,17.6,15.8,16.7,15.2,11.9,18.8,21.0,21.0,19.5,16.9,13.7,10.0,9.8,7.1,3.9,10.7,9.4,3.9,-2.2,4.1,1.8,3.8,2.9,5.5,10.0,10.4,14.0,12.6,8.0,4.5,8.3,3.1,-1.7,-4.5,-3.1,-4.6,-0.1,3.9,0.4,6.3,5.6,7.2,8.4,4.7,2.6,2.4,2.2,3.7,6.5,5.8,8.4,10.1,8.9,8.6,5.7,7.7,2.8,4.3,5.7,9.4,9.3,10.2,10.0,11.0,10.1,9.8,11.6,12.0,14.0,14.5,17.4,15.8,18.5,17.1,20.0,20.8,22.0,19.2,18.8,16.3,17.3,20.2,18.7,18.5,15.0,14.2,14.7,15.2,12.5,9.6,16.0,17.5,20.2,21.4,22.3,22.6,25.6,26.6,27.0,25.1,27.4,28.9,30.2,32.0,33.8,33.3,35.5,36.8,36.4,36.2,39.4,39.9,38.6,36.4,32.2,35.8,36.5,39.0,41.2,41.2,40.5,42.4,44.6,45.5,45.4,48.2,49.5,46.6,45.3,42.3,42.3,47.9,50.0,50.4,44.0,49.8,51.8,52.8,53.1,54.8,56.1,54.6,52.5,59.6,56.3,58.9,60.6,62.1,61.1,57.9,59.0]},"current":[0.0,-1.9,0.9,2.7,1.7,1.4,2.9,1.2,0.2,-2.9,-5.1,-4.6,-6.1,-14.6,-9.7,-11.1,-7.0,-4.3,-4.8,0.3,-2.4,-0.5,1.0,0.6,0.4,3.9,5.7,5.3,6.0,7.5,5.0,7.5,8.5,8.8,8.7,9.1,10.8,12.1,11.8,13.0,10.3,12.1,14.3,15.1,13.2,13.3,11.1,15.3,15.6,14.9,15.0,16.6,15.4,17.2,16.8,16.4,16.8,16.7,15.0,16.3,15.8,13.4,11.6,9.5,7.2,10.8,14.7,19.9,20.6,21.7,24.5,24.7,25.8,27.6,24.3,25.1,26.2,23.8,25.9,27.5,25.5,24.7,26.0,30.5,31.0,29.1,29.8,29.9,28.9,28.7,30.3,30.0,31.5,28.9,28.3,27.6,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"marks":{"years":[0.0,52.14,104.29,156.43,208.71],"midterm":95.86,"presidential":200.86},"scatter":[{"cycle":1949,"before":27.2,"after":20.5,"to_dec":5.1},{"cycle":1953,"before":19.4,"after":43.6,"to_dec":13.6},{"cycle":1957,"before":10.0,"after":16.7,"to_dec":8.0},{"cycle":1961,"before":-1.1,"after":30.7,"to_dec":11.0},{"cycle":1965,"before":-5.3,"after":20.2,"to_dec":0.1},{"cycle":1969,"before":-19.9,"after":22.6,"to_dec":10.7},{"cycle":1973,"before":-38.4,"after":23.0,"to_dec":-4.3},{"cycle":1977,"before":-8.4,"after":10.8,"to_dec":3.1},{"cycle":1981,"before":-1.9,"after":23.3,"to_dec":5.2},{"cycle":1985,"before":49.1,"after":1.3,"to_dec":1.0},{"cycle":1989,"before":11.1,"after":34.5,"to_dec":2.9},{"cycle":1993,"before":8.7,"after":30.0,"to_dec":-3.1},{"cycle":1997,"before":46.9,"after":33.7,"to_dec":11.9},{"cycle":2001,"before":-30.6,"after":23.0,"to_dec":0.8},{"cycle":2005,"before":15.0,"after":3.5,"to_dec":3.3},{"cycle":2009,"before":27.0,"after":6.3,"to_dec":6.3},{"cycle":2013,"before":37.6,"after":1.3,"to_dec":2.0},{"cycle":2017,"before":19.6,"after":18.8,"to_dec":-7.0},{"cycle":2021,"before":3.9,"after":22.3,"to_dec":-1.6}],"lows":[{"midterm":1950,"low":"1950-01-13","ret":26.6},{"midterm":1954,"low":"1954-01-01","ret":45.0},{"midterm":1958,"low":"1958-01-10","ret":38.1},{"midterm":1962,"low":"1962-06-22","ret":33.4},{"midterm":1966,"low":"1966-10-07","ret":32.9},{"midterm":1970,"low":"1970-05-22","ret":39.8},{"midterm":1974,"low":"1974-10-04","ret":37.9},{"midterm":1978,"low":"1978-03-03","ret":10.9},{"midterm":1982,"low":"1982-08-06","ret":56.0},{"midterm":1986,"low":"1986-01-10","ret":25.6},{"midterm":1990,"low":"1990-10-12","ret":27.1},{"midterm":1994,"low":"1994-06-24","ret":24.1},{"midterm":1998,"low":"1998-01-09","ret":37.4},{"midterm":2002,"low":"2002-10-04","ret":28.6},{"midterm":2006,"low":"2006-07-14","ret":25.6},{"midterm":2010,"low":"2010-07-02","ret":31.0},{"midterm":2014,"low":"2014-01-31","ret":11.9},{"midterm":2018,"low":"2018-12-21","ret":33.3},{"midterm":2022,"low":"2022-10-14","ret":20.8}]};
+const NS = 'http://www.w3.org/2000/svg';
+const sg = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(1) + '%';
+const cyc = y => y + '–' + String((+y + 3) % 100).padStart(2, '0');
+function el(tag, attrs, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function tipFor(fig) {
+  const tip = fig.querySelector('.viz-tip');
+  return {
+    show(html, evt) {
+      tip.innerHTML = html; tip.style.opacity = 1;
+      const r = fig.getBoundingClientRect();
+      let x = evt.clientX - r.left + 14, y = evt.clientY - r.top - 12;
+      if (x + tip.offsetWidth > r.width) x = evt.clientX - r.left - tip.offsetWidth - 14;
+      tip.style.left = Math.max(0, x) + 'px'; tip.style.top = Math.max(0, y - tip.offsetHeight) + 'px';
+    },
+    hide() { tip.style.opacity = 0; }
+  };
+}
+const YEARS = ['Post-election year', 'Midterm year', 'Pre-election year', 'Election year'];
+
+// Chart 1: every cycle, bands, average and the current cycle
+(function () {
+  const fig = document.getElementById('viz1'), tip = tipFor(fig), s = document.getElementById('viz1-s');
+  const W = 760, H = 420, L = 52, R = 14, T = 40, B = 30;
+  const x0 = -1, x1 = 210, y0 = -50, y1 = 110;
+  const xs = w => L + (w - x0) / (x1 - x0) * (W - L - R);
+  const ys = v => T + (y1 - v) / (y1 - y0) * (H - T - B);
+  const wk = D.weeks;
+  const line = arr => { let d = '', pen = false; arr.forEach((v, i) => { if (v == null) { pen = false; return; } d += (pen ? 'L' : 'M') + xs(wk[i]).toFixed(1) + ',' + ys(v).toFixed(1); pen = true; }); return d; };
+  const area = (lo, hi) => { const idx = wk.map((_, i) => i).filter(i => lo[i] != null && hi[i] != null);
+    return 'M' + idx.map(i => xs(wk[i]).toFixed(1) + ',' + ys(hi[i]).toFixed(1)).join('L') + 'L' + idx.reverse().map(i => xs(wk[i]).toFixed(1) + ',' + ys(lo[i]).toFixed(1)).join('L') + 'Z'; };
+  for (let v = -40; v <= 100; v += 20) {
+    el('line', { x1: L, x2: W - R, y1: ys(v), y2: ys(v), stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+    el('text', { x: L - 8, y: ys(v) + 4, 'text-anchor': 'end', class: 'tick' }, s, (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v) + '%');
+  }
+  D.marks.years.forEach((w, i) => {
+    if (i > 0 && i < 4) el('line', { x1: xs(w), x2: xs(w), y1: T - 6, y2: H - B, stroke: 'var(--line-2)', 'stroke-width': 1 }, s);
+    if (i < 4) el('text', { x: (xs(w) + xs(D.marks.years[i + 1])) / 2, y: T - 22, 'text-anchor': 'middle', class: 'lab' }, s, YEARS[i]);
+  });
+  [['midterm', 'Midterm election'], ['presidential', 'Presidential election']].forEach(([k, lab]) => {
+    el('line', { x1: xs(D.marks[k]), x2: xs(D.marks[k]), y1: T, y2: H - B, stroke: 'var(--c-ref)', 'stroke-width': 1, 'stroke-dasharray': '2 3' }, s);
+    el('text', { x: xs(D.marks[k]) - 5, y: T + 12, 'text-anchor': 'end', class: 'tick' }, s, lab);
+  });
+  [0, 52, 104, 156, 208].forEach(w => el('text', { x: xs(w), y: H - B + 18, 'text-anchor': 'middle', class: 'tick' }, s, 'week ' + w));
+  el('path', { d: area(D.min, D.max), fill: 'var(--c-hist)', 'fill-opacity': 0.08 }, s);
+  el('path', { d: area(D.q25, D.q75), fill: 'var(--c-hist)', 'fill-opacity': 0.24 }, s);
+  Object.values(D.cycles).forEach(c => el('path', { d: line(c), fill: 'none', stroke: 'var(--ink-3)', 'stroke-width': 0.7, 'stroke-opacity': 0.22 }, s));
+  el('line', { x1: L, x2: W - R, y1: ys(0), y2: ys(0), stroke: 'var(--c-ref)', 'stroke-width': 1, 'stroke-dasharray': '4 4' }, s);
+  el('path', { d: line(D.mean), fill: 'none', stroke: 'var(--c-hist)', 'stroke-width': 2.2 }, s);
+  el('path', { d: line(D.current), fill: 'none', stroke: 'var(--bg)', 'stroke-width': 5 }, s);
+  el('path', { d: line(D.current), fill: 'none', stroke: 'var(--c-cur)', 'stroke-width': 2.6 }, s);
+  const nw = D.now_week, nv = D.current[nw];
+  el('circle', { cx: xs(nw), cy: ys(nv), r: 5, fill: 'var(--c-cur)', stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+  el('text', { x: xs(nw), y: ys(nv) - 14, 'text-anchor': 'middle', class: 'cur-lab' }, s, 'We are here: ' + sg(nv));
+  el('text', { x: xs(wk[wk.length - 1]) - 2, y: ys(D.mean[wk.length - 1]) - 10, 'text-anchor': 'end', class: 'tick' }, s, 'average ' + sg(D.mean[wk.length - 1]));
+  // hover: crosshair and values of the week
+  const cross = el('line', { x1: 0, x2: 0, y1: T, y2: H - B, stroke: 'var(--ink-3)', 'stroke-width': 1, opacity: 0 }, s);
+  const dm = el('circle', { r: 4.5, fill: 'var(--c-hist)', stroke: 'var(--bg)', 'stroke-width': 2, opacity: 0 }, s);
+  const dc = el('circle', { r: 4.5, fill: 'var(--c-cur)', stroke: 'var(--bg)', 'stroke-width': 2, opacity: 0 }, s);
+  const hit = el('rect', { x: L, y: T, width: W - L - R, height: H - T - B, fill: 'transparent' }, s);
+  hit.addEventListener('mousemove', e => {
+    const p = s.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+    const q = p.matrixTransform(s.getScreenCTM().inverse());
+    const i = Math.max(0, Math.min(wk.length - 1, Math.round(x0 + (q.x - L) / (W - L - R) * (x1 - x0))));
+    if (D.mean[i] == null) return;
+    cross.setAttribute('x1', xs(wk[i])); cross.setAttribute('x2', xs(wk[i])); cross.setAttribute('opacity', 1);
+    dm.setAttribute('cx', xs(wk[i])); dm.setAttribute('cy', ys(D.mean[i])); dm.setAttribute('opacity', 1);
+    const c = D.current[i];
+    if (c != null) { dc.setAttribute('cx', xs(wk[i])); dc.setAttribute('cy', ys(c)); dc.setAttribute('opacity', 1); } else dc.setAttribute('opacity', 0);
+    const yr = YEARS[Math.min(3, D.marks.years.filter(w => w <= wk[i]).length - 1)];
+    tip.show('<b>Week ' + wk[i] + '</b> &middot; ' + yr + '<br>average: ' + sg(D.mean[i]) + ' &middot; median: ' + sg(D.median[i]) +
+             '<br>middle 50%: ' + sg(D.q25[i]) + ' to ' + sg(D.q75[i]) + '<br>range: ' + sg(D.min[i]) + ' to ' + sg(D.max[i]) +
+             (c != null ? '<br><b>2025–28: ' + sg(c) + '</b>' : ''), e);
+  });
+  hit.addEventListener('mouseleave', () => { tip.hide(); [cross, dm, dc].forEach(n => n.setAttribute('opacity', 0)); });
+})();
+
+// Chart 2: level before the midterm vs what followed
+(function () {
+  const fig = document.getElementById('viz2'), tip = tipFor(fig), s = document.getElementById('viz2-s');
+  const W = 760, H = 380, L = 52, R = 14, T = 14, B = 44;
+  const x0 = -45, x1 = 55, y0 = -5, y1 = 50;
+  const xs = v => L + (v - x0) / (x1 - x0) * (W - L - R);
+  const ys = v => T + (y1 - v) / (y1 - y0) * (H - T - B);
+  const fmt = v => (v > 0 ? '+' : v < 0 ? '−' : '') + Math.abs(v) + '%';
+  for (let v = 0; v <= 50; v += 10) {
+    el('line', { x1: L, x2: W - R, y1: ys(v), y2: ys(v), stroke: v === 0 ? 'var(--c-ref)' : 'var(--c-grid)', 'stroke-width': 1, 'stroke-dasharray': v === 0 ? '4 4' : null }, s);
+    el('text', { x: L - 8, y: ys(v) + 4, 'text-anchor': 'end', class: 'tick' }, s, fmt(v));
+  }
+  for (let v = -40; v <= 50; v += 10) {
+    el('line', { x1: xs(v), x2: xs(v), y1: T, y2: H - B, stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+    el('text', { x: xs(v), y: H - B + 17, 'text-anchor': 'middle', class: 'tick' }, s, fmt(v));
+  }
+  el('text', { x: (L + W - R) / 2, y: H - 6, 'text-anchor': 'middle', class: 'tick' }, s, 'return from the start of the cycle to the week before the midterm');
+  el('text', { x: L + 6, y: T + 12, class: 'tick' }, s, 'then to the end of the pre-election year');
+  const now = D.current[D.now_week];
+  el('line', { x1: xs(now), x2: xs(now), y1: T, y2: H - B, stroke: 'var(--c-cur)', 'stroke-width': 2 }, s);
+  el('text', { x: xs(now) + 6, y: ys(47), class: 'cur-lab' }, s, '2025–28 today');
+  const n = D.scatter.length, mx = D.scatter.reduce((a, r) => a + r.before, 0) / n, my = D.scatter.reduce((a, r) => a + r.after, 0) / n;
+  const sl = D.scatter.reduce((a, r) => a + (r.before - mx) * (r.after - my), 0) / D.scatter.reduce((a, r) => a + (r.before - mx) ** 2, 0);
+  el('line', { x1: xs(-42), x2: xs(52), y1: ys(my + sl * (-42 - mx)), y2: ys(my + sl * (52 - mx)), stroke: 'var(--c-hist)', 'stroke-width': 1.5, 'stroke-dasharray': '6 4', 'stroke-opacity': 0.8 }, s);
+  const label = new Set([1985, 2013, 1997, 1953, 1973, 2001]), above = new Set([1973]);
+  D.scatter.forEach(r => {
+    el('circle', { cx: xs(r.before), cy: ys(r.after), r: 6, fill: 'var(--c-hist)', stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+    if (label.has(r.cycle)) el('text', above.has(r.cycle) ? { x: xs(r.before), y: ys(r.after) + 21, 'text-anchor': 'middle', class: 'tick' } : { x: xs(r.before) + 9, y: ys(r.after) + 4, class: 'tick' }, s, cyc(r.cycle));
+    const hit = el('circle', { cx: xs(r.before), cy: ys(r.after), r: 14, fill: 'transparent' }, s);
+    hit.addEventListener('mousemove', e => tip.show('<b>' + cyc(r.cycle) + ' cycle</b><br>up to the week before the midterm: ' + sg(r.before) +
+      '<br>then to the end of the midterm year: ' + sg(r.to_dec) + '<br>then to the end of the pre-election year: ' + sg(r.after), e));
+    hit.addEventListener('mouseleave', () => tip.hide());
+  });
+})();
+
+// tables
+(function () {
+  const tb = document.querySelector('#t-all tbody');
+  D.scatter.forEach(r => tb.insertAdjacentHTML('beforeend', '<tr><td>' + cyc(r.cycle) + '</td><td class="num">' + sg(r.before) + '</td><td class="num">' + sg(r.to_dec) + '</td><td class="num">' + sg(r.after) + '</td></tr>'));
+  const tl = document.querySelector('#t-lows tbody');
+  const d = s => new Date(s + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  D.lows.forEach(r => tl.insertAdjacentHTML('beforeend', '<tr><td>' + r.midterm + '</td><td>' + d(r.low) + '</td><td class="num">' + sg(r.ret) + '</td></tr>'));
+})();
+</script>
+</body>
+</html>
