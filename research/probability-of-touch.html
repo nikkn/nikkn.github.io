@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Probability of touch vs finishing ITM: is it really 2x?</title>
+<meta name="description" content="469 stocks and the S&amp;P 500 since 1990: the 2x rule holds on average. Only two things break it: earnings gaps, where the day of the touch decides, and the trend, which splits calls and puts.">
+<link rel="canonical" href="https://nikolai-alexander.com/research/probability-of-touch.html">
+<link rel="alternate" type="application/rss+xml" title="Research | Nikolai Alexander" href="https://nikolai-alexander.com/research/feed.xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Is the probability of touch really twice the probability of finishing in the money?">
+<meta property="og:description" content="469 S&amp;P 500 stocks over ten years and the index since 1990: where the 2x rule holds, and the only two things that break it.">
+<meta property="og:url" content="https://nikolai-alexander.com/research/probability-of-touch.html">
+<meta property="og:image" content="https://nikolai-alexander.com/research/img/probability-of-touch.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ratio of the probability of touching a strike to the probability of finishing beyond it, by group, against the textbook value of 2.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css?v=3">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Is the probability of touch really twice the probability of finishing in the money?",
+  "description": "A test of the rule of thumb that a strike is touched twice as often as it finishes in the money, on 469 S&P 500 stocks over ten years and the S&P 500 index since 1990, including 18,462 earnings reports: the rule holds on average, and only the trend and earnings gaps break it.",
+  "datePublished": "2026-11-02",
+  "dateModified": "2026-11-02",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "10+ years of quantitative research on financial markets",
+             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+  "about": ["probability of touch", "probability of expiring in the money", "reflection principle", "earnings gap", "option selling", "S&P 500"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/research/probability-of-touch.html"
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="/count.js"></script>
+<style>
+.brand-text { font: 600 17px var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+.article { max-width: 760px; padding: 48px 0 24px; }
+.article h1 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.015em; }
+.article h2 { margin-top: 48px; }
+.article .lede { font-size: 19px; color: var(--ink-2); }
+.byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+.findings { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px 22px; margin: 26px 0 8px; }
+.findings p { font: 600 12.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 10px; }
+.findings ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.article table { font-size: 14.5px; }
+.article td, .article th { white-space: nowrap; padding-right: 14px; }
+.article td.num, .article th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.article th.grp { text-align: center; border-bottom: 1px solid var(--line); }
+.small { font-size: 14px; color: var(--ink-3); }
+.tnote { margin-top: 4px; }
+
+/* charts */
+.viz { --c-put: #e34948; --c-call: #008300; --c-avg: var(--ink-2); --c-ref: var(--ink-3); --c-grid: var(--line);
+       position: relative; margin: 22px 0 6px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .viz { --c-put: #e66767; --c-call: #22a322; }
+}
+:root[data-theme="dark"] .viz { --c-put: #e66767; --c-call: #22a322; }
+.viz-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--ink-2); margin-bottom: 6px; }
+.viz-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.viz-legend svg { width: 13px; height: 12px; display: inline-block; }
+.viz-legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+.viz-legend i.dot { width: 11px; height: 11px; border-radius: 50%; }
+.viz-legend i.dash { height: 0; border-top: 2px dashed var(--c-ref); background: none; }
+.viz svg { width: 100%; height: auto; display: block; overflow: visible; }
+.viz text { font-family: var(--sans); fill: var(--ink-2); }
+.viz .grp { font-weight: 600; fill: var(--ink); font-size: 12.5px; }
+.viz-title { font-weight: 600; font-size: 14.5px; color: var(--ink); margin: 0 0 6px; }
+.viz .tick { font-size: 11px; fill: var(--ink-3); }
+.viz-tip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s; background: var(--ink); color: var(--bg);
+           font-size: 12.5px; line-height: 1.45; padding: 7px 10px; border-radius: 4px; white-space: nowrap; z-index: 5; }
+.viz + .table-scroll { margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="brand-text">nikolai-alexander.com</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/research/" aria-current="page">Research</a>
+      <a href="/#projects">Projects</a>
+      <a href="/#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="article">
+  <p class="eyebrow">Options research</p>
+  <h1>Is the probability of touch really twice the probability of finishing in the money?</h1>
+  <p class="byline">By <a href="/#about">Nikolai Alexander</a> &middot; 2 November 2026 &middot; stocks 2016&ndash;2026, S&amp;P 500 since 1990</p>
+  <p class="lede">Option sellers learn a rule of thumb: a strike is touched about twice as often as it finishes in the money. I tested it on 469 S&amp;P 500 stocks over ten years, on the S&amp;P 500 index since 1990 and on 18,462 earnings reports. On average the rule holds remarkably well. Only two things break it: earnings gaps, and the trend.</p>
+
+  <div class="findings">
+    <p>Key findings</p>
+    <ul>
+      <li>On average, with calls and puts taken together, the rule holds: across 469 stocks, a strike one standard deviation away was touched 1.96 to 2.02 times as often as it finished beyond the strike; on the S&amp;P 500 since 1990, 1.88 to 2.00 times.</li>
+      <li>Earnings gaps break the rule for calls and puts alike: when a stock reported earnings during a one-week term, the ratio fell from 2.01 to 1.78, lower in every year from 2016 to 2026.</li>
+      <li>What matters is the day of the touch: a strike touched on the earnings reaction day finished in the money about six times in ten, at every expiry, because the gap had already carried the price beyond it. Touched on another day, it was about half the time.</li>
+      <li>The trend splits the two sides. On the S&amp;P 500, puts reached a ratio of 2.98 over three months, calls only 1.60. In the bear markets of 2000&ndash;02 and 2007&ndash;09 it turned around: 59% of touched put strikes finished in the money, against 27% in all other years.</li>
+    </ul>
+  </div>
+
+  <h2>Where the rule comes from</h2>
+  <p>Picture a stock price as a random walk without a trend, and a strike above the current price. Every path that reaches the strike is, from that moment on, equally likely to end above it as below it. So of all the paths that touch the strike, half finish beyond it: the probability of touching is twice the probability of finishing beyond. Mathematicians call this the reflection principle.</p>
+  <p>The rule has a useful property: it does not depend on how volatile the stock is. A wrong volatility estimate changes how often a strike is touched, but not the ratio. Only two things can break it. Jumps can carry the price past the strike and leave it there, so that a "touch" is already a finish. And a trend tilts the paths after the touch toward one side.</p>
+
+  <h2>How the strikes were counted</h2>
+  <ul>
+    <li><strong>469 S&amp;P 500 stocks, 2016 to 2026,</strong> and the <strong>S&amp;P 500 index since 1990</strong>, daily prices. A new set of strikes starts on every trading day.</li>
+    <li><strong>Strikes</strong> at 0.5, 1, 1.5 and 2 standard deviations above and below the starting price, scaled with the stock's realized volatility of the previous 20 trading days and the length of the term.</li>
+    <li><strong>Terms</strong> of one week, one month and three months (5, 21 and 63 trading days).</li>
+    <li><strong>Touched:</strong> the day's high (calls) or low (puts) reached the strike during the term. <strong>Finished beyond:</strong> the close on the last day of the term was past the strike. The ratio is touched divided by finished.</li>
+    <li><strong>Earnings:</strong> 18,462 reports with their time of day. The reaction day is the same day for reports before the open, the next day for reports after the close.</li>
+  </ul>
+
+  <h2>On average, the rule holds</h2>
+  <figure class="viz" id="viz1" aria-label="Chart: ratio of touched to finished strikes one standard deviation away over the whole period, for calls and puts together, puts and calls, for 469 stocks and the S&amp;P 500.">
+    <p class="viz-title">Touched &divide; finished beyond, whole period</p>
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-avg)"></i>Average</span>
+      <span><svg width="13" height="12" viewBox="0 0 13 12" aria-hidden="true"><path d="M1 1h11L6.5 11z" fill="var(--c-put)"/></svg>Puts</span>
+      <span><svg width="13" height="12" viewBox="0 0 13 12" aria-hidden="true"><path d="M1 11h11L6.5 1z" fill="var(--c-call)"/></svg>Calls</span>
+      <span><i class="dash"></i>Textbook value: 2</span>
+    </div>
+    <svg id="viz1-s" viewBox="0 0 760 340" role="img"></svg>
+    <div class="viz-tip"></div>
+    <figcaption>Touched &divide; finished beyond, strikes one standard deviation away, over the whole period: 469 stocks 2016&ndash;2026, S&amp;P 500 1990&ndash;2026. Hover for the touch and finish rates.</figcaption>
+  </figure>
+  <p>Across all 469 stocks, a strike one standard deviation away was touched in 33.0% of one-month terms and finished beyond in 16.8%: a ratio of 1.96. Over three months it was 2.02. On the S&amp;P 500 since 1990 it was 1.99 for one month and 2.00 for three months; only one week was lower, at 1.88. The random-walk textbook says 31.7% and 15.9%. For a rule that rests on a simple model of prices, that is close. The gray dots are the average of calls and puts together. The trend is in them too, but it pushes the two sides in opposite directions, so it largely cancels out: puts (red) sit above 2 and calls (green) below, the more so the longer the term and on the index. The second break below shows what the average hides. Within a single trading day, SPY showed a similar pattern: a level 1% away from the open was touched on 29.1% of days and closed beyond on 16.0% (<a href="/research/spy-0dte-touch-vs-close.html">0DTE odds on SPY</a>).</p>
+
+  <h2>Break 1: earnings gaps</h2>
+  <p>The first break does not depend on the direction of the market, and it hits calls and puts alike. When a stock reported earnings before the options expired, the ratio fell below 2: from 2.01 to 1.78 for options with one week to expiry, and from 2.01 to 1.90 with one month. Options with three months to expiry almost always span a report, and there the ratio stayed at 2.</p>
+  <p>In probabilities: without a report, a touched strike finished in the money about half the time (50%). With a report before expiry, it was 56% for one-week options and 53% for one-month options. For one-week options the effect showed up in every single year from 2016 to 2026 and at every strike distance. To make sure the reports cause it and not chance, I ran the same test with fake report dates, ten days before or after the real ones: the effect disappeared, so it belongs to the reports themselves.</p>
+  <p>But the report alone does not decide it. What matters is the day the strike was touched. The chart takes only options with a report before expiry and compares strikes touched on the earnings reaction day with strikes touched on another day of the same term.</p>
+  <figure class="viz" id="viz2" aria-label="Chart: options with an earnings report before expiry: share of touched strikes that finished in the money, touched on the earnings reaction day or on another day, for one week, one month and three months to expiry, for puts and calls.">
+    <p class="viz-title">Earnings: strikes touched on the reaction day vs on another day</p>
+    <p class="small" style="margin:-4px 0 8px">Only options with an earnings report before expiry. Share of touched strikes that finished in the money, 469 stocks</p>
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-avg)"></i>Average</span>
+      <span><svg width="13" height="12" viewBox="0 0 13 12" aria-hidden="true"><path d="M1 1h11L6.5 11z" fill="var(--c-put)"/></svg>Puts</span>
+      <span><svg width="13" height="12" viewBox="0 0 13 12" aria-hidden="true"><path d="M1 11h11L6.5 1z" fill="var(--c-call)"/></svg>Calls</span>
+    </div>
+    <svg id="viz2-s" viewBox="0 0 760 300" role="img"></svg>
+    <div class="viz-tip"></div>
+    <figcaption>Reaction day: the first trading day on which the market could react to an earnings report (the report day itself for reports before the open, the next day for reports after the close). Another day: a first touch before or after the reaction day, in the same term. Strikes one standard deviation away, 469 stocks, 2016&ndash;2026.</figcaption>
+  </figure>
+  <p>The timing of the touches explains it. A strike touched on the reaction day finished in the money about six times in ten, at every expiry (average 58 to 61%; one week: puts 58%, calls 63%). The gap had already carried the price past the strike, and the close of that day decided most of the outcome. After the gap, the price behaved like an ordinary random walk again: no rebound that would pull it back, and no follow-through that would push it further. A strike touched on another day finished in the money about half the time, just like in terms without a report.</p>
+
+  <h2>Break 2: the trend</h2>
+  <p>The second break splits the two sides. On average they cancel out, but separately they do not. A rising market tilts every path after a touch upward: touched call strikes finish in the money more often than half the time, touched put strikes less often. Across the 469 stocks, the three-month ratio was 2.36 for puts and 1.80 for calls, and the gap grew with the stock's own trend. On the S&amp;P 500 since 1990 it was wider still: 2.98 for puts, 1.60 for calls.</p>
+  <p>To see the trend at work, the long bear markets are the test case. They can only be measured on the index: the stock prices here start in 2016 and contain no long bear market, and going further back with today's index members would hide exactly the companies that collapsed in those bear markets (survivorship bias), which would make the effect look smaller than it was. The S&amp;P 500 itself has no such gap and goes back to 1990.</p>
+  <p>The two long bear markets turned it around. From March 2000 to October 2002 and from October 2007 to March 2009, a three-month put strike was touched more than half the time, and 59% of the touched put strikes finished in the money. In all other years, only 27% did. Those other years were mostly rising markets, but they also include sharp falls such as the 2020 crash and the 2022 decline.</p>
+  <figure class="viz" id="viz3" aria-label="Chart: three-month strikes one standard deviation away: share of touched strikes that finished in the money, in the long bear markets and in all other years, for puts and calls, for the S&amp;P 500 index and 469 stocks.">
+    <p class="viz-title">S&amp;P 500 index, three months: how often a touched strike finished in the money</p>
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-avg)"></i>Average</span>
+      <span><svg width="13" height="12" viewBox="0 0 13 12" aria-hidden="true"><path d="M1 1h11L6.5 11z" fill="var(--c-put)"/></svg>Puts</span>
+      <span><svg width="13" height="12" viewBox="0 0 13 12" aria-hidden="true"><path d="M1 11h11L6.5 1z" fill="var(--c-call)"/></svg>Calls</span>
+      <span><i class="dash"></i>Half (no trend)</span>
+    </div>
+    <svg id="viz3-s" viewBox="0 0 760 130" role="img"></svg>
+    <div class="viz-tip"></div>
+    <figcaption>S&amp;P 500 index since 1990, three months, strikes one standard deviation away: of the touched strikes, the share that finished in the money. In the bear markets calls were touched only 40 times, so that value is uncertain. The average counts every touched strike once, so in the bear markets, where almost all touches were puts, it sits close to the puts.</figcaption>
+  </figure>
+  <div class="table-scroll"><table><thead>
+    <tr><th rowspan="2">S&amp;P 500 index, 3 months, 1 standard deviation</th><th class="num grp" colspan="2">Puts</th><th class="num grp" colspan="2">Calls</th></tr>
+    <tr><th class="num">Touched</th><th class="num">Then finished</th><th class="num">Touched</th><th class="num">Then finished</th></tr></thead><tbody>
+    <tr><td>Bear markets 2000&ndash;02 and 2007&ndash;09</td><td class="num">55.6%</td><td class="num">59%</td><td class="num">4.0%</td><td class="num">30%</td></tr>
+    <tr><td>All other years since 1990 (mostly rising)</td><td class="num">25.4%</td><td class="num">27%</td><td class="num">41.9%</td><td class="num">63%</td></tr>
+  </tbody></table></div>
+  <p class="small tnote">Touched: share of three-month terms in which the strike was touched. Then finished: of those touched strikes, the share that finished in the money.</p>
+  <p>So the same touch meant very different things: in a bull market, a touched put strike usually came back; in a bear market, it usually stayed in the money.</p>
+
+  <h2>What it means for option sellers</h2>
+  <p>For most strikes, most of the time, "a touched strike finishes in the money about half the time" is a good working assumption, and with it, "the probability of touch is about twice the probability of expiring in the money". Where it needs care:</p>
+  <ul>
+    <li><strong>With earnings, watch when the strike is touched.</strong> A strike touched on the earnings reaction day finished in the money about six times in ten (one week: 58% for puts, 63% for calls), not half the time. A strike touched on another day of the same term behaved like an ordinary touch.</li>
+    <li><strong>No rebound after the gap.</strong> After the earnings gap, the price moved like an ordinary random walk again. There was no rebound that pulled it back to the strike, so a strike the gap jumped past stayed in the money more often than not.</li>
+    <li><strong>Halving the probability of touch is too optimistic across a report.</strong> For one-week options with a report before expiry, the ratio was 1.78 instead of 2: the chance of finishing in the money was about 12% higher than the rule of thumb says.</li>
+    <li><strong>A touch on the reaction day matters for defensive rolls.</strong> If a short strike is touched on the reaction day, it is more likely than not to expire in the money: about six times in ten, at every expiry. Waiting for the price to come back is a weaker bet than after an ordinary touch, which comes back about half the time.</li>
+    <li><strong>The trend decides which side comes back.</strong> In mostly rising years on the S&amp;P 500, only 27% of touched three-month put strikes finished in the money, while 63% of touched call strikes did. In the long bear markets it flipped: 59% of touched put strikes stayed in the money. The "half" of the rule is the average of two sides that behave differently.</li>
+  </ul>
+  <p>The probability of finishing in the money is also not the same as delta, the number it is often confused with: <a href="/research/delta-vs-itm-probability.html">is delta the probability of expiring in the money?</a></p>
+
+  <h2>Data and notes</h2>
+  <ul class="small">
+    <li>Daily prices from Yahoo Finance: 469 current S&amp;P 500 members, 2016&ndash;2026, split-adjusted but not dividend-adjusted, as options settle on the price; the S&amp;P 500 index (^GSPC) from 1990. Earnings dates and times from Yahoo Finance; where the time was missing, the reaction day is the day with the larger opening gap.</li>
+    <li>Strikes are scaled with realized volatility (20 trading days, close to close). The rule is usually quoted with implied volatility; the ratio does not depend on the volatility used, the touch rates do. For the earnings test, the volatility excludes the earnings reaction days.</li>
+    <li>Survivorship: the stocks are today's S&amp;P 500 members, so companies that dropped out of the index are missing.</li>
+    <li>Terms start on every trading day and overlap; a check with non-overlapping starts gave the same picture. Daily bars count a gap through the strike as a touch.</li>
+    <li>The bear markets are dated from the S&amp;P 500's peak to its trough (24 March 2000 to 9 October 2002, 9 October 2007 to 9 March 2009).</li>
+    <li>All numbers count what happened in the past. They are not probabilities for the future, not forecasts and not financial advice.</li>
+  </ul>
+  <aside class="signup" aria-label="Newsletter">
+    <p class="signup-title">New studies by email</p>
+    <p class="signup-text">One email when a new study is out. No spam, unsubscribe anytime.</p>
+    <form class="signup-form" action="https://app.kit.com/forms/10127955/subscriptions" method="post">
+      <input type="email" name="email_address" required placeholder="Your email address" aria-label="Email address" autocomplete="email">
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="signup-msg" role="status" aria-live="polite"></p>
+    <p class="signup-note">Also available as an <a href="/research/feed.xml">RSS feed</a> &middot; <a href="/OptionsCone/legal.html#privacy">Privacy</a></p>
+  </aside>
+  <section class="more" hidden>
+    <h2>More research</h2>
+    <div class="more-list"></div>
+  </section>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p class="about"><strong>About.</strong> Nikolai Alexander. 10+ years of quantitative research on financial markets. Former product lead and associate commercial director in biotech. I build research tools for market analysis.</p>
+    </div>
+    <div>
+      <p><a href="/research/">Research</a> &middot; <a href="/OptionsCone/">OptionsCone</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const D = {"sides":[{"grp":"469 stocks, 2016-2026","lab":"1 week","per":"2016-2026","avg":[1.98,30.5,15.4],"put":[2.08,29.5,14.2],"call":[1.9,31.6,16.6]},{"grp":"469 stocks, 2016-2026","lab":"1 month","per":"2016-2026","avg":[1.96,33.0,16.8],"put":[2.16,30.9,14.3],"call":[1.82,35.1,19.3]},{"grp":"469 stocks, 2016-2026","lab":"3 months","per":"2016-2026","avg":[2.02,34.5,17.1],"put":[2.36,30.7,13.0],"call":[1.8,38.4,21.3]},{"grp":"S&P 500 index, 1990-2026","lab":"1 week","per":"1990-2026","avg":[1.88,29.7,15.8],"put":[2.19,30.0,13.7],"call":[1.65,29.4,17.8]},{"grp":"S&P 500 index, 1990-2026","lab":"1 month","per":"1990-2026","avg":[1.99,31.2,15.7],"put":[2.59,30.1,11.6],"call":[1.63,32.3,19.8]},{"grp":"S&P 500 index, 1990-2026","lab":"3 months","per":"1990-2026","avg":[2.0,33.2,16.6],"put":[2.98,28.6,9.6],"call":[1.6,37.8,23.6]}],"phases":[{"grp":"S&P 500 index, 1990-2026","lab":"Bear markets 2000-02 and 2007-09","tp":553,"fp":324,"tc":40,"fc":12,"put":58.6,"call":30.0,"avg":56.7},{"grp":"S&P 500 index, 1990-2026","lab":"All other years (mostly rising)","tp":2086,"fp":562,"tc":3443,"fc":2166,"put":26.9,"call":62.9,"avg":49.3}],"timing":[{"grp":"1 week","share":60,"lab":"Touched on the earnings reaction day","put":58.0,"call":62.9,"avg":60.6,"np":26213,"nc":28901},{"grp":"1 week","share":60,"lab":"Touched on another day","put":47.4,"call":51.6,"avg":49.6,"np":17584,"nc":18866},{"grp":"1 month","share":33,"lab":"Touched on the earnings reaction day","put":55.2,"call":62.4,"avg":59.2,"np":45452,"nc":56914},{"grp":"1 month","share":33,"lab":"Touched on another day","put":44.0,"call":53.9,"avg":49.5,"np":94447,"nc":115639},{"grp":"3 months","share":16,"lab":"Touched on the earnings reaction day","put":51.8,"call":61.6,"avg":57.7,"np":49923,"nc":76403},{"grp":"3 months","share":16,"lab":"Touched on another day","put":40.8,"call":54.2,"avg":48.2,"np":311014,"nc":376363}]};
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) if (attrs[k] != null) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function tipFor(fig) {
+  const tip = fig.querySelector('.viz-tip');
+  return {
+    show(html, evt) {
+      tip.innerHTML = html; tip.style.opacity = 1;
+      const r = fig.getBoundingClientRect();
+      let x = evt.clientX - r.left + 14, y = evt.clientY - r.top - 12;
+      if (x + tip.offsetWidth > r.width) x = evt.clientX - r.left - tip.offsetWidth - 14;
+      tip.style.left = Math.max(0, x) + 'px'; tip.style.top = Math.max(0, y - tip.offsetHeight) + 'px';
+    },
+    hide() { tip.style.opacity = 0; }
+  };
+}
+const dash = t => t.replace(/(\d{4})-(\d{2,4})/g, '$1–$2');
+// markers: calls and puts together = circle, puts = down-triangle, calls = up-triangle
+function mark(s, kind, x, y, size) {
+  const r = size || 6.5;
+  if (kind === 'avg') return el('circle', { cx: x, cy: y, r: r * 0.85, fill: 'var(--c-avg)', stroke: 'var(--bg)', 'stroke-width': 1.8 }, s);
+  const up = kind === 'call', h = r * 1.15;
+  const d = up ? 'M' + (x - r) + ',' + (y + h * 0.6) + 'L' + (x + r) + ',' + (y + h * 0.6) + 'L' + x + ',' + (y - h) + 'Z'
+               : 'M' + (x - r) + ',' + (y - h * 0.6) + 'L' + (x + r) + ',' + (y - h * 0.6) + 'L' + x + ',' + (y + h) + 'Z';
+  return el('path', { d: d, fill: up ? 'var(--c-call)' : 'var(--c-put)', stroke: 'var(--bg)', 'stroke-width': 1.5 }, s);
+}
+
+// Chart 1: whole period, grouped by universe; calls and puts together / puts / calls per term
+(function () {
+  const fig = document.getElementById('viz1'), tip = tipFor(fig), s = document.getElementById('viz1-s');
+  const W = 760, H = 340, L = 250, R = 30, T = 8, B = 30, x0 = 1.4, x1 = 3.1;
+  const xs = v => L + (v - x0) / (x1 - x0) * (W - L - R);
+  const rows = [];
+  D.sides.forEach(r => { if (!rows.length || rows[rows.length - 1].grp !== r.grp && !rows.some(q => q.head === r.grp)) rows.push({ head: r.grp }); rows.push(r); });
+  for (let v = 1.5; v <= 3.0001; v += 0.5) {
+    el('line', { x1: xs(v), x2: xs(v), y1: T, y2: H - B, stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+    el('text', { x: xs(v), y: H - B + 17, 'text-anchor': 'middle', class: 'tick' }, s, v.toFixed(1));
+  }
+  el('line', { x1: xs(2), x2: xs(2), y1: T, y2: H - B, stroke: 'var(--c-ref)', 'stroke-width': 1.5, 'stroke-dasharray': '5 4' }, s);
+  const step = (H - T - B) / rows.length;
+  rows.forEach((r, i) => {
+    const y = T + step * (i + 0.5);
+    if (r.head) { el('text', { x: 0, y: y + 5, class: 'grp' }, s, dash(r.head)); return; }
+    el('text', { x: L - 12, y: y + 4, 'text-anchor': 'end', 'font-size': 12.5 }, s, 'Options with ' + r.lab + ' to expiry');
+    el('line', { x1: xs(r.call[0]), x2: xs(r.put[0]), y1: y, y2: y, stroke: 'var(--ink-3)', 'stroke-width': 1.2, 'stroke-opacity': 0.5 }, s);
+    mark(s, 'put', xs(r.put[0]), y); mark(s, 'call', xs(r.call[0]), y); mark(s, 'avg', xs(r.avg[0]), y);
+    const line = (n, v) => n + ': ' + v[0].toFixed(2) + ' (touched ' + v[1].toFixed(1) + '%, finished ' + v[2].toFixed(1) + '%)';
+    const hit = el('rect', { x: 0, y: y - step / 2, width: W, height: step, fill: 'transparent' }, s);
+    hit.addEventListener('mousemove', e => tip.show('<b>' + dash(r.grp) + ', options with ' + r.lab + ' to expiry</b><br>' + line('average', r.avg) + '<br>' + line('puts', r.put) + '<br>' + line('calls', r.call), e));
+    hit.addEventListener('mouseleave', () => tip.hide());
+  });
+})();
+
+// dumbbell rows in % with puts and calls (bear markets, earnings timing)
+function pctRows(id, rows, x0, x1, L, H, info) {
+  const fig = document.getElementById(id), tip = tipFor(fig), s = document.getElementById(id + '-s');
+  const W = 760, R = 30, T = 10, B = 30;
+  const xs = v => L + (v - x0) / (x1 - x0) * (W - L - R);
+  const st = x1 - x0 > 40 ? 10 : 5;
+  for (let v = x0; v <= x1 + 0.001; v += st) {
+    el('line', { x1: xs(v), x2: xs(v), y1: T, y2: H - B, stroke: v === 50 ? 'var(--c-ref)' : 'var(--c-grid)', 'stroke-width': v === 50 ? 1.5 : 1, 'stroke-dasharray': v === 50 ? '5 4' : null }, s);
+    el('text', { x: xs(v), y: H - B + 17, 'text-anchor': 'middle', class: 'tick' }, s, v + '%');
+  }
+  const step = (H - T - B) / rows.length;
+  rows.forEach((r, i) => {
+    const y = T + step * (i + 0.5);
+    if (r.head) { el('text', { x: 0, y: y + 5, class: 'grp' }, s, dash(r.head)); return; }
+    el('text', { x: L - 12, y: y + 4, 'text-anchor': 'end', 'font-size': 12.5, 'font-weight': r.bold ? 600 : null }, s, dash(r.lab));
+    el('line', { x1: xs(Math.min(r.put, r.call)), x2: xs(Math.max(r.put, r.call)), y1: y, y2: y, stroke: 'var(--ink-3)', 'stroke-width': 1.2, 'stroke-opacity': 0.5 }, s);
+    mark(s, 'put', xs(r.put), y); mark(s, 'call', xs(r.call), y); mark(s, 'avg', xs(r.avg), y);
+    const hit = el('rect', { x: 0, y: y - step / 2, width: W, height: step, fill: 'transparent' }, s);
+    hit.addEventListener('mousemove', e => tip.show(info(r), e));
+    hit.addEventListener('mouseleave', () => tip.hide());
+  });
+}
+pctRows('viz3', D.phases, 0, 80, 250, 130, r => '<b>' + dash(r.lab) + '</b><br>average: ' + r.avg.toFixed(1) + '% of ' + (r.tp + r.tc).toLocaleString('en-US') + ' touches finished in the money<br>puts: ' + r.put.toFixed(1) + '% of ' + r.tp.toLocaleString('en-US') + ' touches finished in the money<br>calls: ' + r.call.toFixed(1) + '% of ' + r.tc.toLocaleString('en-US') + ' touches');
+pctRows('viz2', D.timing.reduce((a, r) => { const g = 'Options with ' + r.grp + ' to expiry'; if (!a.length || a[a.length - 1].g !== g) a.push({ head: g, g: g }); a.push(Object.assign({ g: g }, r, { lab: r.lab.replace('the reaction day', 'the earnings reaction day') })); return a; }, []), 35, 70, 280, 300, r => '<b>' + r.g + '</b><br>' + r.lab + '<br>average: ' + r.avg.toFixed(1) + '% finished in the money (' + (r.np + r.nc).toLocaleString('en-US') + ' touches)<br>puts: ' + r.put.toFixed(1) + '% finished in the money (' + r.np.toLocaleString('en-US') + ' touches)<br>calls: ' + r.call.toFixed(1) + '% (' + r.nc.toLocaleString('en-US') + ' touches)');
+</script>
+<script src="/signup.js?v=2" defer></script>
+<script src="/related.js?v=2" defer></script>
+</body>
+</html>

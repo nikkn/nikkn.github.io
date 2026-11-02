@@ -6,7 +6,16 @@
     <atom:link href="https://nikolai-alexander.com/research/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Quantitative studies of financial markets and options, with the data and the numbers behind each result.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 01 Nov 2026 18:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 02 Nov 2026 16:49:00 GMT</lastBuildDate>
+
+    <item>
+      <title>Is the probability of touch really twice the probability of finishing in the money?</title>
+      <link>https://nikolai-alexander.com/research/probability-of-touch.html</link>
+      <guid isPermaLink="true">https://nikolai-alexander.com/research/probability-of-touch.html</guid>
+      <pubDate>Mon, 02 Nov 2026 16:49:00 GMT</pubDate>
+      <category>Options research</category>
+      <description>469 S&amp;P 500 stocks over ten years, the S&amp;P 500 since 1990 and 18,462 earnings reports: a strike is touched about twice as often as it finishes in the money. Earnings gaps break the rule for calls and puts alike: a strike touched on the reaction day finished in the money about six times in ten. The trend splits the two sides: in the bear markets of 2000-02 and 2007-09, 59% of touched put strikes stayed in the money.</description>
+    </item>
 
     <item>
       <title>XLP for straddle and strangle sellers: five years of big moves that came back</title>
