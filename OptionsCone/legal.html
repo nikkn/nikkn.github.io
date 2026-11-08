@@ -123,7 +123,7 @@
 // address collectors reading the page source do not find them.
 (function(){
   var d = JSON.parse(decodeURIComponent(escape(atob(
-    "eyJuYW1lIjoiQWxleGFuZGVyIEtub2VkZWwiLCJzdHJlZXQiOiJHaWdnZW5iYWNoZXJzdHIuIDciLCJjaXR5IjoiODEyNDkgTXVuaWNoIiwiY291bnRyeSI6Ikdlcm1hbnkiLCJ1c2VyIjoiY29udGFjdC5hcXVhcnQiLCJob3N0IjoiZ21haWwuY29tIn0="))));
+    "eyJuYW1lIjoiQWxleGFuZGVyIEtub2VkZWwiLCJzdHJlZXQiOiJHaWdnZW5iYWNoZXJzdHIuIDciLCJjaXR5IjoiODEyNDkgTXVuaWNoIiwiY291bnRyeSI6Ikdlcm1hbnkiLCJ1c2VyIjoicmVzZWFyY2giLCJob3N0Ijoibmlrb2xhaS1hbGV4YW5kZXIuY29tIn0="))));
   var mail = d.user + "@" + d.host;
   document.querySelectorAll('[data-p="name"]').forEach(function(e){ e.textContent = d.name; });
   var a = document.querySelector('[data-p="address"]');
