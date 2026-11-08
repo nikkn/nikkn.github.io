@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to choose a put credit spread worth selling: real AMD data</title>
+<meta name="description" content="How to pick the strikes, width and expiry of a put credit spread (bull put spread), and how to tell if the credit is worth the risk. Real AMD data.">
+<link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/put-credit-spread.html">
+<link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Put credit spreads: how to sell premium with defined risk">
+<meta property="og:description" content="Is this put credit spread worth selling? Compare the credit with the fair premium of both legs, on AMD&#39;s real option chain of 19 October 2026.">
+<meta property="og:url" content="https://nikolai-alexander.com/OptionsCone/put-credit-spread.html">
+<meta property="og:image" content="https://nikolai-alexander.com/OptionsCone/img/social.png?v=6">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="OptionsCone">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=13">
+<style>
+  /* placeholders until the real screenshots and figures exist */
+  .ph { border: 1.5px dashed var(--ink-3); border-radius: 6px; padding: 28px 18px; color: var(--ink-3);
+        font: 500 14px/1.5 var(--mono); text-align: center; background: var(--panel); }
+  .fig-ph { color: #b45309; font-weight: 600; }
+  .byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+  .data-note { font-size: 13.5px; color: var(--ink-3); border-left: 3px solid var(--line); padding: 2px 0 2px 12px; }
+  .ph small { display: block; margin-top: 8px; font-size: 12px; color: var(--ink-3); opacity: .8; }
+  .note.end { margin-top: 56px; }
+  .formula { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); padding: 16px 20px;
+             font: 500 15px/1.7 var(--mono); margin: 18px 0; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Put credit spreads: how to sell premium with defined risk, with an AMD example",
+  "description": "How to pick the strikes, width and expiry of a put credit spread (bull put spread), and how to tell if the credit is worth the risk. Real AMD data.",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "10+ years of quantitative research on financial markets",
+             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+  "publisher": {"@type": "Organization", "name": "OptionsCone"},
+  "datePublished": "2026-11-08",
+  "dateModified": "2026-11-08",
+  "about": ["put credit spread", "bull put spread", "credit spread", "selling puts", "volatility skew", "option probability"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/OptionsCone/put-credit-spread.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What is a put credit spread?",
+     "acceptedAnswer": {"@type": "Answer", "text": "A put credit spread, also called a bull put spread, is an option strategy in which you sell a put and buy a put with a lower strike and the same expiration. You receive a net credit, and the bought put caps the largest possible loss at the distance between the strikes minus the credit."}},
+    {"@type": "Question", "name": "Put credit spread or cash secured put?",
+     "acceptedAnswer": {"@type": "Answer", "text": "A cash secured put ties up the cash to buy 100 shares at the strike, which is a lot on a stock with a high share price. A put credit spread earns less premium but ties up only the width of the spread, and its largest loss is fixed at entry."}},
+    {"@type": "Question", "name": "When is a put credit spread worth selling?",
+     "acceptedAnswer": {"@type": "Answer", "text": "When the net credit you receive is higher than the fair premium of the short put minus the fair premium of the long put, judged by the stock's own realized moves. OptionsCone shows the fair premium of every contract, so the comparison takes two clicks."}},
+    {"@type": "Question", "name": "How wide should a put credit spread be?",
+     "acceptedAnswer": {"@type": "Answer", "text": "A narrow spread has a small largest loss and a small credit. A wider spread collects more credit but can lose more. Many traders compare the credit with the width: the larger the share of the width you collect, the closer the short strike sits to the price."}},
+    {"@type": "Question", "name": "What is the maximum loss of a put credit spread?",
+     "acceptedAnswer": {"@type": "Answer", "text": "The width between the two strikes minus the credit received, times 100 per spread. It occurs if the stock finishes below the lower strike at expiry."}}
+  ]
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="./"><picture><source media="(prefers-color-scheme: dark)" srcset="brand/optionscone-wordmark-dark.svg"><img src="brand/optionscone-wordmark-light.svg" alt="OptionsCone" width="183" height="34"></picture></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="use-cases.html" aria-current="page">Use cases</a>
+      <a href="manual.html">Manual</a>
+      <a href="methods.html">Methods</a>
+      <a class="nav-pro" href="./#pro">Pro</a>
+      <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="doc">
+
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ul>
+      <li><a href="#what">What is a put credit spread?</a></li>
+      <li><a href="#why">Why a spread on an expensive stock</a></li>
+      <li><a href="#short-strike">Choosing the short strike</a></li>
+      <li><a href="#worth">Is the spread worth selling?</a></li>
+      <li><a href="#skew">What the protection costs: skew</a></li>
+      <li><a href="#width">How wide</a></li>
+      <li><a href="#expiry">Which expiry</a></li>
+      <li><a href="#liquidity">Liquidity of both legs</a></li>
+      <li><a href="#compare">Checking both legs</a></li>
+      <li><a href="#example">Worked example</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <article class="prose">
+    <h1>Put credit spreads: how to sell premium with defined risk</h1>
+    <p class="byline">By <a href="https://nikolai-alexander.com/#about">Nikolai Alexander</a> &middot; 8 November 2026</p>
+    <p class="lede">A put credit spread pays you a premium like a sold put, but caps the largest possible loss from the moment you open it. This guide shows how to pick its two strikes and how to tell whether a spread pays enough to be worth selling. Throughout the guide we work through a real example: AMD's option chain on 19 October 2026, analyzed with OptionsCone.</p>
+
+    <p><strong>In short:</strong> OptionsCone colors every strike and expiry of AMD by its probability, so the strikes the price is unlikely to reach stand out at a glance. For every contract it also shows a fair premium, judged by AMD's own realized moves. A put credit spread is worth selling when the credit you receive is higher than the fair premium of the short put minus the fair premium of the long put, and OptionsCone shows both numbers side by side.</p>
+
+    <h2 id="what">What is a put credit spread?</h2>
+    <p>A put credit spread, also called a bull put spread or credit put spread, is an option strategy with two puts of the same expiration:</p>
+    <ul>
+      <li><strong>You sell a put</strong> below the current stock price and receive its premium.</li>
+      <li><strong>You buy a put with a lower strike,</strong> which costs less than the sold put pays.</li>
+    </ul>
+    <p>The difference is your net credit. If AMD stays above the short strike, both puts expire worthless and you keep the credit. If AMD falls below the long strike, the bought put pays out for every dollar the sold put loses, so the loss stops there. The largest possible loss is the width between the strikes minus the credit, times 100 per spread.</p>
+
+    <h2 id="why">Why a put credit spread on a stock with a high share price</h2>
+    <p>A put credit spread is a smart way to sell premium on a stock with a high share price. With AMD at $538, a cash secured put would tie up about $54,000 in cash for a single contract, and its largest loss is nearly that amount if the stock collapses. A spread with strikes 10 points apart ties up only the width, $1,000 minus the credit, and that is also its largest possible loss. You give up part of the premium in exchange, because the bought put costs money. How the strike of the sold put is chosen is covered in detail in the <a href="cash-secured-put.html">cash secured put guide</a>.</p>
+
+    <h2 id="short-strike">Choosing the short strike from the probability cone</h2>
+    <p>Download AMD in OptionsCone and look at the cone below the price. Its coloring shows the probability of every strike and expiry at a glance: dark where AMD is likely to reach the strike, pale where it is not. The short put belongs where the cone turns pale enough for your taste, while the premium is still worth having.</p>
+    <p>Hover over any contract to see its probabilities in detail: how likely AMD touches the strike before expiry and how likely it finishes below it, from option prices and from AMD's own realized moves. Laid side by side, these numbers make it easy to compare candidates for the short strike.</p>
+    <p>Two numbers decide a put credit spread at expiry. The spread loses money if AMD finishes below the short strike minus the credit, which is its break-even point. It loses the most if AMD finishes below the long strike. The cone shows the probability of both levels.</p>
+
+    <h2 id="worth">Is this put credit spread worth selling?</h2>
+    <p>The probability shows how often a spread would lose. It does not show whether the credit pays enough for that. For this, OptionsCone shows a fair premium for every contract: the premium that would be fair for AMD's own realized moves.</p>
+    <p>A spread is the combination of two contracts, so its fair value is the difference of the two fair premiums. OptionsCone makes it easy to see whether a put credit spread is worth selling:</p>
+    <div class="formula">credit received &nbsp;&gt;&nbsp; fair premium of the short put &minus; fair premium of the long put</div>
+    <p>If the credit is higher, the spread pays more than AMD's realized moves would justify. If it is lower, you would be selling it below its fair value. The same comparison works for each leg on its own: the fair premium of the short put is the minimum premium worth accepting for it, and the bid you can sell at should be above it.</p>
+
+    <figure><img class="shot" src="img/guides/pcs-break-even.png" width="1839" height="997" loading="lazy" alt="OptionsCone cone for AMD colored by the premium above the break-even price, blue below the price where the puts pay more than AMD's realized moves would justify, red above it"></figure>
+
+    <h2 id="skew">What the protection costs: implied volatility and skew</h2>
+    <p>Puts further below the price usually trade at a higher implied volatility than puts close to it. This pattern is called the volatility skew, and it means the bought put of a spread is priced at a higher volatility than the sold one. That extra volatility is the price of capping the risk.</p>
+    <p>The IV map shows how steep the skew is between your two strikes. In AMD's November expiry, on 19 October 2026, implied volatility rose from 58.2% at the 520 put to 66.3% at the 400 put, about 8 points. In the December expiry the same range rose from 53.1% to 58.7%, about 6 points. The flatter the skew between the two strikes, the less you pay for the protection.</p>
+    <p>The same map shows the term structure: the November expiry trades at a clearly higher volatility than December. When one expiry stands out like that, it often contains an event such as an earnings report, which the markers on the date axis show.</p>
+
+    <h2 id="width">How wide should a put credit spread be?</h2>
+    <p>The distance between the strikes sets the balance between credit and largest loss. A narrow spread collects little and can lose little. A wide spread collects more, but can lose more, and moves closer to a plain sold put. Many traders compare the credit with the width: the larger the share of the width you collect, the closer the short strike sits to the price and the more likely the spread is to lose. With the probability of both strikes and the fair value of the spread next to each other, you can compare widths on the same terms.</p>
+
+    <h2 id="expiry">Which expiry for a put credit spread?</h2>
+    <p>The same rules as for a single sold put apply. Shorter spreads lose time value faster, longer ones give AMD more time to fall to the short strike. An expiry that includes an earnings report pays more, because the stock can open far below the previous close, past both strikes. The volatility badge above each expiry and the earnings markers show where that happens.</p>
+
+    <h2 id="liquidity">Liquidity: two legs, two spreads</h2>
+    <p>A put credit spread is traded as two contracts, so the bid-ask spread is paid twice, once on each leg. Switch the cone to <em>spread</em> and <em>volume</em>: the tighter the quotes and the more contracts traded at both strikes, the closer to the fair value you can open and later close the position. In the volume map of this example, the lighter spots mark the strikes and expiries where more contracts traded. The contract details that open for each option show whether its quote is reliable enough to read a volatility from, with a yellow or red mark where it is not. Legs with such a mark make a spread harder to price and to trade.</p>
+
+    <figure><img class="shot" src="img/guides/pcs-volume.png" width="1838" height="1007" loading="lazy" alt="OptionsCone cone for AMD colored by trading volume, showing at which strikes and expiries the contracts traded"></figure>
+
+    <h2 id="compare">Checking both legs in OptionsCone</h2>
+    <p>Click the short put and its tooltip stays open. Step to the long put with the arrow keys: down moves to the next lower strike of the same expiry, and the tooltip follows. Left and right move to the neighboring expiry. Switch between the maps to read each leg's probability, fair premium, implied volatility and spread, and compare the two legs in a few seconds.</p>
+
+    <h2 id="example">Worked example: three AMD put credit spreads compared</h2>
+    <p>From a download of AMD on 19 October 2026 at 14:23, with the stock at $538.24. These figures illustrate the comparison and are not a recommendation.</p>
+    <div class="table-scroll"><table>
+      <tr><th>Spread</th><th>Width</th><th>Credit</th><th>Fair value (short &minus; long)</th><th>Largest loss</th><th>Below short strike (option prices)</th><th>Below short strike (AMD's moves)</th></tr>
+      <tr><td>480 / 470, 20 Nov (32 days)</td><td>$10</td><td>$2.10</td><td>$1.82</td><td>$790</td><td>28.2%</td><td>20.0%</td></tr>
+      <tr><td>440 / 430, 20 Nov (32 days)</td><td>$10</td><td>$0.75</td><td>$0.60</td><td>$925</td><td>15.3%</td><td>7.8%</td></tr>
+      <tr><td>460 / 450, 18 Dec (60 days)</td><td>$10</td><td>$1.50</td><td>$1.72</td><td>$850</td><td>26.6%</td><td>19.2%</td></tr>
+    </table></div>
+    <p class="data-note">Data: AMD option chain, downloaded on 19 October 2026 at 14:23 New York time, quotes delayed about 15 minutes. Credits at the bid of the short put and the ask of the long put, per share, largest loss per spread. All figures calculated with OptionsCone.</p>
+    <p><strong>Read it as:</strong> The November 480/470 spread collects $2.10, 28 cents more than its fair value, and AMD's realized moves put its chance of finishing below the short strike at 20%, against 28% from option prices. The 440/430 spread sits further away and also pays above its fair value, but its credit of $0.75 is small against a largest loss of $925. The December 460/450 spread pays $1.50, below its fair value of $1.72, because the wide quote of the 450 put costs most of the difference, and at the mid prices of both legs it would collect $2.15. AMD reports earnings on 3 November, inside both expiries.</p>
+
+    <h2 id="faq">Put credit spread FAQ</h2>
+    <h3>What is the difference between a put credit spread and a bull put spread?</h3>
+    <p>None. Put credit spread, credit put spread and bull put spread are names for the same strategy: a sold put and a bought put with a lower strike and the same expiration.</p>
+    <h3>Put credit spread or cash secured put?</h3>
+    <p>A cash secured put ties up the cash to buy 100 shares at the strike, which is a lot on a stock with a high share price. A put credit spread earns less premium, but ties up only the width of the spread, and its largest loss is fixed at entry.</p>
+    <h3>When is a put credit spread worth selling?</h3>
+    <p>When the net credit you receive is higher than the fair premium of the short put minus the fair premium of the long put, judged by the stock's own realized moves. OptionsCone shows the fair premium of every contract, so the comparison takes two clicks.</p>
+    <h3>How wide should a put credit spread be?</h3>
+    <p>A narrow spread has a small largest loss and a small credit. A wider spread collects more credit but can lose more. Many traders compare the credit with the width: the larger the share of the width you collect, the closer the short strike sits to the price.</p>
+    <h3>What is the maximum loss of a put credit spread?</h3>
+    <p>The width between the two strikes minus the credit received, times 100 per spread. It occurs if the stock finishes below the lower strike at expiry.</p>
+
+    <p class="note end">We use AMD as an example. The same steps work for any stock with listed options. Nothing on this page is a recommendation to buy or sell AMD stock or options.</p>
+
+    <h2>Try it on your own stock</h2>
+    <p>Every figure on this page comes from one download and a few clicks. The <a href="manual.html">manual</a> explains each control.</p>
+    <p><a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a></p>
+  </article>
+
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/eVqbJ14of3vwabb4NSbII00" rel="nofollow">Cancel subscription here</a></p>
+      <p>Not financial advice.</p>
+    </div>
+    <div>
+      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
