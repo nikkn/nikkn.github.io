@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Strangle defense: what happens after one strike is touched</title>
-<meta name="description" content="Six ETFs since 1993: after a strangle strike is touched, the price keeps going about as often as usual, but moves get larger. How far to roll the other side.">
+<meta name="description" content="After a strangle strike is touched, the next move is about as random as usual, but moves get larger. Six ETFs since 1993, and how far to roll the other side.">
 <link rel="canonical" href="https://nikolai-alexander.com/research/strangle-after-a-touch.html">
 <link rel="alternate" type="application/rss+xml" title="Research | Nikolai Alexander" href="https://nikolai-alexander.com/research/feed.xml">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Strangle defense: what happens after one strike is touched, and how far to roll the other side">
-<meta property="og:description" content="Short strangles on SPY, QQQ, IWM, XLP, GLD and SLV, opened every day since 1993: after a touch the direction stays about as random as usual, but moves get larger, and a strike rolled with a slow volatility is touched 1.4 to 2.4 times as often as it should be.">
+<meta property="og:title" content="Strangle defense: what happens after one strike is touched">
+<meta property="og:description" content="Short strangles on SPY, QQQ, IWM, XLP, GLD and SLV, opened every day since 1993: after a touch the direction stays about as random as usual, but moves get larger, and a strike rolled at the usual distance is touched 1.4 to 2.4 times as often as it should be.">
 <meta property="og:url" content="https://nikolai-alexander.com/research/strangle-after-a-touch.html">
 <meta property="og:image" content="https://nikolai-alexander.com/research/img/strangle-after-a-touch.png">
 <meta property="og:image:width" content="1200">
@@ -132,6 +132,7 @@
     <figcaption>Share of touched strikes that finished in the money at expiration, measured from the day of the touch. Normal: a strike at the same distance from the price, with the same days left, on any day. Six ETFs, 30 to 90 days. Hover for the numbers.</figcaption>
   </figure>
   <p>Once a call strike at 1 SD was touched, the price finished beyond it at expiration 57.2% of the time. On any day, a call at the same distance with the same time left finished beyond it 57.4% of the time, so the touch added nothing to the direction beyond the ETFs' normal drift. For puts, the touched strike finished in the money 39.9% of the time against 42.9% normally: after a fall the price came back slightly more often than usual, by 3 points at 1 SD and 5 points at 2 SD. That tilt is small next to the change in the size of the moves.</p>
+  <p>Averaged over calls and puts, a touched strike finished in the money about half the time. That half is where a well-known rule of thumb comes from: a strike is touched about twice as often as it finishes in the money. How well the rule holds on 469 stocks, and where earnings gaps and the trend break it, is the subject of the study <a href="/research/probability-of-touch.html">is the probability of touch really twice the probability of finishing in the money?</a></p>
 
   <h2>The size of the moves</h2>
   <p>After a put touch, I moved the untested call to the same number of standard deviations from the new price, measured with the same 42-day volatility on the day of the touch. For a 45-day strangle at 1 SD, that rolled call was touched later in 38.6% of cases. A call at the same distance on any day was touched in 28.5%.</p>

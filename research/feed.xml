@@ -6,7 +6,34 @@
     <atom:link href="https://nikolai-alexander.com/research/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Quantitative studies of financial markets and options, with the data and the numbers behind each result.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 02 Nov 2026 16:49:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 08 Nov 2026 16:30:00 GMT</lastBuildDate>
+
+    <item>
+      <title>Rolling the untested side of a strangle: which roll pays</title>
+      <link>https://nikolai-alexander.com/research/strangle-roll-premium.html</link>
+      <guid isPermaLink="true">https://nikolai-alexander.com/research/strangle-roll-premium.html</guid>
+      <pubDate>Sun, 08 Nov 2026 16:30:00 GMT</pubDate>
+      <category>Options research</category>
+      <description>Short strangles on SPY, QQQ, IWM, XLP, GLD and SLV, priced with each ETF&apos;s volatility index: in stock ETFs, rolling the put up after a rally added about 12% of the original credit up to 1 standard deviation but lost at 2. Rolling the call down after a drop only broke even if calls traded near the full VIX level, which they rarely do. Part 2 of 2.</description>
+    </item>
+
+    <item>
+      <title>Strangle defense: what happens after one strike is touched</title>
+      <link>https://nikolai-alexander.com/research/strangle-after-a-touch.html</link>
+      <guid isPermaLink="true">https://nikolai-alexander.com/research/strangle-after-a-touch.html</guid>
+      <pubDate>Sun, 08 Nov 2026 16:25:00 GMT</pubDate>
+      <category>Options research</category>
+      <description>Short strangles on SPY, QQQ, IWM, XLP, GLD and SLV, opened every day since 1993: after a touch the direction stays about as random as usual, but moves get larger, and a strike rolled at the usual distance is touched 1.4 to 2.4 times as often as it should be. How far to roll the other side. Part 1 of 2.</description>
+    </item>
+
+    <item>
+      <title>VIX term structure vs realized volatility: how much of the slope was premium</title>
+      <link>https://nikolai-alexander.com/research/vix-term-structure.html</link>
+      <guid isPermaLink="true">https://nikolai-alexander.com/research/vix-term-structure.html</guid>
+      <pubDate>Sun, 08 Nov 2026 15:15:00 GMT</pubDate>
+      <category>Options research</category>
+      <description>The VIX curve usually slopes up: since 2008, one-year S&amp;P 500 options priced 3.9 points more volatility than 30-day ones on average, but realized volatility was only 1.4 points higher. What that meant for sellers at each term, and for puts vs calls.</description>
+    </item>
 
     <item>
       <title>Is the probability of touch really twice the probability of finishing in the money?</title>
