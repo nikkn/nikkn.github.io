@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strangle defense: what happens after one strike is touched</title>
+<meta name="description" content="Six ETFs since 1993: after a strangle strike is touched, the price keeps going about as often as usual, but moves get larger. How far to roll the other side.">
+<link rel="canonical" href="https://nikolai-alexander.com/research/strangle-after-a-touch.html">
+<link rel="alternate" type="application/rss+xml" title="Research | Nikolai Alexander" href="https://nikolai-alexander.com/research/feed.xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Strangle defense: what happens after one strike is touched, and how far to roll the other side">
+<meta property="og:description" content="Short strangles on SPY, QQQ, IWM, XLP, GLD and SLV, opened every day since 1993: after a touch the direction stays about as random as usual, but moves get larger, and a strike rolled with a slow volatility is touched 1.4 to 2.4 times as often as it should be.">
+<meta property="og:url" content="https://nikolai-alexander.com/research/strangle-after-a-touch.html">
+<meta property="og:image" content="https://nikolai-alexander.com/research/img/strangle-after-a-touch.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="How often a rolled call was touched later after a put touch, relative to normal, with a slow and a fast volatility estimate.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css?v=3">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Strangle defense: what happens after one strike is touched",
+  "description": "Short strangles on six ETFs (SPY, QQQ, IWM, XLP, GLD, SLV) opened every trading day since 1993 at 15 to 180 days and 0.5 to 2 standard deviations: what followed the first touch of a strike, how often a rolled untested strike was touched again, and how a faster volatility estimate changes the roll distance.",
+  "datePublished": "2026-11-08",
+  "dateModified": "2026-11-08",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "10+ years of quantitative research on financial markets",
+             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+  "image": "https://nikolai-alexander.com/research/img/strangle-after-a-touch.png",
+  "about": ["short strangle", "strangle adjustment", "rolling the untested side", "realized volatility", "option selling"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/research/strangle-after-a-touch.html"
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="/count.js"></script>
+<style>
+.brand-text { font: 600 17px var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+.article { max-width: 760px; padding: 48px 0 24px; }
+.article h1 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.015em; }
+.article h2 { margin-top: 48px; }
+.article .lede { font-size: 19px; color: var(--ink-2); }
+.byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+.findings { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px 22px; margin: 26px 0 8px; }
+.findings p { font: 600 12.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 10px; }
+.findings ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.article table { font-size: 14.5px; }
+.article td, .article th { white-space: nowrap; padding-right: 14px; }
+.article td.num, .article th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.article th.grp { text-align: center; }
+.article tr.weak td { color: var(--ink-3); }
+.article td .ci { color: var(--ink-3); font-size: 13px; }
+.small { font-size: 14px; color: var(--ink-3); }
+.tnote { margin-top: 4px; }
+.next { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px 22px; margin: 26px 0; }
+
+/* charts */
+.viz { --c-a: #2a78d6; --c-b: #eb6834; --c-ref: var(--ink-3); --c-grid: var(--line);
+       position: relative; margin: 22px 0 6px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .viz { --c-a: #3987e5; --c-b: #d95926; }
+}
+:root[data-theme="dark"] .viz { --c-a: #3987e5; --c-b: #d95926; }
+.viz-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--ink-2); margin-bottom: 6px; }
+.viz-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.viz-legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+.viz-legend i.dot { width: 11px; height: 11px; border-radius: 50%; }
+.viz-legend i.ring { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--ink-3); background: transparent; }
+.viz-legend i.dash { background: repeating-linear-gradient(90deg, var(--ink-3) 0 5px, transparent 5px 8px); height: 2px; }
+.viz-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 640px) { .viz-panels { grid-template-columns: 1fr; } }
+.viz svg { width: 100%; height: auto; display: block; overflow: visible; }
+.viz text { font-family: var(--sans); fill: var(--ink-2); }
+.viz .ttl { font-weight: 600; fill: var(--ink); font-size: 13px; }
+.viz .tick { font-size: 11px; fill: var(--ink-3); }
+.viz .lbl { font-size: 11.5px; fill: var(--ink-2); font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; }
+.viz-tip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s; background: var(--ink); color: var(--bg);
+           font-size: 12.5px; line-height: 1.45; padding: 7px 10px; border-radius: 4px; white-space: nowrap; z-index: 5; }
+.viz + .table-scroll { margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="brand-text">nikolai-alexander.com</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/research/" aria-current="page">Research</a>
+      <a href="/#projects">Projects</a>
+      <a href="/#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="article">
+  <p class="eyebrow">Options research</p>
+  <h1>Strangle defense: what happens after one strike is touched</h1>
+  <p class="byline">By <a href="/#about">Nikolai Alexander</a> &middot; 8 November 2026 &middot; data through 30 October 2026 &middot; part 1 of 2</p>
+  <p class="lede">Sooner or later the price of a short strangle reaches one of its two strikes. A common defense is to roll the untested strike closer to the price and collect more premium. I tested what happens after that first touch on six ETFs (SPY, QQQ, IWM, XLP, GLD and SLV), with a strangle opened on every trading day since 1993: where the price went next, and how far away the rolled strike needed to be. Whether the roll pays for itself once option prices are included is the subject of <a href="/research/strangle-roll-premium.html">part 2</a>.</p>
+
+  <div class="findings">
+    <p>Key findings</p>
+    <ul>
+      <li>After a touch, the price kept going about as often as it does on any day. A touched call strike one standard deviation away finished in the money 57% of the time, the same as normal; a touched put 40%, against 43% normally.</li>
+      <li>The moves got larger in both directions. After a put touch, a call rolled to the same distance (measured with a 42-day volatility) was touched again 1.37 times as often as normal at 1 standard deviation and 2.42 times at 2. The same distance in the other direction, further down, was elevated about as much.</li>
+      <li>Placing the rolled strike with a 10-day volatility instead brought it back to normal risk (1.00 times at 1 standard deviation) and moved it only 12 to 37% further out. At 180 days a 21-day volatility fit better.</li>
+      <li>Stock ETFs needed the fast volatility after falls, gold and silver after rallies. The result held before and after 2010, above and below the 200-day average, at every VIX level and for overnight gaps.</li>
+    </ul>
+  </div>
+
+  <h2>The test</h2>
+  <p>For each ETF I opened a short strangle at every daily close, with 15, 30, 45, 60, 90 or 180 calendar days to expiration and both strikes at 0.5, 1, 1.5 or 2 standard deviations of the term (SD in the charts and tables). The standard deviation comes from an exponentially weighted realized volatility with a 42-day half-life, measured on the entry day. A strike counts as touched when the day's high or low reaches it, and I follow whichever strike is touched first.</p>
+  <p>Every result is compared with a normal level: the same ETF from any day, with the same number of trading days left, measured in the same volatility units. That removes each ETF's usual drift and its fat tails, so what remains is the effect of the touch. Unless stated otherwise, the numbers are averages over the six ETFs and over the terms from 30 to 90 days.</p>
+  <div class="table-scroll"><table id="t-out"><thead><tr><th>Strikes at</th><th class="num">Neither touched</th><th class="num">Call touched first</th><th class="num">Put touched first</th></tr></thead><tbody></tbody></table></div>
+  <p class="small tnote">45-day strangles, average of the six ETFs, share of all strangles opened.</p>
+  <p>At 1 SD neither strike was touched in 44% of 45-day strangles. Near the money the call was touched first more often, because the ETFs drifted upward. At 1.5 and 2 SD the put was touched first more often, because large falls were more common than large rallies.</p>
+
+  <h2>Direction after the touch</h2>
+  <figure class="viz" id="viz1" aria-label="Chart: share of touched strikes that finished in the money at expiration, against the normal share, for calls and puts by distance.">
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-a)"></i>After the touch</span>
+      <span><i class="ring"></i>Normal (any day, same days left)</span>
+    </div>
+    <div class="viz-panels">
+      <svg id="viz1a" viewBox="0 0 360 240" role="img"></svg>
+      <svg id="viz1b" viewBox="0 0 360 240" role="img"></svg>
+    </div>
+    <div class="viz-tip"></div>
+    <figcaption>Share of touched strikes that finished in the money at expiration, measured from the day of the touch. Normal: a strike at the same distance from the price, with the same days left, on any day. Six ETFs, 30 to 90 days. Hover for the numbers.</figcaption>
+  </figure>
+  <p>Once a call strike at 1 SD was touched, the price finished beyond it at expiration 57.2% of the time. On any day, a call at the same distance with the same time left finished beyond it 57.4% of the time, so the touch added nothing to the direction beyond the ETFs' normal drift. For puts, the touched strike finished in the money 39.9% of the time against 42.9% normally: after a fall the price came back slightly more often than usual, by 3 points at 1 SD and 5 points at 2 SD. That tilt is small next to the change in the size of the moves.</p>
+
+  <h2>The size of the moves</h2>
+  <p>After a put touch, I moved the untested call to the same number of standard deviations from the new price, measured with the same 42-day volatility on the day of the touch. For a 45-day strangle at 1 SD, that rolled call was touched later in 38.6% of cases. A call at the same distance on any day was touched in 28.5%.</p>
+  <figure class="viz" id="viz2" aria-label="Chart: how often the rolled strike and the same distance in the touch direction were reached after the touch, relative to normal, after put touches and after call touches.">
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-a)"></i>Back: the rolled strike</span>
+      <span><i class="dot" style="background:var(--c-b)"></i>Onward: same distance further in the touch direction</span>
+      <span><i class="dash"></i>Normal</span>
+    </div>
+    <div class="viz-panels">
+      <svg id="viz2a" viewBox="0 0 360 240" role="img"></svg>
+      <svg id="viz2b" viewBox="0 0 360 240" role="img"></svg>
+    </div>
+    <div class="viz-tip"></div>
+    <figcaption>Share of cases in which the level was reached after the touch, divided by the share for the same distance on any day. Distances from the close of the touch day, with the 42-day volatility of that day. Six ETFs, 30 to 90 days.</figcaption>
+  </figure>
+  <p>If prices simply tended to bounce after a fall, only the rolled side would stand out. The chart also shows the same distance in the other direction, further down after a put touch, and it was elevated almost as much: 1.25 times normal at 1 SD against 1.37 for the rolled call, and 2.84 against 2.42 at 2 SD. After a touch, prices moved more in both directions. A 42-day volatility reacts slowly, so on the day of the touch it still describes the calmer market before the move, and a strike placed with it sits closer than it looks.</p>
+  <p>After a call touch, the rolled put was reached about as often as normal at 0.5 and 1 SD (0.95 to 0.96 times). At 1.5 and 2 SD it was elevated too (1.17 and 2.24 times), but such touches are rare: the call was touched first in under 5% of 45-day strangles at 2 SD.</p>
+
+  <h2>How far to roll</h2>
+  <p>If the problem is a volatility estimate that reacts too slowly, a faster one should fix it. I placed the rolled strike with the 42-day volatility and with faster versions with half-lives of 21, 10 and 5 days, each compared with a normal level measured with the same estimate.</p>
+  <figure class="viz" id="viz3" aria-label="Chart: how often the rolled call was touched later after a put touch, relative to normal, for four volatility half-lives.">
+    <div class="viz-legend">
+      <span><i style="background:var(--c-b)"></i>42-day half-life</span>
+      <span><i style="background:var(--c-a)"></i>10-day half-life</span>
+      <span><i class="dash"></i>21-day and 5-day</span>
+    </div>
+    <svg id="viz3-s" viewBox="0 0 760 300" role="img"></svg>
+    <div class="viz-tip"></div>
+    <figcaption>Rolled call after a put touch: share touched later, divided by the normal share for the same estimate. Six ETFs, 30 to 90 days. Hover for the numbers and the strike distance.</figcaption>
+  </figure>
+  <div class="table-scroll"><table id="t-vol"><thead><tr><th>Strikes at</th><th class="num">42-day</th><th class="num">21-day</th><th class="num">10-day</th><th class="num">5-day</th><th class="num">10-day strike further out</th></tr></thead><tbody></tbody></table></div>
+  <p class="small tnote">Rolled call after a put touch, share touched later relative to normal, by half-life of the volatility estimate. Last column: how much further from the price the 10-day estimate placed the strike than the 42-day one (median).</p>
+  <p>With a 10-day half-life the rolled call was touched as often as normal at 1 SD (1.00 times) and less often at 1.5 and 2 SD (0.84 and 0.60 times). The strike moved only 12% further out at 1 SD, 23% at 1.5 SD and 37% at 2 SD. A 5-day half-life placed it further out than needed, which costs premium, and the 21-day version removed about half of the excess.</p>
+  <div class="table-scroll"><table id="t-term"><thead><tr><th>Term</th><th class="num">42-day</th><th class="num">21-day</th><th class="num">10-day</th></tr></thead><tbody></tbody></table></div>
+  <p class="small tnote">Rolled call after a put touch at 1 SD, share touched later relative to normal.</p>
+  <p>For 15-day strangles the 10-day estimate was also about right (1.06 times). At 180 days it placed the strike too far out (0.77 times), because volatility falls back over half a year, and the 21-day version fit (1.08 times).</p>
+
+  <h2>Stock ETFs and metals</h2>
+  <div class="table-scroll"><table id="t-grp"><thead>
+    <tr><th rowspan="2">Rolled strike</th><th class="num grp" colspan="2">1 SD</th><th class="num grp" colspan="2">1.5 SD</th><th class="num grp" colspan="2">2 SD</th></tr>
+    <tr><th class="num">42-day</th><th class="num">10-day</th><th class="num">42-day</th><th class="num">10-day</th><th class="num">42-day</th><th class="num">10-day</th></tr>
+  </thead><tbody></tbody></table></div>
+  <p class="small tnote">Share touched later relative to normal, 30 to 90 days. Stock ETFs: SPY, QQQ, IWM, XLP. Metals: GLD, SLV.</p>
+  <p>The six-ETF average mixes two patterns. In the four stock ETFs the excess appeared after put touches: 1.59 times normal at 1 SD and 4.23 at 2 SD with the 42-day volatility, 1.10 and 0.84 with the 10-day one. In gold and silver it appeared after call touches (1.41 and 2.71 times at 1.5 and 2 SD), while after put touches the rolled call stayed close to normal even with the slow estimate (1.01 times at 1 SD, 1.12 to 1.19 further out). In stocks volatility jumped after falls, in gold and silver after rallies, and the side that needs the faster estimate follows from that.</p>
+  <p>One cell stays high with both estimates: stock ETF call touches at 2 SD, 1.60 times normal with the 10-day volatility. These are sharp rallies inside markets that were already volatile, and they are rare.</p>
+
+  <h2>Does it hold?</h2>
+  <p>I split the put touches in the four stock ETFs (1 SD, 30 to 90 days) by period, by trend and by the VIX on the day of the touch. For each group the normal level comes only from days in the same group, so a touch with the VIX above 25 is compared with days on which the VIX was above 25.</p>
+  <div class="table-scroll"><table id="t-reg"><thead><tr><th>Touches</th><th class="num">Number</th><th class="num">42-day volatility</th><th class="num">10-day volatility</th></tr></thead><tbody></tbody></table></div>
+  <p class="small tnote">Rolled call after a put touch, share touched later relative to normal in the same group, with 90% intervals. Grey: fewer than 3,000 touches. Trend: the ETF's close against its own 200-day average on the day of the touch.</p>
+  <p>The excess with the slow estimate appears in every group, from 1.45 times before 2010 to 1.74 times above the 200-day average. With the 10-day estimate every group lies between 0.90 and 1.19 times normal. The quiet market with the VIX below 15 has few put touches (about 2,000), and there the slow estimate was only mildly elevated (1.17 times, interval 0.85 to 1.50).</p>
+  <p>About 14% of the put touches and 16% of the call touches in the stock ETFs happened overnight: the day opened beyond the strike. In gold and silver, which trade nearly around the clock, about 30% did.</p>
+  <div class="table-scroll"><table id="t-gap"><thead>
+    <tr><th rowspan="2">Touch</th><th class="num" rowspan="2">Overnight</th><th class="num grp" colspan="2">42-day volatility</th><th class="num grp" colspan="2">10-day volatility</th></tr>
+    <tr><th class="num">Overnight</th><th class="num">During the day</th><th class="num">Overnight</th><th class="num">During the day</th></tr>
+  </thead><tbody></tbody></table></div>
+  <p class="small tnote">Rolled strike touched later relative to normal, 1 SD, 30 to 90 days, with 90% intervals. Overnight: share of touches where the day opened beyond the strike.</p>
+  <p>Touches that happened overnight and touches during the day were followed by the same pattern, and the roll needs no different rule for gaps.</p>
+
+  <h2>What it means for strangle sellers</h2>
+  <p>The touch itself said little about where the price went next. It said that the market had become more volatile and that a volatility estimate from before the move understated the distance needed. For the untested strike, a distance measured with a fast volatility (about a 10-day half-life up to three months, about 21 days for longer terms) restored a normal risk, at the cost of placing the strike 12 to 37% further out. The side that needs it is the one where volatility jumps: after falls in stock ETFs, after rallies in gold and silver.</p>
+  <div class="next"><strong>Part 2:</strong> a strike further out collects less premium. <a href="/research/strangle-roll-premium.html">Which roll pays for its risk once option prices are included</a>, priced with the VIX and other CBOE volatility indices.</div>
+
+  <h2>Data and notes</h2>
+  <ul class="small">
+    <li>Data: daily open, high, low and close of SPY (from 1993), QQQ (1999), IWM (2000), XLP (1998), GLD (2004) and SLV (2006), split-adjusted and not dividend-adjusted, through 30 October 2026. Prices are used only to compute the statistics shown.</li>
+    <li>Entries: every trading day, overlapping. Expiration: the first trading day on or after the entry date plus the term, settled at its close. Independent windows per ETF: about 635 at 15 days, 211 at 45 days and 52 at 180 days.</li>
+    <li>Volatility: exponentially weighted average of squared daily log returns, half-life in calendar days. Strike distance: number of standard deviations &times; daily volatility &times; &radic;(trading days to expiration).</li>
+    <li>Touch: the day's high or low at or beyond the strike, first touch only; strangles with both strikes touched on the same day are left out. Roll: at the close of the touch day, same expiration, held to expiration.</li>
+    <li>Normal level: from every trading day of the same ETF, with the same number of trading days left, standardized with that day's volatility of the same kind. In the split by group, only days of the same group.</li>
+    <li>Intervals: 90%, from 2,000 resamples of whole calendar quarters, because touches in the same quarter overlap and the ETFs move together. The pooled stock ETF numbers in the last two tables are weighted by the number of touches and come out slightly higher than the six-ETF averages above.</li>
+    <li>Not included here: option prices (see <a href="/research/strangle-roll-premium.html">part 2</a>), stops or adjustments before expiration, trading costs.</li>
+    <li>All numbers count what happened in the past. They are not probabilities for the future, not forecasts and not financial advice.</li>
+  </ul>
+  <aside class="signup" aria-label="Newsletter">
+    <p class="signup-title">New studies by email</p>
+    <p class="signup-text">One email when a new study is out. No spam, unsubscribe anytime.</p>
+    <form class="signup-form" action="https://app.kit.com/forms/10127955/subscriptions" method="post">
+      <input type="email" name="email_address" required placeholder="Your email address" aria-label="Email address" autocomplete="email">
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="signup-msg" role="status" aria-live="polite"></p>
+    <p class="signup-note">Also available as an <a href="/research/feed.xml">RSS feed</a> &middot; <a href="/OptionsCone/legal.html#privacy">Privacy</a></p>
+  </aside>
+  <section class="more" hidden>
+    <h2>More research</h2>
+    <div class="more-list"></div>
+  </section>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p class="about"><strong>About.</strong> Nikolai Alexander. 10+ years of quantitative research on financial markets. Former product lead and associate commercial director in biotech. I build research tools for market analysis.</p>
+    </div>
+    <div>
+      <p><a href="/research/">Research</a> &middot; <a href="/OptionsCone/">OptionsCone</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const D = {"outcomes":[{"k":0.5,"none":3.6,"call":52.2,"put":44.2},{"k":1.0,"none":44.4,"call":29.5,"put":26.1},{"k":1.5,"none":76.0,"call":11.4,"put":12.6},{"k":2.0,"none":89.2,"call":4.5,"put":6.3}],"fin":[{"k":0.5,"call":59.1,"call_b":59.7,"put":40.5,"put_b":41.5},{"k":1.0,"call":57.2,"call_b":57.4,"put":39.9,"put_b":42.9},{"k":1.5,"call":55.3,"call_b":55.7,"put":38.5,"put_b":43.2},{"k":2.0,"call":50.7,"call_b":54.5,"put":37.6,"put_b":42.7}],"backon":[{"k":0.5,"side":"put","back":65.8,"back_b":63.4,"onw":56.5,"onw_b":53.4,"back_r":1.04,"onw_r":1.06},{"k":0.5,"side":"call","back":51.5,"back_b":53.5,"onw":60.9,"onw_b":63.2,"back_r":0.96,"onw_r":0.96},{"k":1.0,"side":"put","back":39.7,"back_b":28.9,"onw":33.6,"onw_b":26.8,"back_r":1.37,"onw_r":1.25},{"k":1.0,"side":"call","back":25.4,"back_b":26.8,"onw":27.8,"onw_b":28.6,"back_r":0.95,"onw_r":0.97},{"k":1.5,"side":"put","back":20.9,"back_b":10.8,"onw":22.5,"onw_b":12.7,"back_r":1.93,"onw_r":1.78},{"k":1.5,"side":"call","back":14.7,"back_b":12.6,"onw":15.0,"onw_b":10.9,"back_r":1.17,"onw_r":1.38},{"k":2.0,"side":"put","back":9.6,"back_b":4.0,"onw":17.2,"onw_b":6.1,"back_r":2.42,"onw_r":2.84},{"k":2.0,"side":"call","back":13.2,"back_b":5.9,"onw":8.7,"onw_b":4.0,"back_r":2.24,"onw_r":2.16}],"vol":[{"k":0.5,"vol":"42","back":65.8,"base":63.4,"ratio":1.04,"width":1.0},{"k":0.5,"vol":"21","back":65.8,"base":64.3,"ratio":1.02,"width":0.99},{"k":0.5,"vol":"10","back":64.6,"base":65.1,"ratio":0.99,"width":1.02},{"k":0.5,"vol":"5","back":62.2,"base":65.9,"ratio":0.94,"width":1.08},{"k":1.0,"vol":"42","back":39.7,"base":28.9,"ratio":1.37,"width":1.0},{"k":1.0,"vol":"21","back":37.0,"base":30.4,"ratio":1.22,"width":1.04},{"k":1.0,"vol":"10","back":32.1,"base":32.2,"ratio":1.0,"width":1.12},{"k":1.0,"vol":"5","back":27.1,"base":34.2,"ratio":0.79,"width":1.25},{"k":1.5,"vol":"42","back":20.9,"base":10.8,"ratio":1.93,"width":1.0},{"k":1.5,"vol":"21","back":16.1,"base":11.6,"ratio":1.39,"width":1.09},{"k":1.5,"vol":"10","back":10.9,"base":13.0,"ratio":0.84,"width":1.23},{"k":1.5,"vol":"5","back":8.1,"base":15.0,"ratio":0.54,"width":1.39},{"k":2.0,"vol":"42","back":9.6,"base":4.0,"ratio":2.42,"width":1.0},{"k":2.0,"vol":"21","back":5.5,"base":4.3,"ratio":1.28,"width":1.14},{"k":2.0,"vol":"10","back":3.0,"base":5.0,"ratio":0.6,"width":1.37},{"k":2.0,"vol":"5","back":2.3,"base":6.3,"ratio":0.36,"width":1.61}],"groups":[{"grp":"equities","side":"put","slow":[1.08,1.59,2.57,4.23],"fast":[1.04,1.1,1.07,0.84]},{"grp":"equities","side":"call","slow":[0.96,0.89,1.06,2.05],"fast":[0.97,0.89,0.97,1.6]},{"grp":"metals","side":"put","slow":[0.94,1.01,1.19,1.12],"fast":[0.9,0.81,0.55,0.41]},{"grp":"metals","side":"call","slow":[0.98,1.08,1.41,2.71],"fast":[0.96,0.91,0.92,1.33]}],"term":[{"term":"15 days","42":1.31,"21":1.21,"10":1.06},{"term":"30 to 90 days","42":1.37,"21":1.22,"10":1.0},{"term":"180 days","42":1.32,"21":1.08,"10":0.77}],"regime":[{"lab":"All touches","n":28806,"slow":[1.59,1.44,1.75],"fast":[1.09,0.96,1.23]},{"lab":"Before 2010","n":12339,"slow":[1.45,1.25,1.66],"fast":[1.04,0.89,1.22]},{"lab":"2010 and later","n":16467,"slow":[1.69,1.49,1.93],"fast":[1.12,0.94,1.34]},{"lab":"Below its 200-day average","n":18066,"slow":[1.46,1.29,1.65],"fast":[1.18,1.01,1.39]},{"lab":"Above its 200-day average","n":10740,"slow":[1.74,1.52,1.96],"fast":[1.11,0.96,1.28]},{"lab":"VIX below 15","n":2008,"slow":[1.17,0.85,1.5],"fast":[0.9,0.66,1.17]},{"lab":"VIX 15 to 25","n":13689,"slow":[1.66,1.44,1.89],"fast":[1.19,1.01,1.38]},{"lab":"VIX above 25","n":13109,"slow":[1.55,1.37,1.76],"fast":[1.12,0.94,1.34]}],"gap":[{"grp":"equities","side":"put","share":14.4,"gap_n":4155,"gap_slow":[1.65,1.39,1.93],"gap_fast":[0.98,0.81,1.19],"intra_n":24651,"intra_slow":[1.58,1.43,1.73],"intra_fast":[1.1,0.98,1.25]},{"grp":"equities","side":"call","share":16.3,"gap_n":4888,"gap_slow":[0.84,0.69,1.01],"gap_fast":[0.86,0.73,1.02],"intra_n":25190,"intra_slow":[0.89,0.78,1.0],"intra_fast":[0.9,0.8,1.0]},{"grp":"metals","side":"put","share":29.4,"gap_n":2924,"gap_slow":[1.04,0.85,1.25],"gap_fast":[0.79,0.62,0.98],"intra_n":7005,"intra_slow":[0.99,0.82,1.17],"intra_fast":[0.82,0.66,0.98]},{"grp":"metals","side":"call","share":33.2,"gap_n":4574,"gap_slow":[1.09,0.9,1.31],"gap_fast":[0.92,0.74,1.1],"intra_n":9213,"intra_slow":[1.04,0.89,1.21],"intra_fast":[0.89,0.76,1.04]}],"ex45":{"rolled":38.6,"base":28.5}};
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) if (attrs[k] != null) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function tipFor(fig) {
+  const tip = fig.querySelector('.viz-tip');
+  return {
+    show(html, evt) {
+      tip.innerHTML = html; tip.style.opacity = 1;
+      const r = fig.getBoundingClientRect();
+      let x = evt.clientX - r.left + 14, y = evt.clientY - r.top - 12;
+      if (x + tip.offsetWidth > r.width) x = evt.clientX - r.left - tip.offsetWidth - 14;
+      tip.style.left = Math.max(0, x) + 'px'; tip.style.top = Math.max(0, y - tip.offsetHeight) + 'px';
+    },
+    hide() { tip.style.opacity = 0; }
+  };
+}
+function hgrid(s, ys, vals, L, R, W, fmt) {
+  vals.forEach(v => {
+    el('line', { x1: L, x2: W - R, y1: ys(v), y2: ys(v), stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+    el('text', { x: L - 8, y: ys(v) + 4, 'text-anchor': 'end', class: 'tick' }, s, fmt(v));
+  });
+}
+const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2);
+const KS = [0.5, 1, 1.5, 2], KL = k => k + ' SD';
+const ciTxt = c => f2(c[0]) + ' <span class="ci">(' + f2(c[1]) + ' to ' + f2(c[2]) + ')</span>';
+
+// generic small panel over the four distances
+function kPanel(s, tip, o) {
+  const W = 360, H = 240, L = 42, R = 14, T = 28, B = 30;
+  const xs = i => L + 26 + i * (W - L - R - 52) / 3;
+  const ys = v => T + (o.y1 - v) / (o.y1 - o.y0) * (H - T - B);
+  el('text', { x: 0, y: 13, class: 'ttl' }, s, o.title);
+  hgrid(s, ys, o.ticks, L, R, W, o.fmt);
+  if (o.ref != null) el('line', { x1: L, x2: W - R, y1: ys(o.ref), y2: ys(o.ref), stroke: 'var(--c-ref)', 'stroke-width': 1.2, 'stroke-dasharray': '4 3' }, s);
+  KS.forEach((k, i) => el('text', { x: xs(i), y: H - B + 18, 'text-anchor': 'middle', class: 'tick' }, s, KL(k)));
+  o.series.forEach(se => {
+    if (se.line) el('path', { d: 'M' + se.v.map((v, i) => xs(i) + ',' + ys(v)).join('L'), fill: 'none', stroke: se.col, 'stroke-width': 2 }, s);
+    se.v.forEach((v, i) => {
+      if (se.ring) el('circle', { cx: xs(i), cy: ys(v), r: 7.5, fill: 'none', stroke: 'var(--ink-3)', 'stroke-width': 1.8 }, s);
+      else el('circle', { cx: xs(i), cy: ys(v), r: 5, fill: se.col, stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+      if (se.label) { const dy = se.away ? (v >= se.away[i] ? -11 : 19) : (se.dy || -10);
+        el('text', { x: xs(i) + (se.dx || 0), y: ys(v) + dy, 'text-anchor': se.dx ? 'start' : 'middle', class: 'lbl' }, s, se.fmt(v)); }
+    });
+  });
+  KS.forEach((k, i) => {
+    const h = el('rect', { x: xs(i) - 34, y: T, width: 68, height: H - T - B, fill: 'transparent' }, s);
+    h.addEventListener('mousemove', e => tip.show(o.tip(i), e));
+    h.addEventListener('mouseleave', () => tip.hide());
+  });
+}
+
+// Table: outcomes
+(function () {
+  const tb = document.querySelector('#t-out tbody');
+  D.outcomes.forEach(r => tb.insertAdjacentHTML('beforeend', '<tr><td>' + KL(r.k) + '</td><td class="num">' + f1(r.none) +
+    '%</td><td class="num">' + f1(r.call) + '%</td><td class="num">' + f1(r.put) + '%</td></tr>'));
+})();
+
+// Chart 1: direction
+(function () {
+  const fig = document.getElementById('viz1'), tip = tipFor(fig), F = D.fin;
+  [['viz1a', 'call', 'Touched calls, finished in the money', 44, 64, [44, 49, 54, 59, 64]],
+   ['viz1b', 'put', 'Touched puts, finished in the money', 30, 50, [30, 35, 40, 45, 50]]].forEach(([id, k, title, y0, y1, ticks]) => {
+    kPanel(document.getElementById(id), tip, {
+      title, y0, y1, ticks, fmt: v => v + '%',
+      series: [{ v: F.map(r => r[k + '_b']), ring: true },
+               { v: F.map(r => r[k]), col: 'var(--c-a)', label: true, fmt: v => f1(v) + '%', dx: 12, dy: 4 }],
+      tip: i => '<b>' + (k === 'call' ? 'Calls' : 'Puts') + ' at ' + KL(F[i].k) + '</b><br>after the touch ' + f1(F[i][k]) + '%<br>normal ' + f1(F[i][k + '_b']) + '%'
+    });
+  });
+})();
+
+// Chart 2: back vs onward
+(function () {
+  const fig = document.getElementById('viz2'), tip = tipFor(fig);
+  [['viz2a', 'put', 'After a put touch (rolled call)'], ['viz2b', 'call', 'After a call touch (rolled put)']].forEach(([id, side, title]) => {
+    const R = D.backon.filter(r => r.side === side);
+    kPanel(document.getElementById(id), tip, {
+      title, y0: 0.5, y1: 3, ticks: [0.5, 1, 1.5, 2, 2.5, 3], fmt: v => v + 'x', ref: 1,
+      series: [{ v: R.map(r => r.onw_r), col: 'var(--c-b)', line: true },
+               { v: R.map(r => r.back_r), col: 'var(--c-a)', line: true, label: true, fmt: v => f2(v) + 'x', away: R.map(r => r.onw_r) }],
+      tip: i => '<b>' + title.split(' (')[0] + ', ' + KL(R[i].k) + '</b><br>rolled strike reached ' + f1(R[i].back) + '% (normal ' + f1(R[i].back_b) + '%), ' + f2(R[i].back_r) + 'x' +
+        '<br>same distance onward ' + f1(R[i].onw) + '% (normal ' + f1(R[i].onw_b) + '%), ' + f2(R[i].onw_r) + 'x'
+    });
+  });
+})();
+
+// Chart 3: half-lives
+(function () {
+  const fig = document.getElementById('viz3'), tip = tipFor(fig), s = document.getElementById('viz3-s');
+  const W = 760, H = 300, L = 46, R = 70, T = 20, B = 30, y0 = 0, y1 = 2.6;
+  const xs = i => L + 40 + i * (W - L - R - 80) / 3, ys = v => T + (y1 - v) / (y1 - y0) * (H - T - B);
+  hgrid(s, ys, [0, 0.5, 1, 1.5, 2, 2.5], L, R, W, v => v + 'x');
+  el('line', { x1: L, x2: W - R, y1: ys(1), y2: ys(1), stroke: 'var(--c-ref)', 'stroke-width': 1.2, 'stroke-dasharray': '4 3' }, s);
+  el('text', { x: W - R + 6, y: ys(1) + 4, class: 'tick' }, s, 'normal');
+  KS.forEach((k, i) => el('text', { x: xs(i), y: H - B + 18, 'text-anchor': 'middle', class: 'tick' }, s, KL(k)));
+  const by = v => D.vol.filter(r => r.vol === v);
+  [['21', 'var(--ink-3)', true], ['5', 'var(--ink-3)', true], ['42', 'var(--c-b)', false], ['10', 'var(--c-a)', false]].forEach(([v, col, minor]) => {
+    const rows = by(v);
+    el('path', { d: 'M' + rows.map((r, i) => xs(i) + ',' + ys(r.ratio)).join('L'), fill: 'none', stroke: col, 'stroke-width': minor ? 1.5 : 2, 'stroke-dasharray': minor ? '5 3' : null }, s);
+    rows.forEach((r, i) => {
+      el('circle', { cx: xs(i), cy: ys(r.ratio), r: minor ? 3.5 : 5, fill: col, stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+      if (v === '42' && i > 0) el('text', { x: xs(i), y: ys(r.ratio) + (v === '42' ? -11 : 19), 'text-anchor': 'middle', class: 'lbl' }, s, f2(r.ratio) + 'x');
+    });
+    const last = rows[3];
+    el('text', { x: xs(3) + 12, y: ys(last.ratio) + 4, class: minor ? 'tick' : 'lbl' }, s, v + '-day');
+  });
+  KS.forEach((k, i) => {
+    const h = el('rect', { x: xs(i) - 60, y: T, width: 120, height: H - T - B, fill: 'transparent' }, s);
+    h.addEventListener('mousemove', e => tip.show('<b>Rolled call at ' + KL(k) + '</b>' + ['42', '21', '10', '5'].map(v => {
+      const r = by(v)[i];
+      return '<br>' + v + '-day: ' + f1(r.back) + '% touched, normal ' + f1(r.base) + '% (' + f2(r.ratio) + 'x), strike ' + (r.width >= 1 ? '+' : '') + Math.round((r.width - 1) * 100) + '% further';
+    }).join(''), e));
+    h.addEventListener('mouseleave', () => tip.hide());
+  });
+  const tb = document.querySelector('#t-vol tbody');
+  KS.forEach((k, i) => tb.insertAdjacentHTML('beforeend', '<tr><td>' + KL(k) + '</td>' + ['42', '21', '10', '5'].map(v => '<td class="num">' + f2(by(v)[i].ratio) + 'x</td>').join('') +
+    '<td class="num">' + Math.round((by('10')[i].width - 1) * 100) + '%</td></tr>'));
+  const tt = document.querySelector('#t-term tbody');
+  D.term.forEach(r => tt.insertAdjacentHTML('beforeend', '<tr><td>' + r.term + '</td><td class="num">' + f2(r['42']) + 'x</td><td class="num">' + f2(r['21']) + 'x</td><td class="num">' + f2(r['10']) + 'x</td></tr>'));
+})();
+
+// Tables: groups, regimes, gaps
+(function () {
+  const NAME = { 'equities put': 'Stock ETFs, call after a put touch', 'equities call': 'Stock ETFs, put after a call touch',
+                 'metals put': 'Metals, call after a put touch', 'metals call': 'Metals, put after a call touch' };
+  const tb = document.querySelector('#t-grp tbody');
+  D.groups.forEach(g => tb.insertAdjacentHTML('beforeend', '<tr><td>' + NAME[g.grp + ' ' + g.side] + '</td>' +
+    [1, 2, 3].map(i => '<td class="num">' + f2(g.slow[i]) + 'x</td><td class="num">' + f2(g.fast[i]) + 'x</td>').join('') + '</tr>'));
+  const tr = document.querySelector('#t-reg tbody');
+  D.regime.forEach(r => tr.insertAdjacentHTML('beforeend', '<tr' + (r.n < 3000 ? ' class="weak"' : '') + '><td>' + r.lab + '</td><td class="num">' +
+    r.n.toLocaleString('en-US') + '</td><td class="num">' + ciTxt(r.slow) + '</td><td class="num">' + ciTxt(r.fast) + '</td></tr>'));
+  const tg = document.querySelector('#t-gap tbody');
+  const GN = { 'equities put': 'Stock ETFs, put touch', 'equities call': 'Stock ETFs, call touch', 'metals put': 'Metals, put touch', 'metals call': 'Metals, call touch' };
+  D.gap.forEach(r => tg.insertAdjacentHTML('beforeend', '<tr><td>' + GN[r.grp + ' ' + r.side] + '</td><td class="num">' + Math.round(r.share) + '%</td><td class="num">' +
+    ciTxt(r.gap_slow) + '</td><td class="num">' + ciTxt(r.intra_slow) + '</td><td class="num">' + ciTxt(r.gap_fast) + '</td><td class="num">' + ciTxt(r.intra_fast) + '</td></tr>'));
+})();
+</script>
+<script src="/signup.js?v=2" defer></script>
+<script src="/related.js?v=2" defer></script>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rolling the untested side of a strangle: which roll pays</title>
+<meta name="description" content="Priced with the VIX and other CBOE volatility indices: rolling the put up after a rally added about 12% of the credit, rolling the call down after a drop mostly did not.">
+<link rel="canonical" href="https://nikolai-alexander.com/research/strangle-roll-premium.html">
+<link rel="alternate" type="application/rss+xml" title="Research | Nikolai Alexander" href="https://nikolai-alexander.com/research/feed.xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rolling the untested side of a strangle: which roll pays for its risk">
+<meta property="og:description" content="Short strangles on SPY, QQQ, IWM, XLP, GLD and SLV, priced with each ETF's volatility index: in stock ETFs the put roll after a rally added about 12% of the original credit, while the call roll after a drop needed a call price near the full VIX level to break even.">
+<meta property="og:url" content="https://nikolai-alexander.com/research/strangle-roll-premium.html">
+<meta property="og:image" content="https://nikolai-alexander.com/research/img/strangle-roll-premium.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Break-even implied volatility of rolling the untested strike, as a share of the volatility index, for the put roll and the call roll by distance.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css?v=3">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Rolling the untested side of a strangle: which roll pays",
+  "description": "Short strangles on six ETFs, priced with Black-Scholes and each ETF's 30-day volatility index (VIX, VXN, RVX, GVZ, VXSLV): the result of rolling the untested strike after a touch, the implied volatility at which the roll breaks even, results by ETF, period and VIX level, and the worst outcomes with and without the roll.",
+  "datePublished": "2026-11-08",
+  "dateModified": "2026-11-08",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "10+ years of quantitative research on financial markets",
+             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+  "image": "https://nikolai-alexander.com/research/img/strangle-roll-premium.png",
+  "about": ["short strangle", "strangle adjustment", "rolling the untested side", "implied volatility", "VIX", "option selling"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/research/strangle-roll-premium.html"
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="/count.js"></script>
+<style>
+.brand-text { font: 600 17px var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+.article { max-width: 760px; padding: 48px 0 24px; }
+.article h1 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.015em; }
+.article h2 { margin-top: 48px; }
+.article .lede { font-size: 19px; color: var(--ink-2); }
+.byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+.findings { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px 22px; margin: 26px 0 8px; }
+.findings p { font: 600 12.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 10px; }
+.findings ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.article table { font-size: 14.5px; }
+.article td, .article th { white-space: nowrap; padding-right: 14px; }
+.article td.num, .article th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.article th.grp { text-align: center; }
+.article tr.weak td { color: var(--ink-3); }
+.article td .ci { color: var(--ink-3); font-size: 13px; }
+.small { font-size: 14px; color: var(--ink-3); }
+.tnote { margin-top: 4px; }
+
+/* charts */
+.viz { --c-a: #2a78d6; --c-b: #eb6834; --c-ref: var(--ink-3); --c-grid: var(--line);
+       position: relative; margin: 22px 0 6px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .viz { --c-a: #3987e5; --c-b: #d95926; }
+}
+:root[data-theme="dark"] .viz { --c-a: #3987e5; --c-b: #d95926; }
+.viz-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--ink-2); margin-bottom: 6px; }
+.viz-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.viz-legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+.viz-legend i.dot { width: 11px; height: 11px; border-radius: 50%; }
+.viz-legend i.dash { background: repeating-linear-gradient(90deg, var(--ink-3) 0 5px, transparent 5px 8px); height: 2px; }
+.viz svg { width: 100%; height: auto; display: block; overflow: visible; }
+.viz text { font-family: var(--sans); fill: var(--ink-2); }
+.viz .ttl { font-weight: 600; fill: var(--ink); font-size: 13px; }
+.viz .tick { font-size: 11px; fill: var(--ink-3); }
+.viz .lbl { font-size: 11.5px; fill: var(--ink-2); font-variant-numeric: tabular-nums; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; }
+.viz-tip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s; background: var(--ink); color: var(--bg);
+           font-size: 12.5px; line-height: 1.45; padding: 7px 10px; border-radius: 4px; white-space: nowrap; z-index: 5; }
+.viz + .table-scroll { margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="brand-text">nikolai-alexander.com</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/research/" aria-current="page">Research</a>
+      <a href="/#projects">Projects</a>
+      <a href="/#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="article">
+  <p class="eyebrow">Options research</p>
+  <h1>Rolling the untested side of a strangle: which roll pays</h1>
+  <p class="byline">By <a href="/#about">Nikolai Alexander</a> &middot; 8 November 2026 &middot; data through 30 October 2026 &middot; part 2 of 2</p>
+  <p class="lede"><a href="/research/strangle-after-a-touch.html">Part 1</a> showed that after one strike of a short strangle is touched, prices move more in both directions, and that the untested strike needs to be rolled with a fast volatility estimate to keep its risk normal. Rolling closer to the price collects more premium. Here I priced the options to see whether that premium paid for the risk, in four stock ETFs and in gold and silver.</p>
+
+  <div class="findings">
+    <p>Key findings</p>
+    <ul>
+      <li>In SPY, QQQ, IWM and XLP, rolling the put up after the call was touched added about 12% of the strangle's original credit at 0.5 and 1 standard deviation. The result was positive under every pricing assumption I tested and in each of the four ETFs.</li>
+      <li>Rolling the call down after the put was touched only paid if the new call could be sold at a high implied volatility. For SPY with the VIX at 20, a call at 1 standard deviation had to be sold at an implied volatility of at least 18.4% (92% of the VIX), and at 0.5 standard deviations at 29.6% (148%). Out-of-the-money index calls usually trade below the VIX level.</li>
+      <li>Further out the two rolls swap places: at 1.5 and 2 standard deviations the call roll broke even at 66% to 81% of the index level, while the put roll after a 2 standard deviation rally lost 13% of the credit on average (from only 1,480 touches).</li>
+      <li>Neither roll changed the worst outcomes, which came from the tested strike. In gold and silver both rolls paid at 0.5 to 1.5 standard deviations.</li>
+    </ul>
+  </div>
+
+  <h2>How the options are priced</h2>
+  <p>There is no long public history of ETF option prices to test against, so I priced every option with Black-Scholes and used each ETF's 30-day volatility index from CBOE as the implied volatility: the VIX for SPY, VXN for QQQ, RVX for IWM, GVZ for GLD and VXSLV for SLV. XLP has no index. As a second version for all six ETFs, including the years before the indices existed, I used the ETF's realized volatility scaled by its typical ratio to the index (1.16 to 1.25).</p>
+  <p>The setup follows part 1: a short strangle opened on every trading day with 30 to 90 days to expiration and strikes at 0.5 to 2 standard deviations (SD below). When one strike is touched, the untested option is bought back at the close of that day and a new one is sold at the same number of standard deviations from the new price, measured with a 10-day volatility. Both positions are held to expiration. The result of the roll is the extra premium (new option sold minus old option bought back) minus the extra payout at expiration, as a share of the strangle's original credit. For a strangle opened for a $3.00 credit, a result of 10% means the roll added $0.30 on average.</p>
+
+  <h2>Rolling the put up after a rally</h2>
+  <div class="table-scroll"><table id="t-adds"><thead>
+    <tr><th>Roll</th><th>Strikes at</th><th class="num">Touches</th><th class="num">Index level</th><th class="num">With skew</th><th class="num">Realized vol</th></tr>
+  </thead><tbody></tbody></table></div>
+  <p class="small tnote">Result of the roll in % of the strangle's original credit, stock ETFs, 30 to 90 days, with a 90% interval for the main version. Index level: the volatility index as implied volatility for every strike. With skew: at-the-money options at 88% of the index level, puts higher and calls lower by 12% of the index level per standard deviation of moneyness. Realized vol: the second version described above, which includes XLP and the years before the indices. Grey: fewer than 3,000 touches.</p>
+  <p>At 0.5 and 1 SD the put roll added 12.4% and 11.6% of the credit with the index level as volatility, and between 10% and 17% in the other versions. The new put kept 37.5% of its premium at 1 SD. A put sold on any day at the same distance and with the same time left kept 43.6%, so the rolled put carried somewhat more risk than usual, and its premium still covered it.</p>
+  <p>At 1.5 SD the result is unclear (4.5%, interval &minus;5.9% to 12.0%). At 2 SD it was negative in every version, &minus;13.3% with the index level (interval &minus;41.4% to 6.2%), from 1,480 touches in 58 calendar quarters. A call touched at 2 SD usually means a sharp rally inside a volatile market, and after rallies the reversal was larger than usual. At 1 SD the expected payout at the rolled put was 2.03 times the payout at the same distance further up (interval 1.34 to 3.02), against 1.26 on any day. After put touches the same comparison could not be told apart from normal (0.98 against 0.80, interval 0.57 to 1.87).</p>
+
+  <h2>Rolling the call down after a drop</h2>
+  <p>For the call roll the answer depends on the price of the call, and a volatility index is a poor guide to the price of one strike. The indices are computed from a strip of out-of-the-money options and sit above at-the-money volatility (see the <a href="/research/vix-term-structure.html">VIX term structure study</a>), and on index options calls further out usually trade below at-the-money volatility while puts trade above it. Instead of relying on an assumed skew, I asked how high the implied volatility of the rolled option had to be for the roll to break even.</p>
+  <p>I state that break-even as a share of the ETF's volatility index on the day of the touch (the VIX for SPY, VXN for QQQ, RVX for IWM). A break-even of 92% means: with the VIX at 20, the roll paid on average if the new call could be sold at an implied volatility of 18.4% or more, and lost if it traded lower. The option bought back is priced at the same implied volatility. A break-even below 100% means the roll pays even when the option trades below the index level; above 100%, the option has to trade above it.</p>
+  <figure class="viz" id="viz1" aria-label="Chart: break-even implied volatility of the roll as a share of the volatility index, put roll and call roll by distance, with 90% intervals.">
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-a)"></i>Put rolled up after a call touch</span>
+      <span><i class="dot" style="background:var(--c-b)"></i>Call rolled down after a put touch</span>
+      <span><i class="dash"></i>100%: implied volatility equal to the index</span>
+    </div>
+    <svg id="viz1-s" viewBox="0 0 760 320" role="img"></svg>
+    <div class="viz-tip"></div>
+    <figcaption>Implied volatility at which the roll adds nothing on average, as a share of the ETF's volatility index on the day of the touch. Stock ETFs with an index (SPY, QQQ, IWM), 30 to 90 days, 90% intervals. Hover for the numbers.</figcaption>
+  </figure>
+  <p>For the put roll the break-even was 62% of the index at 0.5 SD and 77% at 1 SD. Out-of-the-money puts on stock indices usually trade at or above the index level, so the put roll cleared that easily. For the call roll the break-even was 148% of the index at 0.5 SD and 92% at 1 SD (SPY alone: 87%, interval 76% to 100%). Out-of-the-money calls usually trade below the index level, and after a fall, when the index is high, the gap tends to be wider, so calls rarely reached those levels. With the call priced at exactly the index level (100%), the roll at 1 SD added 5.1% (interval &minus;3.5% to 12.2%), with the skew version it lost 9.7%. The rolled call kept 34.1% of its premium, against 48.1% for a call sold on any day.</p>
+  <p>At 1.5 and 2 SD the call roll broke even at only 81% and 66% of the index level. With the index level it added 15.5% and 21.0% of the credit, with the skew version &minus;5.7% and 1.9%, so the outcome depends on how cheap far calls were at the time. In this sample a fall large enough to touch a put at 2 SD was rarely followed by a rally all the way back to a call rolled that far out within the term.</p>
+
+  <h2>By ETF</h2>
+  <figure class="viz" id="viz2" aria-label="Chart: result of the put roll and the call roll at one standard deviation for each ETF, with 90% intervals.">
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-a)"></i>Put roll after a call touch</span>
+      <span><i class="dot" style="background:var(--c-b)"></i>Call roll after a put touch</span>
+    </div>
+    <svg id="viz2-s" viewBox="0 0 760 300" role="img"></svg>
+    <div class="viz-tip"></div>
+    <figcaption>Result of the roll in % of the original credit at 1 SD, 30 to 90 days, index level as volatility (XLP: realized vol version), with 90% intervals. Index data from 1993 (SPY), 2001 (QQQ), 2008 (GLD), 2009 (IWM) and 2011 (SLV).</figcaption>
+  </figure>
+  <p>The put roll was positive in each stock ETF, from 8.6% of the credit in IWM to 12.8% in SPY, with intervals above zero. The call roll ranged from 2.4% in XLP to 7.6% in SPY, and every one of its intervals reaches zero or below, even with the index level as volatility, which flatters the call.</p>
+
+  <h2>By period and market</h2>
+  <div class="table-scroll"><table id="t-reg"><thead>
+    <tr><th>Touches</th><th class="num">Put roll</th><th class="num">Call touches</th><th class="num">Call roll</th><th class="num">Put touches</th></tr>
+  </thead><tbody></tbody></table></div>
+  <p class="small tnote">Result of the roll in % of the original credit, stock ETFs with an index, 1 SD, 30 to 90 days, index level, with 90% intervals. Call touches lead to the put roll, put touches to the call roll. Grey: fewer than 3,000 touches. Before 2010 only SPY and QQQ have an index.</p>
+  <p>The put roll stayed positive in every group, between 8.5% after 2010 and 17.6% before, and its interval excludes zero everywhere except with the VIX above 25, where there were only 1,092 call touches. The call roll ranged from &minus;0.2% after 2010 to 19.0% with the VIX below 15. Its interval excludes zero only before 2010 and in the quiet VIX group, which had 940 put touches.</p>
+
+  <h2>What the roll does not change</h2>
+  <p>Among strangles at 1 SD whose put was touched, the worst 5% lost 4.39 times the original credit when held without a roll and 4.09 times with the call roll. After a call touch, the worst 5% lost 2.22 times the credit without and 2.10 times with the put roll. In those cases the loss came from the tested strike, and the untested side is too small to offset it. On average, touched strangles at 1 SD held to expiration kept 3.8% of their credit after a put touch and 16.7% after a call touch, with the index level as volatility.</p>
+
+  <h2>Gold and silver</h2>
+  <div class="table-scroll"><table id="t-dmg"><thead>
+    <tr><th rowspan="2">Touch</th><th class="num grp" colspan="2">Rolled strike reached</th><th class="num grp" colspan="2">Same distance onward</th><th class="num grp" colspan="2">Payout ratio</th></tr>
+    <tr><th class="num">After touch</th><th class="num">Normal</th><th class="num">After touch</th><th class="num">Normal</th><th class="num">After touch</th><th class="num">Normal</th></tr>
+  </thead><tbody></tbody></table></div>
+  <p class="small tnote">1 SD, all terms from 15 to 180 days, 10-day volatility. Payout ratio: expected payout at expiration at the rolled strike divided by the payout at the same distance onward. Above 1: the move back against the rolled strike costs more than a continued move.</p>
+  <p>In GLD and SLV the risk after a touch sat on the tested side. After a call touch the same distance further up was reached in 40% of cases (35% normally), while the rolled put was touched in 24% (27% normally), and the payout ratio was 0.38 against 0.63. In the stock ETFs it was the other way round after call touches: 1.63 against 1.19.</p>
+  <p>With option prices from GVZ and VXSLV (available from 2008 and 2011), both rolls paid at 1 SD: the put roll after a rally added 18.3% of the credit (interval 10.4% to 25.7%), the call roll after a fall 12.5% (5.5% to 18.1%). The break-even was between 76% and 83% of the index level on either side up to 1.5 SD. Two ETFs, overlapping windows and 15 to 18 years of index data make this the weakest part of the study.</p>
+
+  <h2>What it means for strangle sellers</h2>
+  <p>In the stock ETFs, rolling the put up after a rally paid at 0.5 and 1 SD under every assumption, while the version at 2 SD lost on average. Rolling the call down after a fall paid only if the new call could be sold near the full volatility index, a price index calls rarely reach after a sell-off; at 1.5 and 2 SD the threshold was lower, and whether it was met depended on the skew. In gold and silver both rolls paid. In every case the roll was a small addition to the average result, and the outcome of a touched strangle was decided by the tested strike.</p>
+
+  <h2>Data and notes</h2>
+  <ul class="small">
+    <li>Prices: daily data of SPY, QQQ, IWM, XLP, GLD and SLV through 30 October 2026 as in <a href="/research/strangle-after-a-touch.html">part 1</a>. Volatility indices: CBOE daily closes of VIX, VXN, RVX, GVZ and VXSLV.</li>
+    <li>Options are modeled, not observed: Black-Scholes with rates and dividends set to zero (forward = spot), time in trading days / 252, and the 30-day index used for every term. After shocks short-term implied volatility usually trades above the 30-day index, and in normal markets longer terms trade above it.</li>
+    <li>An index level is not the implied volatility of a specific strike. For that reason the main result is stated as the break-even level. The skew version is an assumption, not measured data.</li>
+    <li>Realized vol version: m &times; &radic;(0.5 &times; 10-day&sup2; + 0.5 &times; 42-day&sup2;) volatility, with m the median ratio of the index to that blend: SPY 1.25, QQQ 1.18, IWM 1.18, GLD 1.16, SLV 1.16; XLP 1.20, the average of the three stock ETFs.</li>
+    <li>Roll: at the close of the touch day, untested option bought back, new option sold at the same number of standard deviations from that close with a 10-day volatility, same expiration, only toward the price (if the new distance were further out, the old strike is kept, in under 2% of cases at 1 SD), held to expiration. Trading costs are not included; a roll pays two bid-ask spreads.</li>
+    <li>Normal level for the premium kept: the same option (same distance, same days left, same pricing) sold on every trading day.</li>
+    <li>Intervals: 90%, from 2,000 resamples of whole calendar quarters of the touch date.</li>
+    <li>All numbers count what happened in the past. They are not probabilities for the future, not forecasts and not financial advice.</li>
+  </ul>
+  <aside class="signup" aria-label="Newsletter">
+    <p class="signup-title">New studies by email</p>
+    <p class="signup-text">One email when a new study is out. No spam, unsubscribe anytime.</p>
+    <form class="signup-form" action="https://app.kit.com/forms/10127955/subscriptions" method="post">
+      <input type="email" name="email_address" required placeholder="Your email address" aria-label="Email address" autocomplete="email">
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="signup-msg" role="status" aria-live="polite"></p>
+    <p class="signup-note">Also available as an <a href="/research/feed.xml">RSS feed</a> &middot; <a href="/OptionsCone/legal.html#privacy">Privacy</a></p>
+  </aside>
+  <section class="more" hidden>
+    <h2>More research</h2>
+    <div class="more-list"></div>
+  </section>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p class="about"><strong>About.</strong> Nikolai Alexander. 10+ years of quantitative research on financial markets. Former product lead and associate commercial director in biotech. I build research tools for market analysis.</p>
+    </div>
+    <div>
+      <p><a href="/research/">Research</a> &middot; <a href="/OptionsCone/">OptionsCone</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const D = {"be":[{"roll":"put","k":0.5,"n":39916,"q":133,"f":[0.62,0.56,0.68]},{"roll":"put","k":1.0,"n":20695,"q":132,"f":[0.77,0.69,0.86]},{"roll":"put","k":1.5,"n":6223,"q":115,"f":[0.92,0.72,1.08]},{"roll":"put","k":2.0,"n":1480,"q":58,"f":[1.21,0.81,1.48]},{"roll":"call","k":0.5,"n":33137,"q":133,"f":[1.48,1.16,2.06]},{"roll":"call","k":1.0,"n":19244,"q":119,"f":[0.92,0.8,1.05]},{"roll":"call","k":1.5,"n":10063,"q":93,"f":[0.81,0.69,0.93]},{"roll":"call","k":2.0,"n":5463,"q":64,"f":[0.66,0.59,0.72]}],"adds":[{"roll":"put","k":0.5,"n":39916,"q":133,"Mf":[12.4,9.7,14.8],"Ms":10.1,"Rf":13.3,"Rs":10.8},{"roll":"put","k":1.0,"n":20695,"q":132,"Mf":[11.6,7.3,15.5],"Ms":13.1,"Rf":15.1,"Rs":17.0},{"roll":"put","k":1.5,"n":6223,"q":115,"Mf":[4.5,-5.9,12.0],"Ms":8.3,"Rf":7.3,"Rs":13.9},{"roll":"put","k":2.0,"n":1480,"q":58,"Mf":[-13.3,-41.4,6.2],"Ms":-14.3,"Rf":-22.9,"Rs":-18.8},{"roll":"call","k":0.5,"n":33137,"q":133,"Mf":[-6.4,-10.3,-2.6],"Ms":-9.6,"Rf":-5.6,"Rs":-9.0},{"roll":"call","k":1.0,"n":19244,"q":119,"Mf":[5.1,-3.5,12.2],"Ms":-9.7,"Rf":1.8,"Rs":-14.3},{"roll":"call","k":1.5,"n":10063,"q":93,"Mf":[15.5,5.6,23.2],"Ms":-5.7,"Rf":9.6,"Rs":-11.2},{"roll":"call","k":2.0,"n":5463,"q":64,"Mf":[21.0,15.5,28.7],"Ms":1.9,"Rf":12.5,"Rs":-3.0}],"etf":[{"sym":"SPY","roll":"put","n":8846,"v":[12.8,8.6,16.4]},{"sym":"SPY","roll":"call","n":8419,"v":[7.6,0.0,14.1]},{"sym":"QQQ","roll":"put","n":7512,"v":[12.2,6.4,17.3]},{"sym":"QQQ","roll":"call","n":6510,"v":[2.9,-8.7,13.0]},{"sym":"IWM","roll":"put","n":4337,"v":[8.6,1.0,14.6]},{"sym":"IWM","roll":"call","n":4315,"v":[4.2,-7.7,14.2]},{"sym":"XLP","roll":"put","n":7019,"v":[11.9,5.6,17.5]},{"sym":"XLP","roll":"call","n":6741,"v":[2.4,-5.0,9.1]},{"sym":"GLD","roll":"put","n":6350,"v":[23.3,16.7,28.7]},{"sym":"GLD","roll":"call","n":4220,"v":[9.5,-0.4,17.5]},{"sym":"SLV","roll":"put","n":3366,"v":[13.2,-3.4,24.9]},{"sym":"SLV","roll":"call","n":3560,"v":[15.0,8.3,20.7]}],"metals_be":[{"roll":"put","k":0.5,"n":15706,"q":74,"f":[0.77,0.66,0.92]},{"roll":"put","k":1.0,"n":9716,"q":72,"f":[0.76,0.65,0.87]},{"roll":"put","k":1.5,"n":4991,"q":56,"f":[0.83,0.6,1.06]},{"roll":"put","k":2.0,"n":2624,"q":37,"f":[1.01,0.71,1.32]},{"roll":"call","k":0.5,"n":13702,"q":75,"f":[0.81,0.69,0.97]},{"roll":"call","k":1.0,"n":7780,"q":69,"f":[0.79,0.68,0.9]},{"roll":"call","k":1.5,"n":3217,"q":51,"f":[0.83,0.59,1.02]},{"roll":"call","k":2.0,"n":1317,"q":31,"f":[0.96,0.4,1.3]}],"prem_regime":[{"lab":"All touches","put":[11.6,7.3,15.4],"n_put":20695,"call":[5.1,-3.2,12.3],"n_call":19244},{"lab":"Before 2010","put":[17.6,14.0,20.7],"n_put":6781,"call":[13.4,4.4,20.3],"n_call":6923},{"lab":"2010 and later","put":[8.5,2.3,13.9],"n_put":13914,"call":[-0.2,-13.3,9.8],"n_call":12321},{"lab":"Below its 200-day average","put":[9.6,3.3,14.5],"n_put":1708,"call":[7.2,-3.9,16.0],"n_call":11523},{"lab":"Above its 200-day average","put":[12.0,7.1,16.3],"n_put":18987,"call":[0.9,-8.5,9.8],"n_call":7721},{"lab":"VIX below 15","put":[15.1,10.5,18.9],"n_put":11347,"call":[19.0,6.8,27.6],"n_call":940},{"lab":"VIX 15 to 25","put":[8.6,1.8,14.5],"n_put":8256,"call":[0.1,-12.3,10.8],"n_call":9464},{"lab":"VIX above 25","put":[10.9,-2.3,19.0],"n_put":1092,"call":[7.8,-3.8,16.8],"n_call":8840}],"kept":{"put":[37.5,43.6],"call":[34.1,48.1]},"tail":{"put":[-2.22,-2.1,16.7],"call":[-4.39,-4.09,3.8]},"metals":{"roll_put":[18.3,10.4,25.7],"roll_call":[12.5,5.5,18.1]},"spy_be":{"put":[0.72,0.64,0.82],"call":[0.87,0.76,1.0]},"damage":[{"grp":"equities","touch":"put","n":43885,"hit_back":33.8,"hit_back_b":31.7,"hit_onw":31.7,"hit_onw_b":29.8,"ratio":1.0,"ratio_b":0.85},{"grp":"equities","touch":"call","n":46888,"hit_back":27.4,"hit_back_b":29.9,"hit_onw":25.2,"hit_onw_b":31.3,"ratio":1.63,"ratio_b":1.19},{"grp":"metals","touch":"put","n":14724,"hit_back":26.6,"hit_back_b":34.1,"hit_onw":24.0,"hit_onw_b":27.9,"ratio":0.78,"ratio_b":1.45},{"grp":"metals","touch":"call","n":21278,"hit_back":24.4,"hit_back_b":27.4,"hit_onw":40.3,"hit_onw_b":34.8,"ratio":0.38,"ratio_b":0.63}],"dmg_ci_call":[2.03,1.35,2.95,1.26],"dmg_ci_put":[0.98,0.59,1.84,0.8]};
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) if (attrs[k] != null) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function tipFor(fig) {
+  const tip = fig.querySelector('.viz-tip');
+  return {
+    show(html, evt) {
+      tip.innerHTML = html; tip.style.opacity = 1;
+      const r = fig.getBoundingClientRect();
+      let x = evt.clientX - r.left + 14, y = evt.clientY - r.top - 12;
+      if (x + tip.offsetWidth > r.width) x = evt.clientX - r.left - tip.offsetWidth - 14;
+      tip.style.left = Math.max(0, x) + 'px'; tip.style.top = Math.max(0, y - tip.offsetHeight) + 'px';
+    },
+    hide() { tip.style.opacity = 0; }
+  };
+}
+const f1 = v => v.toFixed(1), f2 = v => v.toFixed(2);
+const sg = v => (v < 0 ? '&minus;' + Math.abs(v).toFixed(1) : v.toFixed(1));
+const sgt = v => (v < 0 ? '−' + Math.abs(v).toFixed(1) : v.toFixed(1));
+const KS = [0.5, 1, 1.5, 2], KL = k => k + ' SD';
+const pctCi = c => sg(c[0]) + '% <span class="ci">(' + sg(c[1]) + ' to ' + sg(c[2]) + ')</span>';
+
+// Chart 1: break-even
+(function () {
+  const fig = document.getElementById('viz1'), tip = tipFor(fig), s = document.getElementById('viz1-s');
+  const W = 760, H = 320, L = 50, R = 20, T = 16, B = 30, y0 = 0.4, y1 = 2.2;
+  const xs = i => L + 60 + i * (W - L - R - 120) / 3, ys = v => T + (y1 - v) / (y1 - y0) * (H - T - B);
+  [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2].forEach(v => {
+    el('line', { x1: L, x2: W - R, y1: ys(v), y2: ys(v), stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+    el('text', { x: L - 8, y: ys(v) + 4, 'text-anchor': 'end', class: 'tick' }, s, Math.round(v * 100) + '%');
+  });
+  el('line', { x1: L, x2: W - R, y1: ys(1), y2: ys(1), stroke: 'var(--c-ref)', 'stroke-width': 1.2, 'stroke-dasharray': '4 3' }, s);
+  KS.forEach((k, i) => el('text', { x: xs(i), y: H - B + 18, 'text-anchor': 'middle', class: 'tick' }, s, KL(k)));
+  const S = { put: D.be.filter(r => r.roll === 'put'), call: D.be.filter(r => r.roll === 'call') };
+  [['put', 'var(--c-a)', -9], ['call', 'var(--c-b)', 9]].forEach(([roll, col, dx]) => {
+    const rows = S[roll];
+    rows.forEach((r, i) => el('line', { x1: xs(i) + dx, x2: xs(i) + dx, y1: ys(r.f[1]), y2: ys(Math.min(r.f[2], y1)), stroke: col, 'stroke-width': 2, 'stroke-linecap': 'round', opacity: 0.45 }, s));
+    el('path', { d: 'M' + rows.map((r, i) => (xs(i) + dx) + ',' + ys(r.f[0])).join('L'), fill: 'none', stroke: col, 'stroke-width': 2 }, s);
+    rows.forEach((r, i) => {
+      el('circle', { cx: xs(i) + dx, cy: ys(r.f[0]), r: 5.5, fill: col, stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+      const other = S[roll === 'put' ? 'call' : 'put'][i].f[0];
+      el('text', { x: xs(i) + dx, y: ys(r.f[0]) + (r.f[0] >= other ? -11 : 20), 'text-anchor': 'middle', class: 'lbl' }, s, Math.round(r.f[0] * 100) + '%');
+    });
+  });
+  KS.forEach((k, i) => {
+    const h = el('rect', { x: xs(i) - 70, y: T, width: 140, height: H - T - B, fill: 'transparent' }, s);
+    h.addEventListener('mousemove', e => tip.show('<b>Strikes at ' + KL(k) + '</b>' + ['put', 'call'].map(roll => {
+      const r = S[roll][i];
+      const p = v => Math.round(v * 100) + '%';
+      return '<br>' + (roll === 'put' ? 'put roll' : 'call roll') + ': break-even at ' + p(r.f[0]) + ' of the index (90%: ' + p(r.f[1]) + ' to ' + p(r.f[2]) + '), ' + r.n.toLocaleString('en-US') + ' touches';
+    }).join(''), e));
+    h.addEventListener('mouseleave', () => tip.hide());
+  });
+})();
+
+// Chart 2: by ETF
+(function () {
+  const fig = document.getElementById('viz2'), tip = tipFor(fig), s = document.getElementById('viz2-s');
+  const syms = ['SPY', 'QQQ', 'IWM', 'XLP', 'GLD', 'SLV'], NAME = { XLP: 'XLP*' };
+  const W = 760, H = 300, L = 70, R = 20, T = 10, B = 34, x0 = -10, x1 = 30;
+  const xs = v => L + (v - x0) / (x1 - x0) * (W - L - R), step = (H - T - B) / syms.length;
+  for (let v = -10; v <= 30; v += 10) {
+    el('line', { x1: xs(v), x2: xs(v), y1: T, y2: H - B, stroke: v === 0 ? 'var(--ink-3)' : 'var(--c-grid)', 'stroke-width': 1 }, s);
+    el('text', { x: xs(v), y: H - B + 16, 'text-anchor': 'middle', class: 'tick' }, s, (v < 0 ? '−' + Math.abs(v) : v) + '%');
+  }
+  el('text', { x: (L + W - R) / 2, y: H - 2, 'text-anchor': 'middle', class: 'tick' }, s, 'result of the roll, % of the original credit');
+  syms.forEach((sym, i) => {
+    const y = T + step * (i + 0.5);
+    el('text', { x: L - 14, y: y + 4, 'text-anchor': 'end', 'font-size': 13 }, s, NAME[sym] || sym);
+    if (i === 4) el('line', { x1: 0, x2: W - R, y1: T + step * i, y2: T + step * i, stroke: 'var(--line-2)', 'stroke-width': 1 }, s);
+    [['put', -7, 'var(--c-a)'], ['call', 7, 'var(--c-b)']].forEach(([roll, dy, col]) => {
+      const r = D.etf.find(x => x.sym === sym && x.roll === roll);
+      el('line', { x1: xs(Math.max(r.v[1], x0)), x2: xs(Math.min(r.v[2], x1)), y1: y + dy, y2: y + dy, stroke: col, 'stroke-width': 2, 'stroke-linecap': 'round', opacity: 0.45 }, s);
+      el('circle', { cx: xs(r.v[0]), cy: y + dy, r: 5, fill: col, stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+    });
+    const hit = el('rect', { x: 0, y: y - step / 2, width: W, height: step, fill: 'transparent' }, s);
+    hit.addEventListener('mousemove', e => {
+      const p = D.etf.find(x => x.sym === sym && x.roll === 'put'), c = D.etf.find(x => x.sym === sym && x.roll === 'call');
+      tip.show('<b>' + sym + (sym === 'XLP' ? ' (realized vol version)' : '') + ', 1 SD</b><br>put roll ' + sgt(p.v[0]) + '% (90%: ' + sgt(p.v[1]) + ' to ' + sgt(p.v[2]) + '), ' + p.n.toLocaleString('en-US') + ' touches' +
+        '<br>call roll ' + sgt(c.v[0]) + '% (90%: ' + sgt(c.v[1]) + ' to ' + sgt(c.v[2]) + '), ' + c.n.toLocaleString('en-US') + ' touches', e);
+    });
+    hit.addEventListener('mouseleave', () => tip.hide());
+  });
+})();
+
+// Tables
+(function () {
+  const ta = document.querySelector('#t-adds tbody');
+  ['put', 'call'].forEach(roll => D.adds.filter(r => r.roll === roll).forEach((r, i) => ta.insertAdjacentHTML('beforeend',
+    '<tr' + (r.n < 3000 ? ' class="weak"' : '') + '><td>' + (i === 0 ? (roll === 'put' ? 'Put up, after a call touch' : 'Call down, after a put touch') : '') + '</td><td>' + KL(r.k) +
+    '</td><td class="num">' + r.n.toLocaleString('en-US') + '</td><td class="num">' + pctCi(r.Mf) + '</td><td class="num">' + sg(r.Ms) + '%</td><td class="num">' + sg(r.Rf) + '%</td></tr>')));
+  const tr = document.querySelector('#t-reg tbody');
+  D.prem_regime.forEach(r => tr.insertAdjacentHTML('beforeend', '<tr><td>' + r.lab + '</td>' + ['put', 'call'].map(k => {
+    const st = r['n_' + k] < 3000 ? ' style="color:var(--ink-3)"' : '';
+    return '<td class="num"' + st + '>' + pctCi(r[k]) + '</td><td class="num"' + st + '>' + r['n_' + k].toLocaleString('en-US') + '</td>';
+  }).join('') + '</tr>'));
+  const td = document.querySelector('#t-dmg tbody');
+  const GN = { 'equities put': 'Stock ETFs, put touch', 'equities call': 'Stock ETFs, call touch', 'metals put': 'Metals, put touch', 'metals call': 'Metals, call touch' };
+  D.damage.forEach(r => td.insertAdjacentHTML('beforeend', '<tr><td>' + GN[r.grp + ' ' + r.touch] + '</td><td class="num">' + f1(r.hit_back) + '%</td><td class="num">' + f1(r.hit_back_b) +
+    '%</td><td class="num">' + f1(r.hit_onw) + '%</td><td class="num">' + f1(r.hit_onw_b) + '%</td><td class="num">' + f2(r.ratio) + '</td><td class="num">' + f2(r.ratio_b) + '</td></tr>'));
+})();
+</script>
+<script src="/signup.js?v=2" defer></script>
+<script src="/related.js?v=2" defer></script>
+</body>
+</html>
