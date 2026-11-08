@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VIX term structure vs realized volatility since 2008</title>
+<meta name="description" content="Since 2008, one-year S&amp;P 500 options priced 3.9 points more volatility than 30-day ones, but realized volatility was only 1.4 points higher. Who earned it?">
+<link rel="canonical" href="https://nikolai-alexander.com/research/vix-term-structure.html">
+<link rel="alternate" type="application/rss+xml" title="Research | Nikolai Alexander" href="https://nikolai-alexander.com/research/feed.xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VIX term structure vs realized volatility: how much of the slope was premium">
+<meta property="og:description" content="The VIX curve usually slopes up: since 2008, one-year S&amp;P 500 options priced 3.9 points more volatility than 30-day ones on average, but realized volatility was only 1.4 points higher. What that meant for sellers at each term, and for puts vs calls.">
+<meta property="og:url" content="https://nikolai-alexander.com/research/vix-term-structure.html">
+<meta property="og:image" content="https://nikolai-alexander.com/research/img/vix-term-structure.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Average S&amp;P 500 implied volatility by tenor from 30 days to one year, against the realized volatility that followed, 2008-2025.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css?v=3">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "VIX term structure vs realized volatility: how much of the slope was premium",
+  "description": "S&P 500 implied volatility at 30 days, 3 months, 6 months and 1 year (VIX, VIX3M, VIX6M, VIX1Y) against the realized volatility over the same horizon after, every trading day 2008-2025: the premium by tenor, year by year, on the same calendar, for puts and calls, and in stress.",
+  "datePublished": "2026-11-08",
+  "dateModified": "2026-11-08",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "10+ years of quantitative research on financial markets",
+             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+  "image": "https://nikolai-alexander.com/research/img/vix-term-structure.png",
+  "about": ["VIX", "VIX term structure", "implied volatility", "realized volatility", "volatility risk premium", "option selling"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/research/vix-term-structure.html"
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="/count.js"></script>
+<style>
+.brand-text { font: 600 17px var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+.article { max-width: 760px; padding: 48px 0 24px; }
+.article h1 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.015em; }
+.article h2 { margin-top: 48px; }
+.article .lede { font-size: 19px; color: var(--ink-2); }
+.byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+.findings { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px 22px; margin: 26px 0 8px; }
+.findings p { font: 600 12.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 10px; }
+.findings ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.article table { font-size: 14.5px; }
+.article td, .article th { white-space: nowrap; padding-right: 14px; }
+.article td.num, .article th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.article tr.weak td { color: var(--ink-3); }
+.small { font-size: 14px; color: var(--ink-3); }
+.tnote { margin-top: 4px; }
+
+/* charts */
+.viz { --c-iv: #2a78d6; --c-rv: #eb6834; --c-put: #e34948; --c-call: #008300; --c-ref: var(--ink-3); --c-grid: var(--line);
+       position: relative; margin: 22px 0 6px; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .viz { --c-iv: #3987e5; --c-rv: #d95926; --c-put: #e66767; --c-call: #22a322; }
+}
+:root[data-theme="dark"] .viz { --c-iv: #3987e5; --c-rv: #d95926; --c-put: #e66767; --c-call: #22a322; }
+.viz-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--ink-2); margin-bottom: 6px; }
+.viz-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.viz-legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+.viz-legend i.dot { width: 11px; height: 11px; border-radius: 50%; }
+.viz-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 640px) { .viz-panels { grid-template-columns: 1fr; } }
+.viz svg { width: 100%; height: auto; display: block; overflow: visible; }
+.viz text { font-family: var(--sans); fill: var(--ink-2); }
+.viz .ttl { font-weight: 600; fill: var(--ink); font-size: 13px; }
+.viz .tick { font-size: 11px; fill: var(--ink-3); }
+.viz .lbl { font-size: 11.5px; fill: var(--ink-2); font-variant-numeric: tabular-nums; }
+.viz-tip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s; background: var(--ink); color: var(--bg);
+           font-size: 12.5px; line-height: 1.45; padding: 7px 10px; border-radius: 4px; white-space: nowrap; z-index: 5; }
+.viz + .table-scroll { margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="brand-text">nikolai-alexander.com</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/research/" aria-current="page">Research</a>
+      <a href="/#projects">Projects</a>
+      <a href="/#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="article">
+  <p class="eyebrow">Options research</p>
+  <h1>VIX term structure vs realized volatility: how much of the slope was premium</h1>
+  <p class="byline">By <a href="/#about">Nikolai Alexander</a> &middot; 8 November 2026 &middot; data through 30 October 2026</p>
+  <p class="lede">S&amp;P 500 implied volatility usually rises with time to expiration. On 30 October the curve read 19.4 at 30 days, 20.8 at three months, 22.2 at six months and 22.8 at one year. To see whether that reflects more expected turbulence or a higher premium, I compared each tenor with the volatility that actually followed over the same horizon, for every trading day from 2008 to 2025.</p>
+
+  <div class="findings">
+    <p>Key findings</p>
+    <ul>
+      <li>From 30 days to one year, implied volatility rose by 3.9 points on average (20.0 to 23.9). The volatility that followed rose by only 1.4 (16.5 to 17.8). The gap between the two widened from 3.5 points at 30 days to 6.1 at one year.</li>
+      <li>On the same calendar, 30-day volatility sold twelve times a year kept less per year than one 1-year sale (3.6 against 5.7 points) but varied far less: 1.5 points kept per point of risk against 0.6. The 1-year sale lost heavily in the years when a crash followed the sale (2008, 2020).</li>
+      <li>At-the-money puts kept 40% (30 days) to 77% (one year) of their premium, calls 2% to &minus;46%. The difference comes from the market's upward drift: from 2000 to 2009, with no drift, 30-day puts and calls kept about the same (23% and 25%).</li>
+      <li>When the curve was inverted, the 30-day gap shrank to 1.8 points and sellers at 30 days and three months lost on a quarter of the days; six months and one year kept a gap of 5 to 6 points. These rows rest on very few independent windows.</li>
+    </ul>
+  </div>
+
+  <h2>The curve and what followed</h2>
+  <p>The CBOE publishes volatility indices for four tenors of S&amp;P 500 options: the VIX for 30 days, VIX3M for three months, VIX6M for six months and VIX1Y for one year. All four have existed since 2008. For each trading day I took the index level and the realized volatility of the S&amp;P 500 over the same horizon after that day. If the curve rises because longer horizons really are riskier, realized volatility should rise with it.</p>
+  <figure class="viz" id="viz1" aria-label="Chart: average implied volatility and the realized volatility that followed, by tenor, and the gap between them with 90% intervals.">
+    <div class="viz-legend">
+      <span><i class="dot" style="background:var(--c-iv)"></i>Implied (VIX index of that tenor)</span>
+      <span><i class="dot" style="background:var(--c-rv)"></i>Realized over the same horizon after</span>
+    </div>
+    <div class="viz-panels">
+      <svg id="viz1a" viewBox="0 0 360 240" role="img"></svg>
+      <svg id="viz1b" viewBox="0 0 360 240" role="img"></svg>
+    </div>
+    <div class="viz-tip"></div>
+    <figcaption>Averages over every trading day from January 2008 to October 2025 (4,486 days). Right: implied minus realized in volatility points, with 90% intervals from a bootstrap that resamples whole years. Hover for the numbers.</figcaption>
+  </figure>
+  <p>Realized volatility rose much less. Implied volatility rose by 3.9 points from 30 days to one year, realized by 1.4. The difference between the two, 2.6 points, has a 90% interval of 0.5 to 4.5, and in 98% of resampled histories realized volatility rose by less than implied. Most of the upward slope was therefore premium, and only a small part reflected higher realized risk at longer horizons. At every tenor implied volatility sat above what followed, and its 90% interval stays above zero. The seller of that volatility lost, with realized above implied, on 17% of days at 30 days and 13% at one year.</p>
+  <p>These are averages over overlapping windows. A one-year window starts on every trading day, so the 18 years of data contain only about 18 independent one-year outcomes. The intervals account for that by resampling whole years, which is why they are wide.</p>
+
+  <h2>Year by year</h2>
+  <figure class="viz" id="viz2" aria-label="Chart: monthly average of 30-day and one-year implied volatility since 2008, against the realized volatility over the following 30 days and year.">
+    <div class="viz-legend">
+      <span><i style="background:var(--c-iv)"></i>Implied</span>
+      <span><i style="background:var(--c-rv)"></i>Realized over the horizon after</span>
+    </div>
+    <svg id="viz2-s" viewBox="0 0 760 452" role="img"></svg>
+    <div class="viz-tip"></div>
+    <figcaption>Monthly averages of the index level and of the realized volatility over the following 30 days (top) and the following year (bottom), plotted at the month the option would have been sold. Hover for the values.</figcaption>
+  </figure>
+  <p>The result holds in almost every year. Averaged by the year of the sale, implied volatility at 30 days and three months was above what followed in 17 of 18 years (all but 2008), at six months and one year in 16 of 18 (all but 2008 and 2019). The bottom panel shows what drove the one-year results. One-year volatility sold in 2019 was priced at about 19 and met the 2020 crash: from April 2019 on, the year that followed realized 32 to 35. One-year volatility sold in November and December 2008 was priced at about 46, the year that followed realized 28 to 33, and those sellers did well.</p>
+
+  <h2>Rolling 30-day sales vs one 1-year sale</h2>
+  <p>Measured per sale, the one-year tenor looks best: it has the largest gap and, per trade, also the best result relative to its risk. That comparison sets one 1-year sale against one 30-day sale, although a year contains twelve 30-day sales. A fairer test puts both on the same calendar: in every year, sell 30-day volatility twelve times back to back, three-month volatility four times, six-month twice, one-year once, each sale weighted by its length so that every tenor sells the same amount of volatility over time.</p>
+  <figure class="viz" id="viz3" aria-label="Chart: volatility points kept per year, rolling 30-day sales against one one-year sale, for each year from 2008 to 2024.">
+    <div class="viz-panels">
+      <svg id="viz3a" viewBox="0 0 360 240" role="img"></svg>
+      <svg id="viz3b" viewBox="0 0 360 240" role="img"></svg>
+    </div>
+    <div class="viz-tip"></div>
+    <figcaption>Implied minus realized volatility, weighted by the time each sale covers, summed over each year from the first trading days of January (the 2008 block starts on 3 January 2008). Same scale in both panels.</figcaption>
+  </figure>
+  <div class="table-scroll"><table id="t-cal"><thead><tr><th>Tenor</th><th class="num">Sales</th><th class="num">Kept</th><th class="num">Swing</th><th class="num">Per risk</th><th class="num">Lost</th><th class="num">Ahead</th></tr></thead><tbody></tbody></table></div>
+  <p class="small tnote">Sales: sales per year. Kept: volatility points kept per year. Swing: standard deviation of the yearly result. Per risk: kept divided by swing. Lost: share of years with a loss. Ahead: share of years in which the tenor kept more than rolling 30-day sales. Medians over all 252 possible start days of the yearly blocks (16 or 17 blocks each).</p>
+  <p>The longer tenors kept more per year, 5.7 points at one year against 3.6 for rolling 30-day sales, and they came out ahead of the 30-day seller in about three years out of four. But their results swung four times as much from year to year, so per point of risk rolling 30 days was the steadiest: 1.5 against 0.6. In resampled histories the 30-day seller came out steadier in 98% of cases. The difference is clearest in 2008 and 2020: the one-year seller lost 17 points in each, while the 30-day seller lost 3.5 in 2008 and finished 2020 slightly ahead. A seller who rolls every month sells again at the higher implied volatility after a shock, while a one-year sale keeps its opening price for the whole year.</p>
+
+  <h2>Puts, calls and the drift</h2>
+  <p>The volatility indices combine puts and calls, while many option sellers trade only one side. To separate the two, I priced an at-the-money put and call at each tenor's index level and compared the premium with what the S&amp;P 500's actual price move paid out at expiration.</p>
+  <figure class="viz" id="viz4" aria-label="Chart: share of premium kept by at-the-money put and call sellers by tenor, 2008-2025, and for 30-day options by decade since 1990.">
+    <div class="viz-legend">
+      <span><svg width="13" height="12" viewBox="0 0 13 12" aria-hidden="true"><path d="M1 1h11L6.5 11z" fill="var(--c-put)"/></svg>Puts</span>
+      <span><svg width="13" height="12" viewBox="0 0 13 12" aria-hidden="true"><path d="M1 11h11L6.5 1z" fill="var(--c-call)"/></svg>Calls</span>
+      <span><i style="background:var(--ink-3);height:2px"></i>90% interval</span>
+    </div>
+    <div class="viz-panels">
+      <svg id="viz4a" viewBox="0 0 360 240" role="img"></svg>
+      <svg id="viz4b" viewBox="0 0 360 240" role="img"></svg>
+    </div>
+    <div class="viz-tip"></div>
+    <figcaption>Share of premium the seller kept: 1 &minus; total payout / total premium over all entry days. Premium from each tenor's index level, which sits above at-the-money volatility (see below). Right: 30-day options with the VIX since 1990, and the S&amp;P 500's average price drift in each period.</figcaption>
+  </figure>
+  <p>Puts kept 40% of their premium at 30 days and 77% at one year; calls kept 2% at 30 days and lost 46% of the premium at one year. The 90% interval of the difference between the two sides excludes zero at every tenor, and the difference widens with time: from 2008 to 2025 the S&amp;P 500 rose about 11% a year on price, a drift that grows with the length of the option while the premium grows only with its square root. A straddle, which takes both sides, kept about a fifth of its premium at every tenor.</p>
+  <p>The VIX goes back to 1990, which allows the same split at 30 days over four periods. In the three periods with a rising market, puts kept 40 to 59% and calls nothing or slightly less. From 2000 to 2009, when the S&amp;P 500 ended about where it started, both sides kept about the same, 23% and 25%. The advantage of the put side therefore came from the drift, and it would shrink in a market that does not rise.</p>
+
+  <h2>When the curve inverts</h2>
+  <p>On about 10% of days since 2008, three-month volatility was priced below 30-day volatility: an inverted curve, which usually signals stress. On those days the short and the long tenors behaved differently.</p>
+  <div class="table-scroll"><table id="t-shape"><thead><tr><th>Days</th><th>Tenor</th><th class="num">Implied</th><th class="num">Realized after</th><th class="num">Gap</th><th class="num">Seller lost</th><th class="num">Independent windows</th></tr></thead><tbody></tbody></table></div>
+  <p class="small tnote">Seller lost: share of days on which realized volatility ended above implied. Independent windows: about how many non-overlapping horizons the days cover. Grey: fewer than 10, too few to rely on.</p>
+  <p>With an inverted curve, 30-day implied volatility was almost matched by what followed (35.1 against 33.3), and at 30 days and three months the seller lost on about a quarter of the days, against 16 to 17% on all days. At six months and one year the gap stayed at 5 to 6 points, although the seller lost more often there too (18% and 23% of days). With the VIX above 30, one-year volatility was priced at 35.2 and the following year realized 22.3. Stress tended to fade within months, and the long tenors priced in more of it than followed. But these rows rest on 2 to 7 independent windows at the longer tenors, from a handful of stress episodes (2008 and 2009, 2011, 2018, 2020, 2022, 2025), too few to rely on.</p>
+
+  <h2>Skew in the volatility indices</h2>
+  <p>The VIX indices are not at-the-money volatility. They are computed from a whole strip of out-of-the-money options, so they include the skew and sit above the at-the-money level. That has two consequences. First, every premium here is somewhat overstated for a seller of at-the-money options. The gap between implied and realized would only disappear if at-the-money volatility were 3.5 points below the index at 30 days and 6.1 points below at one year. Second, if the skew adds more to the index at long tenors than at short ones, it explains part of the slope. To explain all of it, the skew would have to add 2.6 points more at one year than at 30 days. With index data alone that cannot be settled, and it is the main open question of this study.</p>
+
+  <h2>What it means for option sellers</h2>
+  <p>From 2008 to 2025, the upward slope of the VIX curve mostly reflected premium. Longer-dated S&amp;P 500 volatility carried more premium in points than short-dated volatility, and the risk that followed rose only a little. Relative to its risk, however, the one-year sale did worse than rolling 30-day sales: it fixes the price for a whole year, and its bad years were much worse than anything the rolling seller went through. For sellers of one side, the result at long tenors depended mostly on direction. The drift helped put sellers and hurt call sellers, and from 2000 to 2009, without drift, the difference disappeared.</p>
+
+  <h2>Data and notes</h2>
+  <ul class="small">
+    <li>Implied volatility: CBOE daily closes of the VIX (30 days), VIX3M (3 months), VIX6M (6 months) and VIX1Y (1 year), from the CBOE index history files. Entries from January 2008 to October 2025 (4,486 trading days), so that the year after each entry is complete; data through 30 October 2026. 30-day results since 1990 use the VIX alone.</li>
+    <li>Realized volatility: S&amp;P 500 index closes, close-to-close log returns over the 21, 63, 126 or 252 trading days after each entry, annualized, mean not removed.</li>
+    <li>Intervals: 90%, from 2,000 bootstrap resamples of whole years (252 trading days), drawn jointly for all tenors. With about 18 independent years they are approximate.</li>
+    <li>Same calendar: yearly blocks of 252 trading days. In each block 30-day volatility is sold 12 times back to back, 3-month 4 times, 6-month twice, 1-year once; each sale counts implied minus realized volatility times its length in years. Table: medians over all 252 start days.</li>
+    <li>Puts and calls: Black-Scholes premium with the tenor's index level as volatility, rates and dividends set to zero (forward = spot), payout from the S&amp;P 500 price index at the end of the horizon. From 2008 to 2025 short rates were near zero for much of the time and the dividend yield about 2%; a forward below spot would make puts slightly dearer and calls slightly cheaper, so the difference between the two sides would be slightly larger. Out-of-the-money strikes are left out because their premiums depend on the skew, which the index levels do not show.</li>
+    <li>Curve shape: inverted means VIX3M below VIX at the close. The VIX indices include the skew and sit above at-the-money volatility; close-to-close realized volatility ignores swings within the day; S&amp;P 500 index only.</li>
+    <li>All numbers count what happened in the past. They are not probabilities for the future, not forecasts and not financial advice.</li>
+  </ul>
+  <aside class="signup" aria-label="Newsletter">
+    <p class="signup-title">New studies by email</p>
+    <p class="signup-text">One email when a new study is out. No spam, unsubscribe anytime.</p>
+    <form class="signup-form" action="https://app.kit.com/forms/10127955/subscriptions" method="post">
+      <input type="email" name="email_address" required placeholder="Your email address" aria-label="Email address" autocomplete="email">
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="signup-msg" role="status" aria-live="polite"></p>
+    <p class="signup-note">Also available as an <a href="/research/feed.xml">RSS feed</a> &middot; <a href="/OptionsCone/legal.html#privacy">Privacy</a></p>
+  </aside>
+  <section class="more" hidden>
+    <h2>More research</h2>
+    <div class="more-list"></div>
+  </section>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p class="about"><strong>About.</strong> Nikolai Alexander. 10+ years of quantitative research on financial markets. Former product lead and associate commercial director in biotech. I build research tools for market analysis.</p>
+    </div>
+    <div>
+      <p><a href="/research/">Research</a> &middot; <a href="/OptionsCone/">OptionsCone</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const D = {"start":"2008-01-02","end":"2025-10-29","days":4486,"curve":[{"t":"30d","name":"30 days","days":30,"iv":20.0,"rv":16.5,"gap":3.5,"iv_ci":[17.7,22.5],"rv_ci":[14.0,19.3],"gap_ci":[2.6,4.4],"lost":0.169,"indep":217},{"t":"3m","name":"3 months","days":91,"iv":21.6,"rv":17.1,"gap":4.6,"iv_ci":[19.5,24.0],"rv_ci":[14.5,20.1],"gap_ci":[3.0,6.2],"lost":0.155,"indep":71},{"t":"6m","name":"6 months","days":182,"iv":22.9,"rv":17.5,"gap":5.4,"iv_ci":[20.9,25.1],"rv_ci":[14.9,20.4],"gap_ci":[3.2,7.5],"lost":0.162,"indep":36},{"t":"1y","name":"1 year","days":365,"iv":23.9,"rv":17.8,"gap":6.1,"iv_ci":[22.1,25.8],"rv_ci":[15.3,20.4],"gap_ci":[3.4,8.6],"lost":0.129,"indep":18}],"rise":{"iv":[3.9,2.9,4.9],"rv":[1.4,-0.5,3.3],"gap":[2.6,0.5,4.5],"share":0.979},"now":{"30d":19.4,"date":"2026-10-30","3m":20.8,"6m":22.2,"1y":22.8},"ts":{"d":["2008-01","2008-02","2008-03","2008-04","2008-05","2008-06","2008-07","2008-08","2008-09","2008-10","2008-11","2008-12","2009-01","2009-02","2009-03","2009-04","2009-05","2009-06","2009-07","2009-08","2009-09","2009-10","2009-11","2009-12","2010-01","2010-02","2010-03","2010-04","2010-05","2010-06","2010-07","2010-08","2010-09","2010-10","2010-11","2010-12","2011-01","2011-02","2011-03","2011-04","2011-05","2011-06","2011-07","2011-08","2011-09","2011-10","2011-11","2011-12","2012-01","2012-02","2012-03","2012-04","2012-05","2012-06","2012-07","2012-08","2012-09","2012-10","2012-11","2012-12","2013-01","2013-02","2013-03","2013-04","2013-05","2013-06","2013-07","2013-08","2013-09","2013-10","2013-11","2013-12","2014-01","2014-02","2014-03","2014-04","2014-05","2014-06","2014-07","2014-08","2014-09","2014-10","2014-11","2014-12","2015-01","2015-02","2015-03","2015-04","2015-05","2015-06","2015-07","2015-08","2015-09","2015-10","2015-11","2015-12","2016-01","2016-02","2016-03","2016-04","2016-05","2016-06","2016-07","2016-08","2016-09","2016-10","2016-11","2016-12","2017-01","2017-02","2017-03","2017-04","2017-05","2017-06","2017-07","2017-08","2017-09","2017-10","2017-11","2017-12","2018-01","2018-02","2018-03","2018-04","2018-05","2018-06","2018-07","2018-08","2018-09","2018-10","2018-11","2018-12","2019-01","2019-02","2019-03","2019-04","2019-05","2019-06","2019-07","2019-08","2019-09","2019-10","2019-11","2019-12","2020-01","2020-02","2020-03","2020-04","2020-05","2020-06","2020-07","2020-08","2020-09","2020-10","2020-11","2020-12","2021-01","2021-02","2021-03","2021-04","2021-05","2021-06","2021-07","2021-08","2021-09","2021-10","2021-11","2021-12","2022-01","2022-02","2022-03","2022-04","2022-05","2022-06","2022-07","2022-08","2022-09","2022-10","2022-11","2022-12","2023-01","2023-02","2023-03","2023-04","2023-05","2023-06","2023-07","2023-08","2023-09","2023-10","2023-11","2023-12","2024-01","2024-02","2024-03","2024-04","2024-05","2024-06","2024-07","2024-08","2024-09","2024-10","2024-11","2024-12","2025-01","2025-02","2025-03","2025-04","2025-05","2025-06","2025-07","2025-08","2025-09","2025-10"],"iv30":[25.8,25.5,27.1,21.6,18.3,22.1,24.3,20.7,30.2,61.2,62.7,52.4,44.7,45.6,44.8,38.1,32.0,29.1,26.2,25.3,24.9,24.3,23.8,21.2,20.6,22.5,17.8,17.4,31.9,29.9,25.6,24.7,22.5,20.4,20.1,17.6,17.3,17.4,20.7,16.2,16.9,19.2,19.2,35.0,36.5,32.8,31.9,25.0,20.2,18.4,16.2,17.8,21.0,21.1,17.6,15.7,15.3,16.3,16.7,17.3,13.5,14.1,13.0,14.0,13.5,17.3,14.0,14.2,14.7,15.4,12.9,14.2,14.2,15.5,14.8,14.2,12.5,11.5,12.3,13.5,13.5,18.1,13.4,16.3,19.1,15.9,14.8,13.5,13.3,14.3,14.4,19.4,24.4,16.8,16.2,18.0,23.7,22.5,15.8,14.3,14.9,17.8,13.2,12.4,14.2,14.6,15.2,12.5,11.6,11.5,11.9,13.1,10.9,10.5,10.3,12.0,10.4,10.1,10.5,10.3,11.1,22.5,19.0,18.3,14.1,13.7,13.1,12.5,12.9,19.4,19.4,25.0,19.6,15.2,14.5,12.9,16.7,15.8,13.3,19.0,15.6,15.5,12.5,13.8,13.9,19.6,57.7,41.5,30.9,31.1,26.8,22.9,27.6,29.4,25.0,22.4,24.9,23.1,21.8,17.4,19.8,17.0,17.6,17.5,19.8,17.9,18.5,21.4,23.2,25.7,27.0,24.4,29.4,28.1,24.9,22.2,27.4,30.0,23.4,21.8,20.2,20.1,21.6,17.8,17.6,14.0,13.9,15.9,15.2,18.9,14.1,12.7,13.4,13.9,13.8,16.1,13.1,12.7,14.5,19.3,17.8,20.0,16.1,15.9,16.7,17.1,21.8,32.0,20.5,18.2,16.3,15.8,15.8,18.2],"rv30":[22.1,24.5,24.1,14.5,17.4,20.6,22.7,31.6,71.9,74.4,64.5,34.2,38.1,45.2,39.1,28.6,23.3,21.7,17.2,15.9,16.6,19.9,13.1,12.6,19.0,11.3,9.4,26.2,28.9,22.1,18.4,18.1,13.1,12.0,13.6,7.4,11.6,15.7,11.2,10.2,14.6,15.1,39.1,33.9,29.9,28.9,25.5,14.3,8.8,10.4,12.9,12.9,17.3,16.3,12.8,10.0,10.0,14.3,11.3,13.2,9.3,10.6,11.5,12.1,13.7,13.0,8.3,9.9,11.8,10.3,8.8,10.1,14.9,9.7,12.1,9.5,7.0,7.3,10.8,7.0,15.6,11.7,10.8,16.2,14.2,11.3,11.3,10.2,9.2,12.4,14.7,28.1,17.1,12.5,16.0,20.3,21.4,15.6,9.9,10.0,10.5,17.2,5.9,10.3,10.4,9.7,8.3,6.9,6.1,7.4,6.7,7.4,7.1,7.4,7.0,7.8,4.5,5.2,6.7,7.6,22.7,18.1,21.2,11.4,9.6,9.1,7.6,6.4,14.8,21.4,24.1,26.3,11.9,9.6,9.8,11.1,13.6,8.2,17.6,15.3,12.9,7.5,7.5,8.1,16.5,71.6,69.0,28.0,25.7,22.0,11.3,20.3,19.6,21.3,11.6,11.8,16.1,17.5,12.4,12.6,10.0,10.2,9.7,9.4,14.3,8.9,17.3,15.8,21.4,24.1,19.6,31.5,29.5,23.5,19.0,22.9,27.6,27.0,21.6,17.6,16.4,16.6,13.8,13.4,11.9,9.7,10.2,11.6,12.9,14.7,9.6,10.1,12.2,11.2,11.1,12.3,8.3,9.3,19.9,15.0,10.1,12.8,10.9,15.1,12.2,19.3,41.3,26.0,13.0,9.0,10.2,8.7,10.8,13.7],"iv1y":[25.1,25.2,26.0,23.4,22.3,24.2,24.4,23.9,26.2,35.8,46.2,45.8,42.2,41.7,39.7,38.6,33.2,32.1,30.6,29.7,29.4,28.1,28.5,27.4,24.9,25.5,23.1,24.0,32.4,32.9,33.2,32.5,30.9,29.2,27.1,26.1,24.8,23.2,24.8,23.6,23.4,24.1,23.8,30.8,34.5,34.2,34.6,31.7,27.7,26.6,25.6,25.6,27.9,29.1,25.6,25.4,24.0,22.9,22.3,21.8,19.8,18.9,18.7,19.1,19.1,21.2,19.8,19.5,19.6,19.4,18.9,18.8,18.4,18.9,18.8,18.2,17.6,17.3,17.4,18.5,18.5,21.1,19.5,20.9,21.6,21.1,20.1,19.9,19.5,19.4,19.0,20.3,24.3,21.9,21.6,22.5,24.8,25.4,22.1,20.9,21.6,22.1,20.8,20.3,20.8,20.3,20.2,19.8,19.1,18.2,17.8,17.1,17.0,17.1,16.2,16.7,17.1,16.6,17.1,16.8,16.3,19.9,19.9,19.7,17.9,17.8,17.5,17.3,17.4,19.6,20.4,22.3,20.5,18.2,17.8,17.3,18.3,18.2,17.3,19.3,19.3,19.7,18.9,18.8,17.8,18.7,33.6,33.2,31.4,30.6,30.3,31.1,33.4,30.9,28.3,27.7,28.7,29.1,26.9,24.1,25.0,23.8,24.6,25.4,26.3,25.7,26.2,28.6,28.3,28.4,29.8,29.5,31.5,30.9,30.0,28.5,29.9,31.6,29.0,27.7,25.0,24.0,24.9,24.1,24.4,21.4,20.7,21.6,20.8,23.2,21.0,20.2,19.6,19.4,20.1,20.6,18.7,18.6,19.1,21.5,22.0,22.1,20.5,21.0,20.7,20.7,22.5,26.6,23.5,22.8,22.2,21.9,22.1,23.2],"rv1y":[41.5,42.4,43.7,44.6,45.2,45.4,45.5,45.3,44.5,39.1,33.3,27.9,26.3,24.7,21.3,18.2,18.0,18.6,18.7,18.7,18.9,18.7,18.1,18.1,17.9,17.4,17.6,17.7,16.3,14.6,13.8,17.1,19.3,20.8,22.1,23.0,23.3,23.2,23.0,23.1,23.2,23.3,23.4,20.6,18.2,16.3,14.6,13.0,12.8,12.9,12.9,12.9,12.8,12.4,12.1,11.7,11.7,11.9,11.5,11.3,11.1,11.6,11.5,11.5,11.3,10.7,10.3,10.4,10.2,10.7,10.9,11.1,11.7,11.6,11.8,11.7,11.7,11.9,12.2,12.7,15.0,15.1,15.1,15.4,15.8,16.4,16.7,16.6,16.6,16.7,17.1,16.5,14.7,14.2,14.0,13.5,12.3,10.9,10.1,9.9,9.7,9.3,8.1,8.2,7.9,7.4,7.0,6.8,6.9,9.3,10.6,12.1,12.3,12.4,12.5,12.6,12.5,13.3,14.6,16.0,17.6,16.6,16.0,15.1,15.1,15.4,15.3,16.2,16.6,16.4,15.3,13.9,11.9,12.2,23.1,31.8,32.7,33.3,33.9,33.6,33.8,34.1,34.6,34.7,34.8,34.8,27.7,19.1,17.7,16.3,15.2,15.1,14.1,13.6,12.3,12.9,13.2,13.8,14.5,15.2,17.3,19.0,20.1,20.6,21.5,22.6,23.8,24.1,24.2,23.9,23.4,23.0,21.5,20.0,19.0,18.5,17.5,16.0,14.6,13.5,12.8,12.4,11.9,11.7,11.6,11.3,11.4,12.4,12.7,12.5,12.4,12.5,12.9,12.9,13.7,18.2,19.5,19.7,19.6,19.0,18.6,18.7,18.8,18.8,18.5,18.5,18.1,14.2,12.2,12.4,12.7,12.9,12.9,12.8]},"cal":{"start":["2008-01-03","2009-01-02","2010-01-04","2011-01-03","2012-01-03","2013-01-04","2014-01-06","2015-01-06","2016-01-06","2017-01-05","2018-01-05","2019-01-08","2020-01-08","2021-01-07","2022-01-06","2023-01-09","2024-01-10"],"v30":[-3.5,8.2,6.3,3.1,5.9,3.6,3.3,2.9,4.3,4.2,0.8,4.8,0.6,6.3,1.6,4.2,2.8],"v3m":[-9.7,10.1,7.7,3.9,7.9,5.4,3.8,4.7,6.1,6.7,0.2,6.7,-0.0,9.1,3.2,7.0,4.1],"v6m":[-13.6,9.7,11.5,0.4,12.4,7.2,4.1,5.4,8.3,9.3,-2.3,6.9,-7.0,11.8,3.6,8.8,4.1],"v1y":[-17.2,11.3,7.8,2.9,16.8,9.6,6.8,6.9,10.4,12.3,-1.7,9.4,-16.9,14.3,3.7,13.5,6.5]},"cal_tab":[{"t":"30d","name":"30 days","sales":12,"kept":3.6,"sd":2.3,"ir":1.52,"lost":0.059,"beat30":null},{"t":"3m","name":"3 months","sales":4,"kept":4.7,"sd":4.3,"ir":1.06,"lost":0.118,"beat30":0.765},{"t":"6m","name":"6 months","sales":2,"kept":5.5,"sd":6.8,"ir":0.79,"lost":0.118,"beat30":0.824},{"t":"1y","name":"1 year","sales":1,"kept":5.7,"sd":9.7,"ir":0.59,"lost":0.118,"beat30":0.765}],"cal_ir_diff":[0.87,0.17,1.74,0.978],"pc":[{"t":"30d","name":"30 days","put":39.9,"put_ci":[26.4,54.1],"call":1.9,"call_ci":[-9.9,13.3]},{"t":"3m","name":"3 months","put":55.0,"put_ci":[35.9,73.4],"call":-5.9,"call_ci":[-23.9,11.4]},{"t":"6m","name":"6 months","put":64.6,"put_ci":[39.4,85.2],"call":-18.0,"call_ci":[-41.4,3.7]},{"t":"1y","name":"1 year","put":77.1,"put_ci":[55.7,94.7],"call":-46.5,"call_ci":[-76.0,-16.8]}],"dec":[{"lab":"1990s","put":58.8,"call":-1.2,"drift":16.6,"vix":18.5},{"lab":"2000s","put":22.9,"call":25.1,"drift":-0.7,"vix":22.1},{"lab":"2010s","put":49.0,"call":-1.0,"drift":12.4,"vix":16.9},{"lab":"2020-25","put":40.4,"call":-8.7,"drift":15.4,"vix":21.1}],"shape":[{"g":"All days","t":"30d","iv":20.0,"rv":16.5,"gap":3.5,"lost":0.169,"edge":0.171,"days":4486,"indep":217},{"g":"All days","t":"3m","iv":21.6,"rv":17.1,"gap":4.6,"lost":0.155,"edge":0.145,"days":4486,"indep":71},{"g":"All days","t":"6m","iv":22.9,"rv":17.5,"gap":5.4,"lost":0.162,"edge":0.195,"days":4486,"indep":36},{"g":"All days","t":"1y","iv":23.9,"rv":17.8,"gap":6.1,"lost":0.129,"edge":0.259,"days":4486,"indep":18},{"g":"Curve inverted","t":"30d","iv":35.1,"rv":33.3,"gap":1.8,"lost":0.245,"edge":-0.136,"days":465,"indep":22},{"g":"Curve inverted","t":"3m","iv":32.5,"rv":29.1,"gap":3.3,"lost":0.247,"edge":-0.104,"days":465,"indep":7},{"g":"Curve inverted","t":"6m","iv":31.0,"rv":25.6,"gap":5.4,"lost":0.178,"edge":0.065,"days":465,"indep":4},{"g":"Curve inverted","t":"1y","iv":29.4,"rv":23.9,"gap":5.5,"lost":0.226,"edge":0.09,"days":465,"indep":2},{"g":"VIX above 30","t":"30d","iv":40.8,"rv":36.2,"gap":4.6,"lost":0.149,"edge":0.072,"days":444,"indep":21},{"g":"VIX above 30","t":"3m","iv":39.0,"rv":31.0,"gap":8.0,"lost":0.119,"edge":0.219,"days":444,"indep":7},{"g":"VIX above 30","t":"6m","iv":37.4,"rv":26.5,"gap":10.9,"lost":0.095,"edge":0.378,"days":444,"indep":4},{"g":"VIX above 30","t":"1y","iv":35.2,"rv":22.3,"gap":13.0,"lost":0.092,"edge":0.512,"days":444,"indep":2}],"inverted_share":0.104};
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent, text) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) if (attrs[k] != null) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function tipFor(fig) {
+  const tip = fig.querySelector('.viz-tip');
+  return {
+    show(html, evt) {
+      tip.innerHTML = html; tip.style.opacity = 1;
+      const r = fig.getBoundingClientRect();
+      let x = evt.clientX - r.left + 14, y = evt.clientY - r.top - 12;
+      if (x + tip.offsetWidth > r.width) x = evt.clientX - r.left - tip.offsetWidth - 14;
+      tip.style.left = Math.max(0, x) + 'px'; tip.style.top = Math.max(0, y - tip.offsetHeight) + 'px';
+    },
+    hide() { tip.style.opacity = 0; }
+  };
+}
+const f1 = v => v.toFixed(1);
+const sg = (v, d = 0) => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(d);
+const pct = v => Math.round(v * 100) + '%';
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmtM = s => MON[+s.slice(5, 7) - 1] + ' ' + s.slice(0, 4);
+const fmtD = s => new Date(s + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+function hgrid(s, ys, vals, L, R, W, fmt) {
+  vals.forEach(v => {
+    el('line', { x1: L, x2: W - R, y1: ys(v), y2: ys(v), stroke: 'var(--c-grid)', 'stroke-width': 1 }, s);
+    el('text', { x: L - 8, y: ys(v) + 4, 'text-anchor': 'end', class: 'tick' }, s, fmt(v));
+  });
+}
+const tri = (x, y, up, r = 6.5) => up ? `M${x - r},${y + r * 0.8}h${2 * r}L${x},${y - r * 0.9}z` : `M${x - r},${y - r * 0.8}h${2 * r}L${x},${y + r * 0.9}z`;
+
+// Chart 1: levels by tenor, and the gap with 90% intervals
+(function () {
+  const fig = document.getElementById('viz1'), tip = tipFor(fig), C = D.curve;
+  const W = 360, H = 240, L = 40, R = 18, T = 28, B = 30;
+  const xs = i => L + 14 + i * (W - L - R - 28) / (C.length - 1);
+  const tipHtml = c => '<b>' + c.name + '</b><br>implied ' + f1(c.iv) + ' · realized after ' + f1(c.rv) +
+    '<br>gap ' + f1(c.gap) + ' points (90%: ' + f1(c.gap_ci[0]) + ' to ' + f1(c.gap_ci[1]) + ')<br>seller lost on ' + pct(c.lost) + ' of days';
+  function xaxis(s) { C.forEach((c, i) => el('text', { x: xs(i), y: H - B + 18, 'text-anchor': 'middle', class: 'tick' }, s, c.name)); }
+  function hits(s) {
+    C.forEach((c, i) => {
+      const h = el('rect', { x: xs(i) - 36, y: T, width: 72, height: H - T - B, fill: 'transparent' }, s);
+      h.addEventListener('mousemove', e => tip.show(tipHtml(c), e));
+      h.addEventListener('mouseleave', () => tip.hide());
+    });
+  }
+  // a: levels
+  let s = document.getElementById('viz1a');
+  const y0 = 14, y1 = 26, ys = v => T + (y1 - v) / (y1 - y0) * (H - T - B);
+  el('text', { x: 0, y: 13, class: 'ttl' }, s, 'Average volatility, % per year');
+  hgrid(s, ys, [14, 17, 20, 23, 26], L, R, W, v => v);
+  xaxis(s);
+  [['iv', 'var(--c-iv)', -10], ['rv', 'var(--c-rv)', 19]].forEach(([k, col, dy]) => {
+    el('path', { d: 'M' + C.map((c, i) => xs(i) + ',' + ys(c[k])).join('L'), fill: 'none', stroke: col, 'stroke-width': 2 }, s);
+    C.forEach((c, i) => {
+      el('circle', { cx: xs(i), cy: ys(c[k]), r: 5, fill: col, stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+      el('text', { x: xs(i), y: ys(c[k]) + dy, 'text-anchor': 'middle', class: 'lbl' }, s, f1(c[k]));
+    });
+  });
+  hits(s);
+  // b: gap
+  s = document.getElementById('viz1b');
+  const g0 = 0, g1 = 10, gs = v => T + (g1 - v) / (g1 - g0) * (H - T - B);
+  el('text', { x: 0, y: 13, class: 'ttl' }, s, 'Implied minus realized, points');
+  hgrid(s, gs, [0, 2, 4, 6, 8, 10], L, R, W, v => v);
+  xaxis(s);
+  C.forEach((c, i) => {
+    el('line', { x1: xs(i), x2: xs(i), y1: gs(c.gap_ci[0]), y2: gs(c.gap_ci[1]), stroke: 'var(--ink-3)', 'stroke-width': 2, 'stroke-linecap': 'round' }, s);
+    el('circle', { cx: xs(i), cy: gs(c.gap), r: 5.5, fill: 'var(--ink-2)', stroke: 'var(--bg)', 'stroke-width': 2 }, s);
+    el('text', { x: xs(i) + 10, y: gs(c.gap) + 4, class: 'lbl' }, s, f1(c.gap));
+  });
+  hits(s);
+})();
+
+// Chart 2: monthly history, 30 days and 1 year
+(function () {
+  const fig = document.getElementById('viz2'), tip = tipFor(fig), s = document.getElementById('viz2-s'), ts = D.ts;
+  const W = 760, L = 40, R = 12, PH = 170, GAP = 60, T0 = 34;
+  const n = ts.d.length, xs = i => L + i / (n - 1) * (W - L - R);
+  const top = Math.ceil(Math.max(...ts.iv30, ...ts.rv30, ...ts.iv1y, ...ts.rv1y) / 10) * 10;
+  const panels = [['30-day sales', 'iv30', 'rv30'], ['One-year sales', 'iv1y', 'rv1y']];
+  const guide = el('line', { y1: T0, y2: T0 + 2 * PH + GAP, stroke: 'var(--ink-3)', 'stroke-width': 1, opacity: 0 }, s);
+  panels.forEach(([title, ki, kr], p) => {
+    const T = T0 + p * (PH + GAP), ys = v => T + (top - v) / top * PH;
+    el('text', { x: 0, y: T - 18, class: 'ttl' }, s, title);
+    hgrid(s, ys, Array.from({ length: top / 20 + 1 }, (_, k) => k * 20), L, R, W, v => v + '%');
+    for (let y = 2008; y <= 2025; y += 2) {
+      const i = ts.d.indexOf(y + '-01');
+      if (i < 0) continue;
+      el('line', { x1: xs(i), x2: xs(i), y1: T + PH, y2: T + PH + 4, stroke: 'var(--ink-3)' }, s);
+      el('text', { x: xs(i), y: T + PH + 16, 'text-anchor': 'middle', class: 'tick' }, s, y);
+    }
+    [[kr, 'var(--c-rv)'], [ki, 'var(--c-iv)']].forEach(([k, col]) =>
+      el('path', { d: 'M' + ts[k].map((v, i) => xs(i).toFixed(1) + ',' + ys(v).toFixed(1)).join('L'), fill: 'none', stroke: col, 'stroke-width': 1.6, 'stroke-linejoin': 'round' }, s));
+  });
+  const hit = el('rect', { x: L, y: T0, width: W - L - R, height: 2 * PH + GAP, fill: 'transparent' }, s);
+  hit.addEventListener('mousemove', e => {
+    const pt = s.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    const p = pt.matrixTransform(s.getScreenCTM().inverse());
+    const i = Math.max(0, Math.min(n - 1, Math.round((p.x - L) / (W - L - R) * (n - 1))));
+    guide.setAttribute('x1', xs(i)); guide.setAttribute('x2', xs(i)); guide.setAttribute('opacity', 0.6);
+    tip.show('<b>Sold in ' + fmtM(ts.d[i]) + '</b><br>30 days: implied ' + f1(ts.iv30[i]) + ', realized after ' + f1(ts.rv30[i]) +
+      '<br>1 year: implied ' + f1(ts.iv1y[i]) + ', realized after ' + f1(ts.rv1y[i]), e);
+  });
+  hit.addEventListener('mouseleave', () => { tip.hide(); guide.setAttribute('opacity', 0); });
+})();
+
+// Chart 3: same calendar, points kept per year
+(function () {
+  const fig = document.getElementById('viz3'), tip = tipFor(fig), c = D.cal;
+  const all = [...c.v30, ...c.v1y], lo = Math.floor(Math.min(...all) / 5) * 5 - 5, hi = Math.ceil(Math.max(...all) / 5) * 5;
+  [['viz3a', 'v30', 'Rolling 30-day sales (12 a year)'], ['viz3b', 'v1y', 'One 1-year sale']].forEach(([id, k, title]) => {
+    const s = document.getElementById(id), W = 360, H = 240, L = 34, R = 6, T = 28, B = 26;
+    const ys = v => T + (hi - v) / (hi - lo) * (H - T - B), n = c.start.length, bw = (W - L - R) / n;
+    el('text', { x: 0, y: 13, class: 'ttl' }, s, title);
+    const ticks = []; for (let v = lo; v <= hi; v += 5) ticks.push(v);
+    hgrid(s, ys, ticks, L, R, W, v => v);
+    el('line', { x1: L, x2: W - R, y1: ys(0), y2: ys(0), stroke: 'var(--ink-3)', 'stroke-width': 1 }, s);
+    c[k].forEach((v, i) => {
+      const x = L + i * bw, yr = c.start[i].slice(0, 4);
+      const y = Math.min(ys(v), ys(0)), h = Math.max(1, Math.abs(ys(v) - ys(0)));
+      el('rect', { x: x + 2, y: y, width: bw - 4, height: h, rx: 2, fill: 'var(--c-iv)', 'fill-opacity': v < 0 ? 1 : 0.85 }, s);
+      if (i % 4 === 0) el('text', { x: x + bw / 2, y: H - B + 16, 'text-anchor': 'middle', class: 'tick' }, s, yr);
+      if (v < -5) el('text', { x: x + bw / 2, y: ys(v) + 13, 'text-anchor': 'middle', class: 'lbl' }, s, f1(v));
+      const hit = el('rect', { x: x, y: T, width: bw, height: H - T - B, fill: 'transparent' }, s);
+      hit.addEventListener('mousemove', e => tip.show('<b>Year from ' + fmtD(c.start[i]) + '</b><br>rolling 30 days: ' + sg(c.v30[i], 1) +
+        ' points<br>one 1-year sale: ' + sg(c.v1y[i], 1) + ' points', e));
+      hit.addEventListener('mouseleave', () => tip.hide());
+    });
+  });
+  const tb = document.querySelector('#t-cal tbody');
+  D.cal_tab.forEach(r => tb.insertAdjacentHTML('beforeend', '<tr><td>' + r.name + '</td><td class="num">' + r.sales + '</td><td class="num">' + f1(r.kept) +
+    '</td><td class="num">' + f1(r.sd) + '</td><td class="num">' + r.ir.toFixed(2) + '</td><td class="num">' + pct(r.lost) + '</td><td class="num">' +
+    (r.beat30 == null ? '' : pct(r.beat30)) + '</td></tr>'));
+})();
+
+// Chart 4: puts vs calls by tenor, and 30 days by decade
+(function () {
+  const fig = document.getElementById('viz4'), tip = tipFor(fig);
+  const W = 360, H = 240, L = 92, R = 14, T = 28, B = 30, x0 = -80, x1 = 100;
+  const xs = v => L + (v - x0) / (x1 - x0) * (W - L - R);
+  function panel(id, title, rows, label, tipHead) {
+    const s = document.getElementById(id);
+    el('text', { x: 0, y: 13, class: 'ttl' }, s, title);
+    for (let v = -80; v <= 100; v += 40) {
+      el('line', { x1: xs(v), x2: xs(v), y1: T, y2: H - B, stroke: v === 0 ? 'var(--ink-3)' : 'var(--c-grid)', 'stroke-width': 1 }, s);
+      el('text', { x: xs(v), y: H - B + 16, 'text-anchor': 'middle', class: 'tick' }, s, v + '%');
+    }
+    el('text', { x: (L + W - R) / 2, y: H - 2, 'text-anchor': 'middle', class: 'tick' }, s, 'share of premium kept');
+    const step = (H - T - B) / rows.length;
+    rows.forEach((r, i) => {
+      const y = T + step * (i + 0.5);
+      label(s, r, y);
+      [['put', -5, false, 'var(--c-put)'], ['call', 5, true, 'var(--c-call)']].forEach(([k, dy, up, col]) => {
+        if (r[k + '_ci']) el('line', { x1: xs(r[k + '_ci'][0]), x2: xs(r[k + '_ci'][1]), y1: y + dy, y2: y + dy, stroke: 'var(--ink-3)', 'stroke-width': 1.5, 'stroke-linecap': 'round' }, s);
+        el('path', { d: tri(xs(r[k]), y + dy, up), fill: col, stroke: 'var(--bg)', 'stroke-width': 1.5 }, s);
+      });
+      const hit = el('rect', { x: 0, y: y - step / 2, width: W, height: step, fill: 'transparent' }, s);
+      hit.addEventListener('mousemove', e => tip.show(tipHead(r) + '<br>puts kept ' + sg(r.put) + '%' + (r.put_ci ? ' (90%: ' + sg(r.put_ci[0]) + ' to ' + sg(r.put_ci[1]) + ')' : '') +
+        '<br>calls kept ' + sg(r.call) + '%' + (r.call_ci ? ' (90%: ' + sg(r.call_ci[0]) + ' to ' + sg(r.call_ci[1]) + ')' : ''), e));
+      hit.addEventListener('mouseleave', () => tip.hide());
+    });
+  }
+  panel('viz4a', 'At the money, 2008 to 2025', D.pc,
+    (s, r, y) => el('text', { x: L - 12, y: y + 4, 'text-anchor': 'end', 'font-size': 13 }, s, r.name),
+    r => '<b>' + r.name + ', 2008 to 2025</b>');
+  panel('viz4b', '30 days, by period', D.dec,
+    (s, r, y) => { el('text', { x: L - 12, y: y, 'text-anchor': 'end', 'font-size': 13 }, s, r.lab);
+                   el('text', { x: L - 12, y: y + 14, 'text-anchor': 'end', class: 'tick' }, s, 'drift ' + sg(r.drift, 1) + '%'); },
+    r => '<b>30 days, ' + r.lab + '</b><br>S&amp;P 500 price drift ' + sg(r.drift, 1) + '% a year, average VIX ' + f1(r.vix));
+})();
+
+// Table: curve shape
+(function () {
+  const tb = document.querySelector('#t-shape tbody');
+  const NAME = { '30d': '30 days', '3m': '3 months', '6m': '6 months', '1y': '1 year' };
+  D.shape.forEach((r, i) => tb.insertAdjacentHTML('beforeend', '<tr' + (r.indep < 10 ? ' class="weak"' : '') + '><td>' + (i % 4 === 0 ? r.g : '') + '</td><td>' + NAME[r.t] +
+    '</td><td class="num">' + f1(r.iv) + '</td><td class="num">' + f1(r.rv) + '</td><td class="num">' + f1(r.gap) + '</td><td class="num">' + pct(r.lost) +
+    '</td><td class="num">' + r.indep + '</td></tr>'));
+})();
+</script>
+<script src="/signup.js?v=2" defer></script>
+<script src="/related.js?v=2" defer></script>
+</body>
+</html>
