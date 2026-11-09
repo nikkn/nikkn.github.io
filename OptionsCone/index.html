@@ -52,6 +52,14 @@
 }
 </script>
 <script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
+<style>
+.about-row { display: flex; gap: 28px; align-items: stretch; max-width: 760px; }
+.about-text { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
+.about-text .about { font-size: 16px; line-height: 1.6; color: var(--ink-2); margin: -4px 0 12px; }
+.about-text .about strong { font-size: 18px; }
+.about-links p:last-child { margin-bottom: 0; }
+.about-pic { flex: none; width: 3cm; height: 4.5cm; object-fit: cover; border-radius: 6px; }
+</style>
 </head>
 <body>
 
@@ -290,12 +298,16 @@
 
 <footer class="site-foot">
   <div class="wrap">
-    <div>
-      <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/eVqbJ14of3vwabb4NSbII00" rel="nofollow">Cancel subscription here</a></p>
-      <p>Not financial advice.</p>
-    </div>
-    <div>
-      <p><a href="use-cases.html">Use cases</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+    <div class="about-row">
+      <img class="about-pic" src="/img/nikolai-alexander.jpg" width="114" height="170" alt="Nikolai Alexander">
+      <div class="about-text">
+        <p class="about"><strong>About.</strong> Nikolai Alexander. 10+ years in quantitative research on financial markets. Former product lead and associate commercial director in biotech. I&nbsp;build research tools for market analysis.</p>
+        <div class="about-links">
+          <p><a href="use-cases.html">Use cases</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+          <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/eVqbJ14of3vwabb4NSbII00" rel="nofollow">Cancel subscription here</a></p>
+          <p>Not financial advice.</p>
+        </div>
+      </div>
     </div>
   </div>
 </footer>
