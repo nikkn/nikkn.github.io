@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="OptionsCone">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <style>
   /* placeholders until the real screenshots and figures exist */
   .ph { border: 1.5px dashed var(--ink-3); border-radius: 6px; padding: 28px 18px; color: var(--ink-3);
@@ -38,8 +38,8 @@
   "headline": "Put credit spreads: how to sell premium with defined risk, with an AMD example",
   "description": "How to pick the strikes, width and expiry of a put credit spread (bull put spread), and how to tell if the credit is worth the risk. Real AMD data.",
   "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
-             "description": "10+ years in quantitative research on financial markets",
-             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+             "description": "I studied business and econometrics, worked in biotech as product lead and later associate commercial director, and have done quantitative research on financial markets for more than ten years. Today I advise on data analytics and teach statistical methods up to PhD level, and I build research tools for market analysis.",
+             "sameAs": ["https://x.com/nikkn_alexander"]},
   "publisher": {"@type": "Organization", "name": "OptionsCone"},
   "datePublished": "2026-11-08",
   "dateModified": "2026-11-08",
@@ -106,6 +106,7 @@
   <article class="prose">
     <h1>Put credit spreads: how to sell premium with defined risk</h1>
     <p class="byline">By <a href="https://nikolai-alexander.com/#about">Nikolai Alexander</a> &middot; 8 November 2026</p>
+    <div class="note"><strong>Updated November 2026.</strong> This guide was written with an earlier version of OptionsCone. Its fair premium has since been developed further into the expected value, which shows what a short option is worth at expiration as a share of its premium, together with maps for the average and tail risk. The reasoning in this guide still holds, but the fair premium itself is no longer shown in the app. A guide on the expected value is coming soon.</div>
     <p class="lede">A put credit spread pays you a premium like a sold put, but caps the largest possible loss from the moment you open it. This guide shows how to pick its two strikes and how to tell whether a spread pays enough to be worth selling. Throughout the guide we work through a real example: AMD's option chain on 19 October 2026, analyzed with OptionsCone.</p>
 
     <p><strong>In short:</strong> OptionsCone colors every strike and expiry of AMD by its probability, so the strikes the price is unlikely to reach stand out at a glance. For every contract it also shows a fair premium, judged by AMD's own realized moves. A put credit spread is worth selling when the credit you receive is higher than the fair premium of the short put minus the fair premium of the long put, and OptionsCone shows both numbers side by side.</p>
@@ -193,7 +194,7 @@
       <p>Not financial advice.</p>
     </div>
     <div>
-      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="changelog.html">What&#39;s new</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
     </div>
   </div>
 </footer>

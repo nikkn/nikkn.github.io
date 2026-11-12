@@ -184,7 +184,7 @@ td:first-child { width: 34%; min-width: 9em; }
 /* about block with photo (home, research) */
 .about-row { display: flex; gap: 28px; align-items: stretch; max-width: 760px; }
 .about-text { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
-.about-text .about { font-size: 16px; line-height: 1.6; color: var(--ink-2); margin: -4px 0 12px; }
-.about-text .about strong { font-size: 18px; }
+.about-text .about { font-size: 14.5px; line-height: 1.5; color: var(--ink-2); margin: -4px 0 12px; }
+.about-text .about strong { font-size: 16px; }
 .about-links p:last-child { margin-bottom: 0; }
 .about-pic { flex: none; width: 3cm; height: 4.5cm; object-fit: cover; border-radius: 6px; }

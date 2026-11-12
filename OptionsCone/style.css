@@ -7,7 +7,7 @@
 :root {
   --bg: #fbfbfa; --panel: #ffffff; --ink: #12130f; --ink-2: #4a4b43; --ink-3: #7d7e74;
   --line: #e3e2d9; --line-2: #cfcec2; --accent: #256abf; --accent-ink: #ffffff;
-  --track: #c2410c; --m5: #0f766e; --m10: #7c4bb8; --code: #f1f0ea;
+  --track: #c2410c; --m5: #0f766e; --m10: #7c4bb8; --mad: #0f766e; --code: #f1f0ea;
   --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, Consolas, monospace;
 }
@@ -15,13 +15,13 @@
   :root:not([data-theme="light"]) {
     --bg: #15161a; --panel: #1c1e22; --ink: #f2f1ea; --ink-2: #c3c4b9; --ink-3: #8c8d83;
     --line: #2c2e33; --line-2: #3c3f45; --accent: #6da7ec; --accent-ink: #0b1220;
-    --track: #fb923c; --m5: #2dd4bf; --m10: #c4a3f0; --code: #23252a;
+    --track: #fb923c; --m5: #2dd4bf; --m10: #c4a3f0; --mad: #2dd4bf; --code: #23252a;
   }
 }
 :root[data-theme="dark"] {
   --bg: #15161a; --panel: #1c1e22; --ink: #f2f1ea; --ink-2: #c3c4b9; --ink-3: #8c8d83;
   --line: #2c2e33; --line-2: #3c3f45; --accent: #6da7ec; --accent-ink: #0b1220;
-  --track: #fb923c; --m5: #2dd4bf; --m10: #c4a3f0; --code: #23252a;
+  --track: #fb923c; --m5: #2dd4bf; --m10: #c4a3f0; --mad: #2dd4bf; --code: #23252a;
 }
 
 * { box-sizing: border-box; }
@@ -136,7 +136,7 @@ td:first-child { width: 34%; min-width: 9em; }
   overflow: hidden; text-decoration: none; color: var(--ink); }
 .map span { display: block; font-weight: 600; font-size: 14px; padding: 9px 12px; border-bottom: 1px solid var(--line); }
 .map img { width: 100%; height: auto; display: block; }
-.map:hover { border-color: var(--ink-3); }
+a.map:hover { border-color: var(--ink-3); }
 .maps-note { font-size: 13.5px; color: var(--ink-3); margin-top: 10px; }
 @media (max-width: 700px) { .maps { grid-template-columns: repeat(2, 1fr); gap: 10px; } .map span { font-size: 13px; padding: 7px 9px; } }
 

@@ -19,7 +19,7 @@
 <meta property="og:image:alt" content="OptionsCone: a probability cone over the listed option strikes of a stock, with implied and historical contour lines.">
 <meta property="og:site_name" content="OptionsCone">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
 </head>
 <body>
@@ -69,7 +69,7 @@
       <li>Run it. It installs OptionsCone in a few seconds and can put a shortcut on your desktop.</li>
       <li>The file is not code-signed yet, so Windows SmartScreen may say it protected your PC. Click <em>More info</em>, then <em>Run anyway</em>. Windows remembers the choice.</li>
     </ol>
-    <p>New versions install themselves: when one is out, OptionsCone shows an <em>Update</em> button at the top, and one click installs it. Your tickers and settings are kept.</p>
+    <p>New versions install themselves: when one is out, OptionsCone shows an <em>Update</em> button at the top, and one click installs it. Your tickers and settings are kept. <a href="changelog.html">What&#39;s new</a> lists every version.</p>
     <p>The first start takes a few seconds longer while the program unpacks itself. It runs on Windows 10 and 11 and uses the Edge WebView2 component that both include.</p>
     <p>Each release lists a SHA-256 checksum. To check your download, open PowerShell in the download folder and run <code>Get-FileHash OptionsCone.exe</code>; the result should match.</p>
 
@@ -78,10 +78,8 @@
     <div class="table-scroll"><table>
       <tr><th>Control</th><th>What it does</th></tr>
       <tr><td>Ticker box</td><td>Type one or more US tickers, separated by spaces or commas, for example <code>AAPL MSFT</code>.</td></tr>
-      <tr><td><em>download</em></td><td>Fetches the option chain, prices every contract and runs both historical models. <kbd>Enter</kbd> in the ticker box does the same.</td></tr>
-      <tr><td><em>refresh all</em></td><td>Downloads a fresh chain for every ticker you already hold.</td></tr>
+      <tr><td><em>download</em></td><td>Fetches the option chain and prices every contract. In Pro it also computes the realized odds and the Pro maps. <kbd>Enter</kbd> in the ticker box does the same.</td></tr>
       <tr><td><em>weeklies</em></td><td>Includes weekly expiries as well as the standard monthly ones. More columns, longer download.</td></tr>
-      <tr><td><em>open in browser</em></td><td>Opens the same chart in your web browser.</td></tr>
       <tr><td><em>data folder</em></td><td>Opens the folder where the archive and the chart are stored.</td></tr>
     </table></div>
     <p>A progress bar and a status line show what is happening. The first download of a ticker takes a minute or two; later ones are similar, because every download is a complete new chain. When it finishes, the chart reloads on that ticker.</p>
@@ -93,7 +91,7 @@
     </ul>
 
     <h2 id="read">Read the chart</h2>
-    <figure><img class="shot" src="img/chart-p.png" width="1384" height="984" loading="lazy" alt="The probability cone for AAPL with contour lines at 30% for the implied, 5-year and 10-year models."></figure>
+    <figure><img class="shot" src="img/chart-p.png" width="1384" height="984" loading="lazy" alt="The probability cone for AAPL with 30% contour lines from option prices and from the stock's own past moves."></figure>
     <h3>Candles and spot</h3>
     <p>Up to ten years of daily or weekly candles. The dashed gold line is the current price (spot), labeled on the price axis. Stars on the date axis mark earnings: filled where the date is confirmed, hollow where it is projected from the reporting cycle, smaller for past reports.</p>
     <h3>The cone</h3>
@@ -101,7 +99,7 @@
     <p>The color is the implied probability of touching that strike before that expiry, from pale (unlikely) to dark (likely). The legend under the chart gives the scale.</p>
     <h3>Contour lines</h3>
     <p>For every expiry, each model marks the listed strike whose probability is closest to your target, once above and once below spot, and joins the marks into a line. A filled marker is within 5 percentage points of the target; a hollow one is the nearest strike available but further off. Where no listed strike comes within 25 points, that expiry has no marker.</p>
-    <p>The <span class="swatch" style="background:var(--track)"></span>implied line comes from option prices, the <span class="swatch" style="background:var(--m5)"></span>5y and <span class="swatch" style="background:var(--m10)"></span>10y lines from the stock's own history. When all three are shown, the implied line is drawn on top.</p>
+    <p>The <span class="swatch" style="background:var(--track)"></span>implied line comes from option prices, the <span class="swatch" style="background:var(--mad)"></span>adaptive <em class="pro">Pro</em> and <span class="swatch" style="background:var(--m10)"></span>10y <em class="pro">Pro</em> lines from the stock&#39;s own moves. When all three are shown, the implied line is drawn on top.</p>
     <h3>Expiry badges</h3>
     <p>The badge above each expiry shows that expiry's overall implied volatility. When there is room (you may need to zoom in), a second number shows the ratio of that volatility to realized volatility, for example <code>x1.15</code>. It turns orange from 1.30: the market is charging a lot more than the stock has recently moved, often ahead of earnings.</p>
     <h3>The figures above the chart</h3>
@@ -110,14 +108,14 @@
     <h2 id="controls">Controls</h2>
     <div class="table-scroll"><table>
       <tr><th>Control</th><th>What it does</th></tr>
-      <tr><td>Ticker</td><td>Switches between the tickers you hold. The line next to it shows when the data was captured and how many downloads are archived.</td></tr>
+      <tr><td>Ticker</td><td>Switches between the tickers you hold. The line next to it shows when the data was captured and how many downloads are archived. <em>refresh</em> downloads a fresh chain for the ticker shown.</td></tr>
       <tr><td>Bars: <em>daily</em>, <em>weekly</em></td><td>Candle interval.</td></tr>
       <tr><td>Zoom: <em>reset</em></td><td>Returns to the opening view. The label shows <code>fit</code> there, otherwise the zoom factor.</td></tr>
       <tr><td>Track probability: <em>down</em>, <em>up</em></td><td>The target probability for the contour lines below and above spot, in steps of 5%.</td></tr>
       <tr><td><em>linked</em></td><td>Moves both sides together.</td></tr>
       <tr><td>Contour: <em>touch</em>, <em>expire</em></td><td>Whether the lines track the probability of touching the strike before expiry, or of finishing beyond it at expiry.</td></tr>
-      <tr><td>Models: <em>implied</em>, <em>5y</em>, <em>10y</em></td><td>Show or hide each model's line.</td></tr>
-      <tr><td>Cone: <em>probability</em>, <em>IV</em>, <em>open int.</em>, <em>volume</em>, <em>spread</em>, <em>time value/day</em>, <em>implied vs realized</em>, <em>premium/risk</em></td><td>What the cone is colored by. Clicking the active button again hides the cone, so the contour lines can be read on their own. The legend under the chart shows the range of values. <em>volume</em> shows the contracts traded in the session of the download. For spread, darker means tighter. <em>time value/day</em> shows a seller&#39;s average daily income per contract. <em>implied vs realized</em> compares the market&#39;s touch probability with the stock&#39;s own realized moves: blue where the market prices in a higher probability (a potential opportunity for sellers), red where lower. <em>premium/risk</em> shows how much premium a seller collects per unit of realized risk; higher is better for a seller.</td></tr>
+      <tr><td>Models: <em>implied</em>, <em>adaptive</em>, <em>10y</em></td><td>Show or hide each model&#39;s line. <em>adaptive</em> and <em>10y</em> are part of Pro.</td></tr>
+      <tr><td>Cone: <em>probability</em>, <em>time value/day</em>, <em>IV</em>, <em>open int.</em>, <em>volume</em>, <em>spread</em>, <em>implied vs realized</em>, <em>expected value</em>, <em>avg. risk / premium</em>, <em>tail risk / premium</em>, <em>GEX</em></td><td>What the cone is colored by. Clicking the active button again hides the cone, so the contour lines can be read on their own. The legend under the chart shows the range of values. <em>time value/day</em> shows a seller&#39;s average daily income per contract. <em>volume</em> shows the contracts traded in the session of the download. For spread, darker means tighter. The maps from <em>implied vs realized</em> on are part of Pro. <em>implied vs realized</em> compares the touch probability from option prices with the realized odds of the adaptive model: blue where the options price in more than the stock itself supports (a potential opportunity for sellers), red where less. <em>expected value</em> shows what a short option is worth at expiration, as a share of its premium: blue where selling it comes out ahead on average, red where it does not. <em>avg. risk / premium</em> and <em>tail risk / premium</em> show what a short option can cost at expiration, on average and in the bad cases, in multiples of the premium: the darker the red, the more it can cost. <em>GEX</em> shows where dealer hedging tends to slow moves down (blue) or speed them up (red).</td></tr>
       <tr><td><em>dots</em></td><td>Hides the contract dots to read the color on its own. The tooltip keeps working.</td></tr>
       <tr><td><em>fullscreen</em></td><td>Fills the window with the chart and takes the controls along.</td></tr>
       <tr><td>Draw: <em>off</em>, <em>trend</em>, <em>horizontal</em>, <em>clear</em></td><td>Drawing tools. Trend lines are dragged from one point to another; a horizontal line is placed with one click. Drawings stay pinned to price and date when you zoom or scroll.</td></tr>
@@ -143,16 +141,19 @@
     <h2 id="tooltip">Tooltip</h2>
     <p>Hover a dot to see that contract: strike, distance from spot, expiry, days to expiry, delta and gamma. Below that come the numbers for the current cone coloring:</p>
     <ul>
-      <li><strong>probability:</strong> the contract's implied volatility, and touch and expire for all three models side by side, plus the mid price</li>
+      <li><strong>probability:</strong> the contract&#39;s implied volatility, and touch and expire from option prices and, in Pro, from the realized odds with their 80% range, plus the mid price</li>
       <li><strong>IV:</strong> implied volatility, and whether it is a call or a put</li>
       <li><strong>open int.:</strong> open interest and volume</li>
       <li><strong>volume:</strong> volume and open interest</li>
       <li><strong>spread:</strong> bid, ask, mid, and the spread in dollars and as a share of the mid</li>
       <li><strong>time value/day:</strong> the mid, the days left and the average theta per day for one contract</li>
-      <li><strong>implied vs realized:</strong> the implied and the realized 10-year touch probability and their difference in percentage points</li>
-      <li><strong>premium/risk:</strong> the premium, the realized risk and the resulting ratio</li>
+      <li><strong>implied vs realized:</strong> the touch probability from option prices, adaptive and 10y, and the difference to the adaptive model in percentage points</li>
+      <li><strong>expected value:</strong> bid, mid and ask against what the option is worth at expiration on average, the expected value per share and as a share of the premium, and the minimum premium for a positive expected value, with safety margins</li>
+      <li><strong>avg. risk / premium:</strong> the expected loss per share and in multiples of the premium, the chance of a loss and the average loss</li>
+      <li><strong>tail risk / premium:</strong> the loss in the bad cases, in multiples of the premium, and the chance of a loss</li>
+      <li><strong>GEX:</strong> the gamma exposure of the calls, the puts and both together, and for all expiries at that strike</li>
     </ul>
-    <p>A warning line appears if the quote was flagged by the checks.</p>
+    <p>A warning line appears if the quote was flagged by the checks. On the expected value and risk maps, a line marked &#9650; says when a figure is only a rough guide, for example in unusually high volatility.</p>
     <h3 id="select">Comparing one contract across maps</h3>
     <p>Click a dot to select the contract. It gets a small square frame that stays visible on every color mode, and its tooltip stays open. With a contract selected, the arrow keys move the selection to the neighboring contracts. Switch through the color modes and the tooltip changes with them, so you can read one contract's probability, volatility, open interest, spread, time value and seller figures in a few clicks. Hovering another dot shows that one for a moment; the selected tooltip comes back when you move away. The selection follows the contract through zooming and scrolling and is kept per ticker.</p>
     <p>Delta and gamma come from the same model as the implied volatility, so they can be compared with your broker's. Small differences come from the broker's own dividend and rate assumptions.</p>
@@ -201,7 +202,7 @@
       <p>Not financial advice.</p>
     </div>
     <div>
-      <p><a href="./">Home</a> &middot; <a href="use-cases.html">Use cases</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+      <p><a href="./">Home</a> &middot; <a href="use-cases.html">Use cases</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="changelog.html">What&#39;s new</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
     </div>
   </div>
 </footer>

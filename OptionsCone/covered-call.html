@@ -18,7 +18,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="OptionsCone">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <style>
   .byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
   .data-note { font-size: 13.5px; color: var(--ink-3); border-left: 3px solid var(--line); padding: 2px 0 2px 12px; }
@@ -31,8 +31,8 @@
   "headline": "Covered call strike: how to find the best strike, with a META example",
   "description": "How to pick a covered call strike that pays well and still leaves the stock room to run.",
   "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
-             "description": "10+ years in quantitative research on financial markets",
-             "sameAs": ["https://x.com/nikkn_alexander", "https://github.com/nikkn"]},
+             "description": "I studied business and econometrics, worked in biotech as product lead and later associate commercial director, and have done quantitative research on financial markets for more than ten years. Today I advise on data analytics and teach statistical methods up to PhD level, and I build research tools for market analysis.",
+             "sameAs": ["https://x.com/nikkn_alexander"]},
   "publisher": {"@type": "Organization", "name": "OptionsCone"},
   "datePublished": "2026-10-24",
   "dateModified": "2026-10-24",
@@ -98,6 +98,7 @@
   <article class="prose">
     <h1>Covered calls: how to find the strike that pays the most</h1>
     <p class="byline">By <a href="https://nikolai-alexander.com/#about">Nikolai Alexander</a> &middot; 24 October 2026</p>
+    <div class="note"><strong>Updated November 2026.</strong> The numbers and screenshots on this page come from an earlier version of OptionsCone. Since then the realized odds have become forward-looking, and Pro has gained expected value and risk maps for sellers. The steps in this guide still apply. New guides with the current version are coming soon.</div>
     <p class="lede">You hold 100 shares of META and want to earn from them by selling a covered call. Every strike is a trade-off: too far out and the call pays almost nothing, too close and you give up the stock's upside. This guide shows how to find the sweet spot, the covered call strike that pays well and still leaves META room to run. Throughout the guide we work through a real example: META's option chain on 19 October 2026, analyzed with OptionsCone.</p>
 
     <p><strong>In short:</strong> OptionsCone shows, for every strike and expiry of META, two probabilities of the price finishing above the strike: one from option prices (risk-neutral pricing) and one from META's own realized moves. Next to them it shows profitability and liquidity figures for every contract, such as the time value it pays per day and its spread. Where the two probabilities differ, you see which covered calls pay you fairly for the upside you give away, and which ones sell it too cheap.</p>
@@ -192,7 +193,7 @@
       <p>Not financial advice.</p>
     </div>
     <div>
-      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="changelog.html">What&#39;s new</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
     </div>
   </div>
 </footer>

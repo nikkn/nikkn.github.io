@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="max-image-preview:large">
 <title>Free options probability calculator and heatmaps | OptionsCone</title>
-<meta name="description" content="The option chain as heatmaps on the price chart: probabilities, premium, liquidity and positioning by strike and expiry, next to the stock&#39;s realized moves.">
+<meta name="description" content="Option chain heatmaps on the price chart: touch and expiry probabilities, implied volatility, open interest, spreads and time value, plus realized odds, expected value and risk per premium.">
 <link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/">
 <meta name="google-site-verification" content="AMuyXyZixV_yJbMoVUShqFuyZB4kxgZxZLLErU_1Yw0" />
 <link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:title" content="OptionsCone: probability, premium and positioning heatmaps">
-<meta property="og:description" content="The option chain as heatmaps on the price chart, compared with the stock&#39;s own history. Free, for Windows.">
+<meta property="og:description" content="The option chain as heatmaps on the price chart: probabilities, implied volatility, open interest and time value, plus realized odds and expected value. For Windows.">
 <meta property="og:url" content="https://nikolai-alexander.com/OptionsCone/">
 <meta property="og:image" content="https://nikolai-alexander.com/OptionsCone/img/social.png?v=6">
 <meta property="og:image:width" content="1200">
@@ -20,13 +20,13 @@
 <meta property="og:image:alt" content="OptionsCone: a probability cone over the listed option strikes of a stock, with implied and historical contour lines.">
 <meta property="og:site_name" content="OptionsCone">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "OptionsCone",
-  "description": "Desktop app with probability, premium and positioning heatmaps for any stock with options: touch and expiry probabilities, implied volatility, open interest, spreads, time value and premium relative to risk, compared with what the stock realized over the last ten years.",
+  "description": "Desktop app for Windows that turns the option chain into heatmaps on the price chart: touch and expiry probabilities, implied volatility, open interest, spreads and time value, for free. Pro adds the stock's own realized odds, made forward-looking, the expected value of every short option at expiration, how much it can cost for the premium collected, and gamma exposure.",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Windows 10, Windows 11",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -44,9 +44,9 @@
     { "@type": "Question", "name": "Is delta the probability of an option expiring in the money?",
       "acceptedAnswer": { "@type": "Answer", "text": "Not exactly. For short-dated options at moderate volatility the two are close, but the higher the volatility and the longer the time to expiry, the further they drift apart." } },
     { "@type": "Question", "name": "Can I use OptionsCone without trading options?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. For a stock position it shows how likely a stop level, a price target or the break-even price is to be reached within a given time, from option prices and, with Pro, from the stock's own last five and ten years." } },
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. For a stock position it shows how likely a stop level, a price target or the break-even price is to be reached within a given time, from option prices and, with Pro, from the stock's own realized moves." } },
     { "@type": "Question", "name": "Is OptionsCone free?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The probability cone and the implied volatility, open interest and spread maps are free. Pro adds the historical models and the seller maps." } },
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. The probability cone and the implied volatility, open interest, spread and time value maps are free. Pro adds the realized odds, implied vs realized, the expected value and risk maps for sellers, and the gamma exposure map (GEX)." } },
     { "@type": "Question", "name": "Does OptionsCone run on Mac or Linux?",
       "acceptedAnswer": { "@type": "Answer", "text": "Not yet. OptionsCone is available for Windows 10 and 11." } }
   ]
@@ -56,10 +56,56 @@
 <style>
 .about-row { display: flex; gap: 28px; align-items: stretch; max-width: 760px; }
 .about-text { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: space-between; }
-.about-text .about { font-size: 16px; line-height: 1.6; color: var(--ink-2); margin: -4px 0 12px; }
-.about-text .about strong { font-size: 18px; }
+.about-text .about { font-size: 14.5px; line-height: 1.5; color: var(--ink-2); margin: -4px 0 12px; }
+.about-text .about strong { font-size: 16px; }
 .about-links p:last-child { margin-bottom: 0; }
 .about-pic { flex: none; width: 3cm; height: 4.5cm; object-fit: cover; border-radius: 6px; }
+.acc-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin: 28px 0 14px; }
+.acc-stat { border-top: 3px solid var(--accent); padding-top: 12px; }
+.acc-num { font: 600 46px/1.05 var(--sans); color: var(--ink); }
+.acc-num small { font-size: 22px; font-weight: 500; color: var(--ink-2); margin-right: 4px; }
+.acc-lab { color: var(--ink-2); margin: 6px 0 0; font-size: 16px; line-height: 1.45; }
+.acc-fine { color: var(--ink-3); font-size: 14px; margin: 0 0 18px; }
+details.acc { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
+details.acc > summary { cursor: pointer; font-weight: 600; padding: 12px 18px; list-style: none; position: relative; }
+details.acc > summary::-webkit-details-marker { display: none; }
+details.acc > summary::after { content: "+"; position: absolute; right: 18px; top: 9px; font: 400 20px var(--mono); color: var(--ink-3); }
+details.acc[open] > summary::after { content: "\2212"; }
+.acc-body { padding: 8px 18px 18px; border-top: 1px solid var(--line); }
+.acc-body p { color: var(--ink-2); }
+.acc-toggle { display: inline-flex; border: 1px solid var(--line-2); border-radius: 6px; overflow: hidden; margin: 14px 0 4px; }
+.acc-toggle button { font: 500 14px var(--sans); padding: 6px 14px; border: 0; background: transparent; color: var(--ink-2); cursor: pointer; }
+.acc-toggle button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.acc-charts { display: grid; grid-template-columns: 0.85fr 1.3fr; gap: 36px; margin: 12px 0 28px; }
+.acc-charts h3 { font-size: 16px; margin: 0 0 2px; }
+.acc-charts .sub { color: var(--ink-3); font-size: 13.5px; margin: 0 0 12px; }
+.acc-grp { margin: 0 0 14px; }
+.acc-grp-name { font-size: 14px; color: var(--ink-2); margin: 0 0 4px; }
+.acc-row { display: grid; grid-template-columns: 74px 1fr; align-items: center; gap: 8px; height: 22px; margin-bottom: 2px; }
+.acc-row > span { font-size: 13px; color: var(--ink-3); }
+.acc-track { position: relative; height: 16px; margin-right: 44px; }
+.acc-bar { position: absolute; left: 0; top: 0; height: 16px; border-radius: 0 4px 4px 0; transition: width .25s; }
+.acc-bar.ad { background: var(--accent); }
+.acc-bar.tb { background: var(--acc-tb); }
+.acc-val { position: absolute; top: -1px; font: 500 13px var(--mono); color: var(--ink); white-space: nowrap; }
+.acc-key { display: flex; gap: 16px; font-size: 13px; color: var(--ink-2); margin: 8px 0 0; flex-wrap: wrap; align-items: center; }
+.acc-key i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+.acc-heat { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.acc-hm h4 { font-size: 14px; font-weight: 600; margin: 0 0 6px; color: var(--ink); }
+.acc-hm-grid { display: grid; grid-template-columns: 58px repeat(4, 1fr); gap: 2px; }
+.acc-hm-grid .rl { font-size: 12px; color: var(--ink-3); align-self: center; white-space: nowrap; }
+.acc-hm-grid .cl { font-size: 12px; color: var(--ink-3); text-align: center; padding-top: 3px; }
+.acc-hm-grid .c { height: 22px; border-radius: 2px; font: 500 11.5px/22px var(--mono); text-align: center; color: var(--ink); background: var(--panel); }
+.acc-hm-grid .c.strong { color: #fff; }
+.acc-hm-grid .gap { grid-column: 1 / -1; height: 4px; }
+.acc-hm .ax { font-size: 12px; color: var(--ink-3); text-align: center; margin: 2px 0 0 58px; }
+.acc-scale { display: inline-block; width: 120px; height: 10px; border-radius: 2px; background: linear-gradient(90deg, rgba(192,57,43,0), #c0392b); border: 1px solid var(--line); vertical-align: -1px; margin: 0 6px; }
+.acc-tip { position: fixed; pointer-events: none; background: var(--ink); color: var(--bg); font: 13px/1.4 var(--sans); padding: 6px 9px; border-radius: 5px; z-index: 50; display: none; max-width: 280px; }
+:root { --acc-tb: #c4c3b8; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --acc-tb: #55575e; } }
+:root[data-theme="dark"] { --acc-tb: #55575e; }
+@media (max-width: 860px) { .acc-stats, .acc-charts { grid-template-columns: 1fr; } .acc-num { font-size: 40px; } }
+@media (max-width: 520px) { .acc-heat { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -83,21 +129,21 @@
 
   <div class="hero">
     <h1>Probability, premium and positioning heatmaps for any stock with options.</h1>
-    <p class="lede">OptionsCone turns the option chain into heatmaps on the price chart: touch and expiry probabilities, implied volatility, open interest, spreads, time value and premium relative to risk. It compares what the option market implies with what the stock&#39;s own history says. For option traders and for anyone who holds stocks. Free, for Windows.</p>
+    <p class="lede">OptionsCone turns the option chain into heatmaps on the price chart: touch and expiry probabilities, implied volatility, open interest, spreads and time value, for free. Pro adds the stock&#39;s own realized odds, made forward-looking, the expected value of every short option at expiration, and how much it can cost you for the premium you collect. For option traders and for anyone who holds stocks. Free and Pro version, for Windows.</p>
     <div class="btn-row">
       <a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a>
       <a class="btn" href="#pro">See Pro</a>
-      <span class="btn-note">Desktop app &middot; Windows 10 and 11 &middot; free</span>
+      <span class="btn-note">Desktop app &middot; Windows 10 and 11 &middot; Free and Pro</span>
     </div>
   </div>
 
   <div class="maps">
-    <figure class="mapfig"><a class="map" href="img/avgo/chart-p.png"><span>Touch probability</span><img src="img/avgo/cone-p.png" width="550" height="840" alt="Broadcom (AVGO), Touch probability: dark near the money, fading where a touch becomes unlikely."></a><figcaption>The chance that the price touches each strike before that expiry, implied from the option prices: dark near the money, fading where a touch becomes unlikely.</figcaption></figure>
-    <figure class="mapfig"><a class="map" href="img/avgo/chart-iv.png"><span>Implied volatility</span><img src="img/avgo/cone-iv.png" width="550" height="840" alt="Broadcom (AVGO), Implied volatility per contract: skew and term structure."></a><figcaption>Each contract&#39;s own volatility, so skew and the term structure show at a glance. The badges above each expiry show its overall implied volatility.</figcaption></figure>
-    <figure class="mapfig"><a class="map" href="img/avgo/chart-oi.png"><span>Open interest</span><img src="img/avgo/cone-oi.png" width="550" height="840" alt="Broadcom (AVGO), Open interest: where the large positions sit."></a><figcaption>Where traders hold the largest positions, for every strike and expiry.</figcaption></figure>
-    <figure class="mapfig"><a class="map" href="img/avgo/chart-tv.png"><span>Time value per day</span><img src="img/avgo/cone-tv.png" width="550" height="840" alt="Broadcom (AVGO), Time value per remaining day, darkest near the money for short expiries."></a><figcaption>Each option&#39;s premium spread over the days it has left, so a seller&#39;s average daily income is visible at a glance.</figcaption></figure>
-    <figure class="mapfig"><a class="map" href="img/avgo/chart-gap.png"><span>Implied vs realized <em class="pro">Pro</em></span><img src="img/avgo/cone-gap.png" width="550" height="840" alt="Broadcom (AVGO), Implied minus realized touch probability: blue where the market prices in a higher probability than the stock realized, red where lower."></a><figcaption>The touch probability from option prices against the realized odds 5y and 10y. Points to potential trading opportunities.</figcaption></figure>
-    <figure class="mapfig"><a class="map" href="img/avgo/chart-vpr.png"><span>Premium per unit risk <em class="pro">Pro</em></span><img src="img/avgo/cone-vpr.png" width="550" height="840" alt="Broadcom (AVGO), premium relative to realized risk."></a><figcaption>How much premium a seller collects for each dollar of risk the stock&#39;s individual realized moves suggest. Higher means the risk is better paid.</figcaption></figure>
+    <figure class="mapfig"><div class="map"><span>Touch probability</span><img src="img/avgo/cone-p.png" width="550" height="840" alt="Broadcom (AVGO), Touch probability: dark near the money, fading where a touch becomes unlikely."></div><figcaption>The chance that the price touches each strike before that expiry, implied from the option prices: dark near the money, fading where a touch becomes unlikely.</figcaption></figure>
+    <figure class="mapfig"><div class="map"><span>Implied volatility</span><img src="img/avgo/cone-iv.png" width="550" height="840" alt="Broadcom (AVGO), Implied volatility per contract: skew and term structure."></div><figcaption>Each contract&#39;s own volatility, so skew and the term structure show at a glance. The badges above each expiry show its overall implied volatility.</figcaption></figure>
+    <figure class="mapfig"><div class="map"><span>Time value per day</span><img src="img/avgo/cone-tv.png" width="550" height="840" alt="Broadcom (AVGO), Time value per remaining day, darkest near the money for short expiries."></div><figcaption>Each option&#39;s premium spread over the days it has left, so a seller&#39;s average daily income is visible at a glance.</figcaption></figure>
+    <figure class="mapfig"><div class="map"><span>Implied vs realized <em class="pro">Pro</em></span><img src="img/avgo/cone-gap.png?v=7" width="550" height="840" alt="Broadcom (AVGO), implied minus realized touch probability: blue where the options price in more than the stock itself supports, red where less."></div><figcaption>The touch probability from option prices against the realized odds of the adaptive model. Points to potential trading opportunities.</figcaption></figure>
+    <figure class="mapfig"><div class="map"><span>Expected value <em class="pro">Pro</em></span><img src="img/avgo/cone-ev.png?v=7" width="550" height="840" alt="Broadcom (AVGO), expected value of short options at expiration as a share of the premium: blue where selling comes out ahead on average, red where it does not."></div><figcaption>What a short option is worth at expiration on average, as a share of its premium: blue where selling it comes out ahead on average, red where it does not.</figcaption></figure>
+    <figure class="mapfig"><div class="map"><span>Avg. risk per premium <em class="pro">Pro</em></span><img src="img/avgo/cone-xl.png?v=7" width="550" height="840" alt="Broadcom (AVGO), average risk of short options at expiration in multiples of the premium: the darker the red, the more it can cost."></div><figcaption>What a short option can cost at expiration on average, in multiples of the premium: the darker the red, the more it can cost.</figcaption></figure>
   </div>
 
   <section>
@@ -110,8 +156,9 @@
       </div>
       <div class="card">
         <h3>Three models</h3>
-        <p><span class="swatch" style="background:var(--track)"></span><strong>Implied</strong> from the option prices, with each contract's own volatility.<br>
-        <span class="swatch" style="background:var(--m5)"></span><strong>5y</strong> and <span class="swatch" style="background:var(--m10)"></span><strong>10y</strong>: the realized odds, from industry-standard probability models built on the stock's realized moves of the last five and ten years. <em class="pro">Pro</em></p>
+        <p><span class="swatch" style="background:var(--track)"></span><strong>Implied</strong>: from the option prices, with each contract's own volatility.<br>
+        <span class="swatch" style="background:var(--m10)"></span><strong>10y</strong>: industry-standard probability models, built on the stock&#39;s realized moves of the last ten years. <em class="pro">Pro</em><br>
+        <span class="swatch" style="background:var(--mad)"></span><strong>Adaptive</strong>: the same models, adjusted to each stock&#39;s current conditions, the events ahead and how this particular stock typically responds to them. <em class="pro">Pro</em></p>
       </div>
       <div class="card">
         <h3>Contour lines</h3>
@@ -126,7 +173,7 @@
       <li><strong>Price chart tools.</strong> Two moving averages, trend and horizontal lines, daily or weekly candles, ten years of history.</li>
       <li><strong>Contour lines.</strong> The strikes that match your chosen probability at every expiry, one line per model.</li>
       <li><strong>Expiry badges.</strong> The implied volatility of each expiry, and how it compares with the stock&#39;s realized volatility.</li>
-      <li><strong>Selected contract.</strong> Click a dot and its tooltip stays open: delta, gamma, implied volatility, touch and expire probabilities from the option market and from the last 5 and 10 years.</li>
+      <li><strong>Selected contract.</strong> Click a dot and its tooltip stays open: delta, gamma, implied volatility, touch and expire probabilities from the option market and, with Pro, from the realized odds.</li>
       <li><strong>Earnings dates.</strong> Filled where confirmed, hollow where projected; an expiry that spans a report prices a different risk.</li>
     </ol>
   </section>
@@ -156,7 +203,8 @@
         <h3>Identify opportunities <em class="pro">Pro</em></h3>
         <ul class="qlist">
           <li>Where does the market price in a higher probability than the stock realized?</li>
-          <li>Which strikes pay a seller the most premium per unit of realized risk?</li>
+          <li>What is a short option worth at expiration, measured against its premium?</li>
+          <li>How much can a short option cost me, on average and in the bad cases, for the premium I collect?</li>
           <li>Where could dealer hedging slow down or speed up a move?</li>
         </ul>
       </div>
@@ -183,7 +231,7 @@
       <div>
         <p class="eyebrow">Under the hood</p>
         <h2>Careful with every quote</h2>
-        <p>Each contract's implied volatility is solved with a model for American options that accounts for dividends. Impossible quotes are removed and doubtful ones are flagged. The historical models keep the fat tails and the calm and turbulent stretches of the real history.</p>
+        <p>Each contract's implied volatility is solved with a model for American options that accounts for dividends. Impossible quotes are removed and doubtful ones are flagged. The realized odds keep the fat tails and the calm and turbulent stretches of the real history.</p>
         <p>Every chain you download is archived on your computer, so a history of the option market builds up for every ticker you follow. <a href="methods.html">Read the methods</a>.</p>
       </div>
       <div>
@@ -205,40 +253,76 @@
     <figure class="mapfig gexhome"><a class="map" href="img/pro-gex-spy-dark.png"><span>Gamma exposure <em class="pro">Pro</em></span><img src="img/pro-gex-spy.png" width="1087" height="1006" loading="lazy" alt="OptionsCone Pro GEX heatmap for SPY in dark mode: positive gamma in blue above the price, negative in red below it, with the call wall at 780, the put wall at 760, the gamma flip at 774.1, the exposure profile on the price axis and a pinned tooltip for the 735 strike."></a><figcaption>Blue where dealer hedging tends to slow moves down, red where it can speed them up. How to read it: the <a href="gex-gamma-exposure.html">GEX guide</a>.</figcaption></figure>
   </section>
 
+  <section id="accuracy">
+    <p class="eyebrow">Accuracy</p>
+    <h2>Built to be tested</h2>
+    <p class="prose" style="max-width:none">We checked the adaptive model against what actually happened, on rolling test dates from 2016 to 2026: 448 S&amp;P 500 stocks, 12 ETFs, gold and silver, terms from two weeks to six months. On each date the models only saw the data known that day.</p>
+    <div class="acc-stats">
+      <div class="acc-stat"><div class="acc-num">0.27</div><p class="acc-lab">points average miss between predicted and real rates at expiry. For touch: 0.73</p></div>
+      <div class="acc-stat"><div class="acc-num">89.9%</div><p class="acc-lab">of real closing prices ended inside the 90% range</p></div>
+      <div class="acc-stat"><div class="acc-num"><small>up to</small>8.9&times;</div><p class="acc-lab">closer than the textbook formula. For touch: 3.4&times;</p></div>
+    </div>
+    <p class="acc-fine">Adaptive model, 448 stocks, 50,663 test dates. Raw values, no corrections. ETFs: 0.66 points at expiry, 1.09 for touch, 90.3% inside the range. Gold and silver: 1.33 and 2.18 points, 90.2%.</p>
+    <details class="acc" open>
+      <summary>See the summary</summary>
+      <div class="acc-body">
+        <p>Each cell in the grid is one kind of strike. The darker the red, the larger the miss. A plus means the model said too high, a minus too low. The textbook formula misses by up to 14 points, for strikes near the price six months out. The adaptive model stays within 3 points in every cell.</p>
+        <div class="acc-toggle" role="group" aria-label="Event"><button type="button" data-ev="finish" aria-pressed="true">Expiry</button><button type="button" data-ev="touch" aria-pressed="false">Touch</button></div>
+        <div class="acc-charts">
+          <div>
+            <h3>Average miss</h3>
+            <p class="sub">Predicted vs real rate, in percentage points. Shorter is better.</p>
+            <div id="acc-bars"></div>
+            <div class="acc-key"><span><i style="background:var(--accent)"></i>Adaptive (Pro)</span><span><i style="background:var(--acc-tb)"></i>Textbook formula</span></div>
+          </div>
+          <div>
+            <h3>Where each model is too high or too low</h3>
+            <p class="sub">448 stocks, said minus happened, in points.</p>
+            <div class="acc-heat" id="acc-heat"></div>
+            <div class="acc-key">small miss<span class="acc-scale"></span>large miss</div>
+          </div>
+        </div>
+        <p>On every test date, both models predicted the chances for the same strikes: calls and puts at four distances from the price, for terms from two weeks to six months. That makes more than two million predictions for the stocks alone, each one compared with what the stock actually did. The textbook formula is the random walk at today&#39;s volatility, without an expected return, the same kind of formula many brokers use for their probability figures.</p>
+        <p><strong>Limitations.</strong> For gold and silver the miss is larger than for stocks, though still below the textbook formula, mainly because calls came out too low. ETF puts from two to six months were rated slightly too high. The stocks are today&#39;s S&amp;P 500 members, which rose more after each test date than the average stock at the time. That favors a model that expects some rise over the textbook formula, which expects none. The ETFs have no such bias and show the same picture. The test covers 2016 to 2026, with the 2020 crash and the 2022 bear market, but no crisis like 2008. All misses are raw values and include the random noise of any finite sample.</p>
+      </div>
+    </details>
+    <div class="acc-tip" id="acc-tip"></div>
+  </section>
+
   <section id="pro">
     <p class="eyebrow">Pro version</p>
     <h2><span class="h-pro">Pro</span> version: for the decisions where option prices alone are not enough</h2>
-    <p class="prose">Everything in the free version, plus the views that weigh option prices against how each stock has actually moved, the gamma exposure map, and every new function as it comes.</p>
+    <p class="prose" style="max-width:none">Everything in the free version, plus the realized odds that weigh option prices against how each stock actually moves, what a short option is worth and what it can cost, the gamma exposure map, and every new function as it comes.</p>
     <div class="grid3 pro-cards">
+      <div class="card">
+        <p class="kind">Models</p>
+        <h3>Realized odds 10y and adaptive</h3>
+        <p>10y: industry-standard probability models, built on the stock&#39;s realized moves of the last ten years. Adaptive: the same models, adjusted to each stock&#39;s current conditions, the events ahead and how this particular stock typically responds to them.</p>
+      </div>
       <div class="card">
         <p class="kind">Map</p>
         <h3>Gamma exposure (GEX)</h3>
         <p>See where dealer hedging can slow down or speed up moves, with the levels where that could change.</p>
       </div>
       <div class="card">
-        <p class="kind">Models</p>
-        <h3>Realized odds 5y and 10y</h3>
-        <p>Industry-standard probability models, built on the stock&#39;s realized moves of the last five and ten years. Probabilities for every strike, as their own contour lines and in every tooltip, next to the probability from option prices.</p>
-      </div>
-      <div class="card">
         <p class="kind">Map</p>
         <h3>Implied vs realized</h3>
-        <p>The whole cone colored by where options price in more or less movement than the stock has typically shown, so the differences stand out at a glance.</p>
+        <p>The whole cone colored by where options price in more or less movement than the stock itself supports, so the differences stand out at a glance.</p>
       </div>
       <div class="card">
         <p class="kind">Map</p>
-        <h3>Premium per unit of risk</h3>
-        <p>Compare which contracts pay you the most for the risk you take.</p>
+        <h3>Expected value</h3>
+        <p>What a short option is worth at expiration, on average, as a share of its premium. Shown only where our backtest found the figure reliable.</p>
       </div>
       <div class="card">
-        <p class="kind">Updates</p>
-        <h3>Regular updates with new advanced functions</h3>
-        <p>Every new tool comes to Pro at no extra cost, and the app installs it with one click.</p>
+        <p class="kind">Maps</p>
+        <h3>Average and tail risk per premium</h3>
+        <p>What a short option can cost you at expiration, on average and in the bad cases, measured against the premium you collect.</p>
       </div>
       <div class="card">
-        <p class="kind">Support</p>
-        <h3>Direct support</h3>
-        <p>Questions go straight to the developer.</p>
+        <p class="kind">Updates and support</p>
+        <h3>Regular updates and direct support</h3>
+        <p>Every new tool comes to Pro at no extra cost, and the app installs it with one click. Questions go straight to the developer.</p>
       </div>
     </div>
 
@@ -277,10 +361,10 @@
         <p>The probability that the stock price reaches a given strike at any time before expiry, even if it moves away again afterwards. It is always at least as high as the probability of finishing beyond the strike, and often about twice as high.</p></details>
       <details class="faq"><summary>Do I need to trade options to use it?</summary>
         <p>No. The option market is only the source of one of the three views. If you hold stocks, the same chart tells you how likely a stop level, a price target or your break-even is to be reached within a given time, by the market's pricing and by the stock's own history. See the <a href="use-cases.html">use cases</a>.</p></details>
-      <details class="faq"><summary>What is the difference between the implied and the historical models?</summary>
-        <p>The implied model uses option prices, so it reflects what the market charges for the risk today. The realized odds 5y and 10y come from industry-standard probability models, built on the stock's realized moves of the last five or ten years. This lets you compare the market's expectations with the realized moves of each individual stock. Where the two differ, the option market is pricing a move the history did not produce, or the other way round.</p></details>
+      <details class="faq"><summary>What is the difference between the implied and the realized odds?</summary>
+        <p>The implied odds come from option prices, so they reflect what the market charges for the risk today. The realized odds come from the stock's own moves. 10y uses industry-standard probability models, built on the stock's realized moves of the last ten years. Adaptive takes the same models and makes them forward-looking: adjusted to each stock's current conditions, the events ahead and how this particular stock typically responds to them. This lets you compare the market's expectations with the realized moves of each individual stock. Where the two differ, the option market is pricing a move the history did not produce, or the other way round.</p></details>
       <details class="faq"><summary>Is OptionsCone free?</summary>
-        <p>Yes. The probability cone and the implied volatility, open interest, spread and time value maps are free. Pro adds the historical models, implied vs realized, premium per unit risk and the gamma exposure map (GEX). See <a href="#pro">OptionsCone Pro</a> for prices.</p></details>
+        <p>Yes. The probability cone and the implied volatility, open interest, spread and time value maps are free. Pro adds the realized odds, implied vs realized, the expected value and risk maps for sellers, and the gamma exposure map (GEX). See <a href="#pro">OptionsCone Pro</a> for prices.</p></details>
       <details class="faq"><summary>Why does a chart show older data in the evening?</summary>
         <p>Option prices are only meaningful while the US market is open. Outside trading hours, the app shows your most recent download from the trading session, with its date. If a ticker has never been downloaded during trading hours, the app tells you so: download it again between 9:30 and 16:00 New York time, usually 15:30 to 22:00 in Central Europe.</p></details>
       <details class="faq"><summary>Does the app send my data anywhere?</summary>
@@ -302,9 +386,9 @@
     <div class="about-row">
       <img class="about-pic" src="/img/nikolai-alexander.jpg" width="114" height="170" alt="Nikolai Alexander">
       <div class="about-text">
-        <p class="about"><strong>About.</strong> Nikolai Alexander. 10+ years in quantitative research on financial markets. Former product lead and associate commercial director in biotech. I&nbsp;build research tools for market analysis.</p>
+        <p class="about"><strong>About.</strong> Nikolai Alexander. I studied business and econometrics, worked in biotech as product lead and later associate commercial director, and have done quantitative research on financial markets for more than ten years. Today I advise on data analytics and teach statistical methods up to PhD level, and I&nbsp;build research tools for market analysis.</p>
         <div class="about-links">
-          <p><a href="use-cases.html">Use cases</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+          <p><a href="use-cases.html">Use cases</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="changelog.html">What&#39;s new</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
           <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/eVqbJ14of3vwabb4NSbII00" rel="nofollow">Cancel subscription here</a></p>
           <p>Not financial advice.</p>
         </div>
@@ -313,5 +397,75 @@
   </div>
 </footer>
 
+<script>
+(function () {
+  var MISS = {
+    touch:  [["448 stocks", 0.73, 2.48], ["12 ETFs", 1.09, 2.35], ["Gold, silver", 2.18, 3.54]],
+    finish: [["448 stocks", 0.27, 2.41], ["12 ETFs", 0.66, 3.30], ["Gold, silver", 1.33, 3.07]]
+  };
+  /* stocks: [side, term, per strike distance 0.5/1/1.5/2: [happened, adaptive, textbook]] */
+  var GRID = {"touch":[["call","2w",[[62.4,62.3,60.9],[31.6,30.7,30.9],[13.6,12.6,12.8],[5.4,4.7,4.3]]],["call","1m",[[64.2,65.1,60.5],[33.5,33.5,30.5],[14.6,14.1,12.6],[5.8,5.4,4.2]]],["call","2m",[[67.0,66.6,60.0],[35.5,35.4,30.0],[15.4,15.6,12.3],[5.8,6.0,4.1]]],["call","3m",[[68.8,67.3,59.6],[36.7,36.5,29.6],[16.0,16.4,12.1],[6.1,6.5,4.0]]],["call","6m",[[71.0,68.8,58.7],[39.1,38.9,28.8],[17.5,18.6,11.5],[7.0,7.9,3.8]]],["put","2w",[[53.8,55.4,62.5],[27.5,28.4,32.6],[14.3,14.2,13.9],[7.7,7.4,4.8]]],["put","1m",[[55.7,55.9,62.9],[30.2,29.3,33.0],[16.0,15.1,14.2],[8.7,8.0,4.9]]],["put","2m",[[56.2,55.7,63.4],[30.5,29.1,33.5],[15.9,15.1,14.5],[8.4,8.0,5.1]]],["put","3m",[[56.2,54.9,63.8],[30.2,28.6,33.9],[15.7,14.8,14.8],[8.5,7.8,5.2]]],["put","6m",[[55.3,53.0,64.7],[30.0,27.3,34.9],[16.3,14.2,15.4],[9.1,7.7,5.5]]]],"finish":[["call","2w",[[34.0,34.0,29.9],[16.7,16.3,15.2],[6.8,6.5,6.3],[2.6,2.4,2.1]]],["call","1m",[[35.8,36.3,29.5],[18.5,18.1,14.9],[7.7,7.5,6.2],[3.1,2.8,2.1]]],["call","2m",[[37.9,38.2,28.9],[19.2,19.9,14.6],[8.1,8.6,6.0],[3.0,3.3,2.0]]],["call","3m",[[39.3,39.4,28.5],[20.5,20.9,14.3],[8.5,9.2,5.8],[3.0,3.6,1.9]]],["call","6m",[[41.6,42.2,27.6],[21.9,23.2,13.7],[9.5,10.9,5.5],[3.6,4.5,1.8]]],["put","2w",[[25.5,24.8,31.8],[13.6,12.9,16.5],[7.1,6.5,7.0],[3.7,3.4,2.4]]],["put","1m",[[25.8,24.5,32.3],[14.1,13.0,16.8],[7.5,6.7,7.2],[3.7,3.5,2.5]]],["put","2m",[[24.0,23.6,32.9],[12.8,12.5,17.3],[6.5,6.4,7.4],[3.4,3.4,2.6]]],["put","3m",[[23.2,22.7,33.3],[12.2,12.0,17.6],[6.3,6.2,7.6],[3.3,3.3,2.7]]],["put","6m",[[20.8,20.8,34.4],[10.7,11.0,18.3],[5.3,5.8,8.1],[2.7,3.2,2.9]]]]};
+  var DIST = ["0.5", "1", "1.5", "2"];
+  var TERM = { "2w": "2 weeks", "1m": "1 month", "2m": "2 months", "3m": "3 months", "6m": "6 months" };
+  var EVW = { touch: "touched", finish: "ended beyond the strike" };
+  var tip = document.getElementById("acc-tip");
+  function fmt(x) { return x.toFixed(2); }
+  function sg(x) { return (x > 0 ? "+" : x < 0 ? "\u2212" : "") + Math.abs(x).toFixed(1); }
+  function bars(ev) {
+    var h = "", MAX = 3.6;
+    MISS[ev].forEach(function (g) {
+      h += '<div class="acc-grp"><p class="acc-grp-name">' + g[0] + '</p>';
+      [["ad", g[1], "Adaptive"], ["tb", g[2], "Textbook"]].forEach(function (b) {
+        var w = b[1] / MAX * 100;
+        h += '<div class="acc-row"><span>' + b[2] + '</span><div class="acc-track" data-tip="' + g[0] + ', ' + b[2].toLowerCase() +
+             ': average miss ' + fmt(b[1]) + ' points"><div class="acc-bar ' + b[0] + '" style="width:' + w + '%"></div>' +
+             '<span class="acc-val" style="left:calc(' + w + '% + 6px)">' + fmt(b[1]) + '</span></div></div>';
+      });
+      h += '</div>';
+    });
+    document.getElementById("acc-bars").innerHTML = h;
+  }
+  function cellBg(d) {
+    var a = Math.min(Math.abs(d) / 10, 1) * 0.92;
+    return "rgba(192,57,43," + a.toFixed(3) + ")";
+  }
+  function heat(ev) {
+    var h = "";
+    [[1, "Adaptive (Pro)", "Adaptive"], [2, "Textbook formula", "Textbook"]].forEach(function (m) {
+      h += '<div class="acc-hm"><h4>' + m[1] + '</h4><div class="acc-hm-grid">';
+      GRID[ev].forEach(function (r, i) {
+        if (i === 5) h += '<div class="gap"></div>';
+        var side = r[0] === "call" ? "Calls" : "Puts";
+        h += '<div class="rl">' + (r[0] === "call" ? "call " : "put ") + r[1] + '</div>';
+        r[2].forEach(function (c, j) {
+          var d = c[m[0]] - c[0];
+          h += '<div class="c' + (Math.abs(d) >= 6 ? ' strong' : '') + '" style="background-image:linear-gradient(' + cellBg(d) + ',' + cellBg(d) + ')" data-tip="' +
+               side + ', ' + TERM[r[1]] + ', strike ' + DIST[j] + ' standard deviations away. ' + m[2] + ' said ' + c[m[0]].toFixed(1) + '%, ' +
+               EVW[ev] + ' ' + c[0].toFixed(1) + '%">' + sg(d) + '</div>';
+        });
+      });
+      h += '<div></div>';
+      DIST.forEach(function (k) { h += '<div class="cl">' + k + '</div>'; });
+      h += '</div><p class="ax">strike distance (standard deviations)</p></div>';
+    });
+    document.getElementById("acc-heat").innerHTML = h;
+  }
+  function show(ev) {
+    bars(ev); heat(ev);
+    document.querySelectorAll(".acc-toggle button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.ev === ev); });
+  }
+  document.querySelectorAll(".acc-toggle button").forEach(function (b) { b.addEventListener("click", function () { show(b.dataset.ev); }); });
+  var box = document.querySelector("details.acc");
+  box.addEventListener("mousemove", function (e) {
+    var t = e.target.closest("[data-tip]");
+    if (!t) { tip.style.display = "none"; return; }
+    tip.textContent = t.getAttribute("data-tip"); tip.style.display = "block";
+    tip.style.left = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 8) + "px";
+    tip.style.top = (e.clientY + 14) + "px";
+  });
+  box.addEventListener("mouseleave", function () { tip.style.display = "none"; });
+  show("finish");
+})();
+</script>
 </body>
 </html>

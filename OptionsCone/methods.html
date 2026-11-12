@@ -19,7 +19,7 @@
 <meta property="og:image:alt" content="OptionsCone: a probability cone over the listed option strikes of a stock, with implied and historical contour lines.">
 <meta property="og:site_name" content="OptionsCone">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
 </head>
 <body>
@@ -82,10 +82,10 @@
     <p>Delta is often read as the chance of an option expiring in the money. For short-dated options at moderate volatility the two are close. The higher the volatility and the longer the time to expiry, the further they drift apart: a 30-delta put on a volatile stock several months out can have a noticeably higher chance of expiring in the money than 30%. Delta remains the right number for hedging. For odds, use the probability at expiry, or the touch probability if the question is whether a level will be reached.</p>
     <p>How large the gap is in real option chains, and how the skew changes it, is shown in the study <a href="/research/delta-vs-itm-probability.html">Is delta the probability of expiring in the money?</a></p>
 
-    <h2 id="history">Realized odds (5y, 10y)</h2>
-    <p>The realized odds 5y and 10y answer the same questions from the stock&#39;s own history instead of option prices. They come from industry-standard probability models, built on the stock&#39;s realized moves of the last five or ten years, including calm and turbulent periods and intraday moves.</p>
-    <p>These are historical frequencies. They contain only moves that happened in those years, and they know nothing of what the market expects today, such as an upcoming earnings date.</p>
-    <div class="note">Where the implied and historical lines diverge, the option market is pricing a move the history did not produce, or the other way round.</div>
+    <h2 id="history">Realized odds (10y, adaptive)</h2>
+    <p>The realized odds answer the same questions from the stock&#39;s own moves instead of option prices. 10y uses industry-standard probability models, built on the stock&#39;s realized moves of the last ten years, including calm and turbulent periods and intraday moves. Adaptive takes the same models and makes them forward-looking: adjusted to each stock&#39;s current conditions, the events ahead and how this particular stock typically responds to them.</p>
+    <p>10y contains only moves that happened in those years and knows nothing of what lies ahead today, such as an upcoming earnings date. The adaptive model does, and the Pro maps for sellers are built on it. Both describe how often a move happens, not the direction the stock will take.</p>
+    <div class="note">Where the implied and realized lines diverge, the option market is pricing a move the stock&#39;s own behavior does not support, or the other way round.</div>
 
     <h2 id="badges">Expiry badges</h2>
     <p>The badge above each expiry shows that expiry&#39;s overall implied volatility. The ratio below compares it with the stock&#39;s recent realized volatility.</p>
@@ -96,17 +96,22 @@
       <li><strong>Probability:</strong> the implied touch probability.</li>
       <li><strong>Implied volatility, open interest and spread:</strong> each contract&#39;s own values. On the spread map, darker means tighter.</li>
       <li><strong>Time value per day:</strong> Each option&#39;s premium spread over the days it has left, so a seller&#39;s average daily income is visible at a glance. It is an average over the remaining life; decay speeds up toward expiry.</li>
-      <li><strong>Implied vs realized:</strong> The touch probability from option prices against the realized odds 5y and 10y. Blue where the market prices in a higher probability (a potential opportunity for sellers), red where lower. The historical models do not know the earnings calendar, so an expiry that ends before the next report leans red, and one that spans it leans blue.</li>
-      <li><strong>Premium per unit risk:</strong> How much premium a seller collects for each dollar of risk the stock&#39;s individual realized moves suggest. Higher means the risk is better paid. It is left out where the history gives too little data. It uses the mid price; a seller receives the bid, which on far out-of-the-money contracts is noticeably lower.</li>
+      <li><strong>Implied vs realized:</strong> The touch probability from option prices against the realized odds of the adaptive model. Blue where the options price in more than the stock itself supports (a potential opportunity for sellers), red where less.</li>
+      <li><strong>Expected value:</strong> What a short option is worth at expiration on average, as a share of its premium. Blue where selling it comes out ahead on average, red where it does not. Where our backtest did not find the figure reliable, the map is veiled and the tooltip marks it as a rough guide. The tooltip also shows the minimum premium: the premium a seller would need for the expected value to stay positive, with safety margins for statistical uncertainty already built in, both in how the stock may move and in the model itself.</li>
+      <li><strong>Average and tail risk per premium:</strong> What a short option can cost the seller at expiration, net of the premium, in multiples of the premium. The average risk counts how often a loss happens and how large it is on average, the tail risk looks at the bad cases. The darker the red, the more it can cost.</li>
+      <li><strong>Gamma exposure (GEX):</strong> The stock dealers would have to trade for a 1% move, per strike and expiry. Blue where their hedging tends to slow moves down, red where it can speed them up. How to read it is shown in the <a href="gex-gamma-exposure.html">GEX guide</a>.</li>
     </ul>
+    <p>The expected value and risk maps use the mid price. A seller receives the bid, which on far out-of-the-money contracts is noticeably lower.</p>
     <p>For each expiry and model, the contour lines mark the listed strike whose probability is closest to your target, above and below the current price.</p>
 
     <h2 id="limits">Limits</h2>
     <ul>
-      <li>The implied model assumes each contract&#39;s volatility is constant until expiry. Real prices jump, especially around earnings.</li>
-      <li>Implied probabilities are risk-neutral. They include the market&#39;s price for risk and are not real-world odds.</li>
-      <li>The historical models ignore the earnings calendar, so comparisons for expiries just before a report lean toward history overstating the risk.</li>
-      <li>The historical models only know the chosen years. A stock that changed its business, or a period without a crash, gives a narrow picture.</li>
+      <li>Implied probabilities are risk-neutral and assume each contract&#39;s volatility stays constant until expiry, while real prices jump, especially around earnings. They are not real-world odds, which is why Pro puts the realized odds next to them.</li>
+      <li>10y replays the last ten years as they happened. It does not take future events into account, such as an upcoming earnings date. The adaptive model does.</li>
+      <li>The realized odds learn from the stock&#39;s own past. A break without precedent in that past, such as a takeover, a new business or a crash of a kind the stock never had, is not in them.</li>
+      <li>The expected value and risk figures are most reliable for expiries between one week and six months, for strikes within a normal distance of the price, and in normal volatility. Outside that range the map is veiled and the tooltip marks them as rough guides.</li>
+      <li>Accuracy differs between groups. In our test it was lower for calls on precious-metal ETFs and for ETF puts two to six months out than for stocks.</li>
+      <li>The expected value and risk figures are averages over many possible outcomes. A single trade can end far from them.</li>
       <li>Free data can be delayed, incomplete or wrong. The checks catch much of that, not all of it.</li>
     </ul>
     <p>All probabilities are estimates. They are not forecasts and not financial advice.</p>
@@ -122,7 +127,7 @@
       <p>Not financial advice.</p>
     </div>
     <div>
-      <p><a href="./">Home</a> &middot; <a href="use-cases.html">Use cases</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+      <p><a href="./">Home</a> &middot; <a href="use-cases.html">Use cases</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="changelog.html">What&#39;s new</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
     </div>
   </div>
 </footer>
