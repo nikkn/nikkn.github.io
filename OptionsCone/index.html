@@ -66,6 +66,9 @@
 .acc-num small { font-size: 22px; font-weight: 500; color: var(--ink-2); margin-right: 4px; }
 .acc-lab { color: var(--ink-2); margin: 6px 0 0; font-size: 16px; line-height: 1.45; }
 .acc-fine { color: var(--ink-3); font-size: 14px; margin: 0 0 18px; }
+.dd-side { align-self: start; margin-top: 62px; }
+.dd-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 30px 28px; margin: 0 0 14px; }
+@media (max-width: 860px) { .dd-side { margin-top: 8px; } }
 details.acc { border: 1px solid var(--line); border-radius: 6px; background: var(--panel); }
 details.acc > summary { cursor: pointer; font-weight: 600; padding: 12px 18px; list-style: none; position: relative; }
 details.acc > summary::-webkit-details-marker { display: none; }
@@ -216,31 +219,33 @@ details.acc[open] > summary::after { content: "\2212"; }
   <section>
     <div class="grid2">
       <div>
-        <p class="eyebrow">The numbers</p>
-        <h2>Every value in a table</h2>
-        <p>The data table lists whatever the cone shows, strike by expiry, for the contracts that are actually listed. Switch it to delta to compare a whole chain with your broker at once.</p>
-        <p>A data quality report shows how many quotes passed the checks, by moneyness, and the Methods section explains what every number means. Nothing is hidden behind a score.</p>
+        <p class="eyebrow">The approach</p>
+        <h2>Every short option carries risk.<br>It deserves due diligence.</h2>
+        <p>Most tools show you the numbers. OptionsCone puts them in context, contract by contract: what the market prices, what the stock itself supports, and what selling is worth.</p>
+        <p>Each download pulls the full option chain and the stock&#39;s price history, checks every quote and solves each contract&#39;s volatility with a model for American options that accounts for dividends. Impossible quotes are removed and doubtful ones flagged, and a data quality report shows how many passed. Nothing is hidden behind a score.</p>
+        <p>For a single download of SPY, that means more than 3,000 contracts and ten years of price history, around 37,000 quality checks and more than 118,000 figures behind the cone. That takes a moment, and it should.</p>
+        <p>OptionsCone is made for decisions that take more than a glance: which option to sell, at which strike and expiry, and whether the premium is worth the risk.</p>
       </div>
-      <figure>
-        <img class="shot" src="img/avgo/table.png" width="1384" height="823" loading="lazy" alt="Data table of touch probabilities for Broadcom (AVGO), strikes in rows and expiries in columns.">
-      </figure>
+      <div class="dd-side">
+        <div class="dd-stats">
+          <div class="acc-stat"><div class="acc-num">3,372</div><p class="acc-lab">contracts in a single download of SPY</p></div>
+          <div class="acc-stat"><div class="acc-num">37,092</div><p class="acc-lab">quality checks on the quotes</p></div>
+          <div class="acc-stat"><div class="acc-num">118,439</div><p class="acc-lab">figures behind the cone</p></div>
+          <div class="acc-stat"><div class="acc-num">100+<small style="margin:0 0 0 6px">million</small></div><p class="acc-lab">calculations behind the realized odds</p></div>
+        </div>
+        <p class="acc-fine">SPY, download of 9 November 2026. Figures and calculations with Pro.</p>
+      </div>
     </div>
   </section>
 
   <section>
-    <div class="grid2">
-      <div>
-        <p class="eyebrow">Under the hood</p>
-        <h2>Careful with every quote</h2>
-        <p>Each contract's implied volatility is solved with a model for American options that accounts for dividends. Impossible quotes are removed and doubtful ones are flagged. The realized odds keep the fat tails and the calm and turbulent stretches of the real history.</p>
-        <p>Every chain you download is archived on your computer, so a history of the option market builds up for every ticker you follow. <a href="methods.html">Read the methods</a>.</p>
-      </div>
+    <div class="prose">
       <div>
         <p class="eyebrow">Get started</p>
         <h2>Three steps</h2>
         <ol class="steps">
           <li><strong>Download</strong> <a href="https://licence.optionscone.com/get/free"><code>OptionsCone-Setup.exe</code></a> and run it. It installs in a few seconds. If Windows warns about an unknown app, click <em>More info</em>, then <em>Run anyway</em>.</li>
-          <li><strong>Type a ticker</strong>, for example <code>AAPL</code>, and press <em>download</em>. The first download takes less than a minute.</li>
+          <li><strong>Type a ticker</strong>, for example <code>AAPL</code>, and press <em>download</em>. The first download takes up to a minute: OptionsCone checks every quote and reads the stock&#39;s history before it draws anything.</li>
           <li><strong>Read the cone.</strong> Set the probability you care about and compare the three lines. The <a href="manual.html">manual</a> explains every control.</li>
         </ol>
       </div>
@@ -364,6 +369,8 @@ details.acc[open] > summary::after { content: "\2212"; }
         <p>No. The option market is only the source of one of the three views. If you hold stocks, the same chart tells you how likely a stop level, a price target or your break-even is to be reached within a given time, by the market's pricing and by the stock's own history. See the <a href="use-cases.html">use cases</a>.</p></details>
       <details class="faq"><summary>What is the difference between the implied and the realized odds?</summary>
         <p>The implied odds come from option prices, so they reflect what the market charges for the risk today. The realized odds come from the stock's own moves. 10y uses industry-standard probability models built on the stock's realized moves of the last ten years. Adaptive builds on these models and adds what history misses: today's conditions, the events ahead and how the stock typically responds to them. This lets you compare the market's expectations with the realized moves of each individual stock. Where the two differ, the option market is pricing a move the history did not produce, or the other way round.</p></details>
+      <details class="faq"><summary>Can I see the numbers behind the colors?</summary>
+        <p>Yes. The data table lists whatever the cone shows, strike by expiry, for the contracts that are actually listed. Switch it to delta to compare a whole chain with your broker at once. The Methods section explains what every number means.</p></details>
       <details class="faq"><summary>Is OptionsCone free?</summary>
         <p>Yes. The probability cone and the implied volatility, open interest, spread and time value maps are free. Pro adds the realized odds, implied vs realized, the expected value and risk maps for sellers, and the gamma exposure map (GEX). See <a href="#pro">OptionsCone Pro</a> for prices.</p></details>
       <details class="faq"><summary>Why does a chart show older data in the evening?</summary>
