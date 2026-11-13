@@ -158,7 +158,7 @@ details.acc[open] > summary::after { content: "\2212"; }
         <h3>Three models</h3>
         <p><span class="swatch" style="background:var(--track)"></span><strong>Implied</strong>: from the option prices, with each contract's own volatility.<br>
         <span class="swatch" style="background:var(--m10)"></span><strong>10y</strong>: industry-standard probability models, built on the stock&#39;s realized moves of the last ten years. <em class="pro">Pro</em><br>
-        <span class="swatch" style="background:var(--mad)"></span><strong>Adaptive</strong>: the same models, adjusted to each stock&#39;s current conditions, the events ahead and how this particular stock typically responds to them. <em class="pro">Pro</em></p>
+        <span class="swatch" style="background:var(--mad)"></span><strong>Adaptive</strong>: our main probability model. It adjusts to each stock&#39;s current conditions, the events ahead and how this particular stock typically responds to them, tested against what actually happened (<a href="#accuracy">see the results</a>). <em class="pro">Pro</em></p>
       </div>
       <div class="card">
         <h3>Contour lines</h3>
@@ -297,7 +297,7 @@ details.acc[open] > summary::after { content: "\2212"; }
       <div class="card">
         <p class="kind">Models</p>
         <h3>Realized odds 10y and adaptive</h3>
-        <p>10y: industry-standard probability models, built on the stock&#39;s realized moves of the last ten years. Adaptive: the same models, adjusted to each stock&#39;s current conditions, the events ahead and how this particular stock typically responds to them.</p>
+        <p>10y: industry-standard probability models, built on the stock&#39;s realized moves of the last ten years. Adaptive: our main probability model, forward-looking and adjusted to each stock&#39;s current conditions, the events ahead and how this particular stock typically responds to them.</p>
       </div>
       <div class="card">
         <p class="kind">Map</p>
@@ -362,7 +362,7 @@ details.acc[open] > summary::after { content: "\2212"; }
       <details class="faq"><summary>Do I need to trade options to use it?</summary>
         <p>No. The option market is only the source of one of the three views. If you hold stocks, the same chart tells you how likely a stop level, a price target or your break-even is to be reached within a given time, by the market's pricing and by the stock's own history. See the <a href="use-cases.html">use cases</a>.</p></details>
       <details class="faq"><summary>What is the difference between the implied and the realized odds?</summary>
-        <p>The implied odds come from option prices, so they reflect what the market charges for the risk today. The realized odds come from the stock's own moves. 10y uses industry-standard probability models, built on the stock's realized moves of the last ten years. Adaptive takes the same models and makes them forward-looking: adjusted to each stock's current conditions, the events ahead and how this particular stock typically responds to them. This lets you compare the market's expectations with the realized moves of each individual stock. Where the two differ, the option market is pricing a move the history did not produce, or the other way round.</p></details>
+        <p>The implied odds come from option prices, so they reflect what the market charges for the risk today. The realized odds come from the stock's own moves. 10y uses industry-standard probability models, built on the stock's realized moves of the last ten years. Adaptive is our main probability model. It is forward-looking: it adjusts to each stock's current conditions, the events ahead and how this particular stock typically responds to them, and it is tested against what actually happened (<a href="#accuracy">see the results</a>). This lets you compare the market's expectations with the realized moves of each individual stock. Where the two differ, the option market is pricing a move the history did not produce, or the other way round.</p></details>
       <details class="faq"><summary>Is OptionsCone free?</summary>
         <p>Yes. The probability cone and the implied volatility, open interest, spread and time value maps are free. Pro adds the realized odds, implied vs realized, the expected value and risk maps for sellers, and the gamma exposure map (GEX). See <a href="#pro">OptionsCone Pro</a> for prices.</p></details>
       <details class="faq"><summary>Why does a chart show older data in the evening?</summary>

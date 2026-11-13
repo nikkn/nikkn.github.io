@@ -83,7 +83,7 @@
     <p>How large the gap is in real option chains, and how the skew changes it, is shown in the study <a href="/research/delta-vs-itm-probability.html">Is delta the probability of expiring in the money?</a></p>
 
     <h2 id="history">Realized odds (10y, adaptive)</h2>
-    <p>The realized odds answer the same questions from the stock&#39;s own moves instead of option prices. 10y uses industry-standard probability models, built on the stock&#39;s realized moves of the last ten years, including calm and turbulent periods and intraday moves. Adaptive takes the same models and makes them forward-looking: adjusted to each stock&#39;s current conditions, the events ahead and how this particular stock typically responds to them.</p>
+    <p>The realized odds answer the same questions from the stock&#39;s own moves instead of option prices. 10y uses industry-standard probability models, built on the stock&#39;s realized moves of the last ten years, including calm and turbulent periods and intraday moves. Adaptive is our main probability model. It is forward-looking: it adjusts to each stock&#39;s current conditions, the events ahead and how this particular stock typically responds to them, and it is tested against what actually happened (<a href="./#accuracy">see the results</a>).</p>
     <p>10y contains only moves that happened in those years and knows nothing of what lies ahead today, such as an upcoming earnings date. The adaptive model does, and the Pro maps for sellers are built on it. Both describe how often a move happens, not the direction the stock will take.</p>
     <div class="note">Where the implied and realized lines diverge, the option market is pricing a move the stock&#39;s own behavior does not support, or the other way round.</div>
 
