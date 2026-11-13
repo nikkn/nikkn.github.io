@@ -6,7 +6,16 @@
     <atom:link href="https://nikolai-alexander.com/research/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Quantitative studies of financial markets and options, with the data and the numbers behind each result.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 08 Nov 2026 16:30:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 13 Nov 2026 12:00:00 GMT</lastBuildDate>
+
+    <item>
+      <title>The Santa Claus rally since 1950: up in 58 of 76 years, but the last three missed</title>
+      <link>https://nikolai-alexander.com/research/santa-claus-rally.html</link>
+      <guid isPermaLink="true">https://nikolai-alexander.com/research/santa-claus-rally.html</guid>
+      <pubDate>Fri, 13 Nov 2026 12:00:00 GMT</pubDate>
+      <category>Market research</category>
+      <description>In the 7 trading days of the Santa Claus rally, the S&amp;P 500 rose in 58 of 76 years since 1950, by 1.25% on average. The pattern is real over the full history but has faded since 2000, and it missed in 2023, 2024 and 2025. After a miss, the rest of the year still rose in 13 of 17 cases.</description>
+    </item>
 
     <item>
       <title>Rolling the untested side of a strangle: which roll pays</title>
