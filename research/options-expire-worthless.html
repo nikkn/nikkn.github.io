@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="max-image-preview:large">
+<title>Do most options expire worthless? What percentage really do</title>
+<meta name="description" content="Only far from the price do 90% of options expire worthless. Near it, 39% to 78% did. Every trading day since 1990, 469 stocks and the S&amp;P 500.">
+<link rel="canonical" href="https://nikolai-alexander.com/research/options-expire-worthless.html">
+<link rel="alternate" type="application/rss+xml" title="Research | Nikolai Alexander" href="https://nikolai-alexander.com/research/feed.xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Do most options expire worthless? Only the ones far from the price">
+<meta property="og:description" content="The 90% claim, checked on every trading day since 1990: how often calls and puts really expired worthless, near the price and far from it.">
+<meta property="og:url" content="https://nikolai-alexander.com/research/options-expire-worthless.html">
+<meta property="og:image" content="https://nikolai-alexander.com/research/img/options-expire-worthless.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Share of options that expired worthless by distance from the price, calls and puts, S&amp;P 500 stocks, 30 days.">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css?v=5">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Do most options expire worthless? Only the ones far from the price",
+  "description": "How often calls and puts expired worthless, by distance from the price and by term, for 469 S&P 500 stocks since 2004 and the S&P 500 since 1990, with the effect of earnings and market phases.",
+  "datePublished": "2026-11-14",
+  "dateModified": "2026-11-14",
+  "author": {
+    "@type": "Person",
+    "name": "Nikolai Alexander",
+    "url": "https://nikolai-alexander.com/#about",
+    "description": "I studied business and econometrics, worked in biotech as product lead and later associate commercial director, and have done quantitative research on financial markets for more than ten years. Today I advise on data analytics and teach statistical methods up to PhD level, and I build research tools for market analysis.",
+    "sameAs": [
+      "https://x.com/nikkn_alexander"
+    ]
+  },
+  "image": "https://nikolai-alexander.com/research/img/options-expire-worthless.png",
+  "about": [
+    "options expire worthless",
+    "option expiration",
+    "probability of expiring worthless",
+    "option selling",
+    "options myths"
+  ],
+  "mainEntityOfPage": "https://nikolai-alexander.com/research/options-expire-worthless.html"
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="/count.js"></script>
+<style>
+.brand-text { font: 600 17px var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+.article { max-width: 760px; padding: 48px 0 24px; }
+.article h1 { font-size: clamp(30px, 4.4vw, 42px); line-height: 1.15; margin: 0 0 16px; letter-spacing: -0.015em; }
+.article h2 { margin-top: 48px; }
+.article .lede { font-size: 19px; color: var(--ink-2); }
+.byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+.findings { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px 22px; margin: 26px 0 8px; }
+.findings p { font: 600 12.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-3); margin: 0 0 10px; }
+.findings ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.article table { font-size: 14.5px; }
+.article td, .article th { white-space: nowrap; padding-right: 14px; }
+.article td.num, .article th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.article details { margin: 10px 0 18px; }
+.article details summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+.small { font-size: 14px; color: var(--ink-3); }
+.tnote { margin-top: 4px; }
+.answer { border-left: 3px solid var(--c-hist, #2a78d6); padding: 2px 0 2px 14px; margin: 14px 0; font-size: 17px; }
+.dates { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 18px 0; }
+.dates div { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; }
+.dates b { display: block; font: 600 12px var(--mono); text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-3); margin-bottom: 4px; }
+.dates span { font-size: 17px; font-weight: 600; color: var(--ink); }
+tr.neg td:nth-child(3) { color: var(--c-cur, #eb6834); font-weight: 600; }
+
+/* charts */
+.viz { --c-hist: #2a78d6; --c-cur: #eb6834; --c-ref: var(--ink-3); --c-grid: var(--line);
+       position: relative; margin: 22px 0 6px; }
+.article { --c-hist: #2a78d6; --c-cur: #eb6834; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .viz, :root:not([data-theme="light"]) .article { --c-hist: #3987e5; --c-cur: #d95926; }
+}
+:root[data-theme="dark"] .viz, :root[data-theme="dark"] .article { --c-hist: #3987e5; --c-cur: #d95926; }
+.viz-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13.5px; color: var(--ink-2); margin-bottom: 6px; }
+.viz-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.viz-legend i { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+.viz-legend i.band { height: 11px; border-radius: 2px; }
+.viz-legend i.dot { width: 11px; height: 11px; border-radius: 50%; }
+.viz svg { width: 100%; height: auto; display: block; overflow: visible; }
+.viz text { font-family: var(--sans); fill: var(--ink-2); }
+.viz .tick { font-size: 11px; fill: var(--ink-3); }
+.viz .lab { font-size: 12px; font-weight: 600; fill: var(--ink-2); }
+.viz .cur-lab { font-size: 13px; font-weight: 700; fill: var(--ink); }
+.viz .halo { paint-order: stroke; stroke: var(--bg); stroke-width: 4px; stroke-linejoin: round; }
+.viz-tip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s; background: var(--ink); color: var(--bg);
+           font-size: 12.5px; line-height: 1.45; padding: 7px 10px; border-radius: 4px; white-space: nowrap; z-index: 5; }
+.viz + .table-scroll { margin-top: 30px; }
+.dist { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 18px 0; }
+.ctl { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 10px; }
+.seg { display: inline-flex; border: 1px solid var(--line-2); border-radius: 6px; overflow: hidden; }
+.seg button { font: 500 14px var(--sans); padding: 6px 12px; border: 0; background: transparent; color: var(--ink-2); cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.heat td.hi { font-weight: 700; color: var(--ink); }
+.heat td.c { text-align: right; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="brand-text">nikolai-alexander.com</span></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="/research/" aria-current="page">Research</a>
+      <a href="/OptionsCone/">Tools</a>
+      <a href="/#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="article">
+  <p class="eyebrow">Options research</p>
+  <h1>Do most options expire worthless? Only the ones far from the price</h1>
+  <p class="byline">By <a href="/#about">Nikolai Alexander</a> &middot; 14 November 2026 &middot; data through 30 October 2026</p>
+  <p class="lede">&ldquo;90% of options expire worthless&rdquo; is one of the most repeated claims in options trading, usually as a reason to sell them. I checked it on every trading day since 1990 for the S&amp;P 500 and since 2004 for 469 of its stocks: how often a call or a put really expired worthless, depending on how far its strike was from the price and how long it had to run.</p>
+
+  <div class="findings">
+    <p>Key findings</p>
+    <ul>
+      <li>The 90% claim holds only far from the price. One and a half typical moves away, 93% of stock calls and 94% of stock puts expired worthless within 30 days. One typical move away, 83% and 87%.</li>
+      <li>Close to the price the claim is far off. A quarter of a typical move away, 54% of stock calls and 67% of stock puts expired worthless within 30 days. For S&amp;P 500 calls with 90 days to run it was 39%.</li>
+      <li>Puts expired worthless more often than calls at the same distance, and the gap grows with the term: S&amp;P 500, a quarter of a typical move, 90 days: 78% of puts, 39% of calls.</li>
+      <li>An earnings report inside the term means fewer options expire worthless: 78% of stock calls one typical move away with a report, 86% without.</li>
+      <li>Expiring worthless is not the same as making money. The options that did finish in the money can cost a seller more than all the others brought in.</li>
+    </ul>
+  </div>
+
+  <h2>What is a typical move?</h2>
+  <p>A strike 5% away means something very different for a calm consumer stock than for a chip maker. So this study measures the distance in <strong>typical moves</strong>: how far the stock usually moves over the term, based on its swings in the three months before. For a typical S&amp;P 500 stock and for the index, one typical move was:</p>
+  <div class="table-scroll"><table><thead><tr><th></th><th class="num">1 week</th><th class="num">30 days</th><th class="num">45 days</th><th class="num">60 days</th><th class="num">90 days</th></tr></thead><tbody>
+    <tr><td>Typical S&amp;P 500 stock</td><td class="num">3.6%</td><td class="num">7.4%</td><td class="num">8.9%</td><td class="num">10.4%</td><td class="num">12.7%</td></tr>
+    <tr><td>S&amp;P 500 index</td><td class="num">1.9%</td><td class="num">3.8%</td><td class="num">4.7%</td><td class="num">5.4%</td><td class="num">6.7%</td></tr>
+  </tbody></table></div>
+  <p class="small tnote">Median volatility over the test period: 25% a year for the stocks, 13% for the index. For statisticians: one typical move is one standard deviation of the move over the term.</p>
+
+  <h2>What percentage of options expire worthless?</h2>
+  <p class="answer">It depends almost entirely on the distance from the price. Close to the price, between 39% and 78% expired worthless, depending on side and term. One typical move away about eight to nine in ten, two typical moves away about 97 in 100.</p>
+  <figure class="viz" id="v1">
+    <div class="ctl">
+      <div class="seg" data-k="g" role="group" aria-label="Instrument"><button type="button" data-v="stocks" aria-pressed="true">S&amp;P 500 stocks</button><button type="button" data-v="S&amp;P 500" aria-pressed="false">S&amp;P 500 index</button></div>
+      <div class="seg" data-k="t" role="group" aria-label="Term"><button type="button" data-v="1 week" aria-pressed="false">1 week</button><button type="button" data-v="30 days" aria-pressed="true">30 days</button><button type="button" data-v="45 days" aria-pressed="false">45 days</button><button type="button" data-v="60 days" aria-pressed="false">60 days</button><button type="button" data-v="90 days" aria-pressed="false">90 days</button></div>
+    </div>
+    <div class="viz-legend"><span><i style="background:var(--c-hist)"></i>Calls</span><span><i style="background:var(--c-cur)"></i>Puts</span><span><i style="background:none;border-top:2px dashed var(--ink-3);height:0"></i>The 90% claim</span></div>
+    <div class="viz-tip" id="v1-tip"></div>
+    <div id="v1-svg"></div>
+    <figcaption class="small">Share of options that expired worthless, by distance of the strike from the price, with the 90% range. Hover for the numbers.</figcaption>
+  </figure>
+
+  <h2>Is it true that 90% of options expire worthless?</h2>
+  <p>Only for options at least about one and a half typical moves from the price, and for S&amp;P 500 puts from about one typical move with 45 days or more. The bold cells reached 90% or more.</p>
+  <div class="table-scroll"><table class="heat"><thead><tr><th>S&amp;P 500 stocks</th><th class="num">1 week</th><th class="num">30 days</th><th class="num">45 days</th><th class="num">60 days</th><th class="num">90 days</th></tr></thead><tbody><tr><td>Calls, a quarter of a typical move</td><td class="c">58%</td><td class="c">54%</td><td class="c">53%</td><td class="c">52%</td><td class="c">50%</td></tr><tr><td>Calls, half a typical move</td><td class="c">69%</td><td class="c">65%</td><td class="c">64%</td><td class="c">63%</td><td class="c">61%</td></tr><tr><td>Calls, one typical move</td><td class="c">85%</td><td class="c">83%</td><td class="c">82%</td><td class="c">82%</td><td class="c">81%</td></tr><tr><td>Calls, one and a half typical moves</td><td class="c hi">94%</td><td class="c hi">93%</td><td class="c hi">93%</td><td class="c hi">93%</td><td class="c hi">92%</td></tr><tr><td>Calls, two typical moves</td><td class="c hi">97%</td><td class="c hi">97%</td><td class="c hi">97%</td><td class="c hi">97%</td><td class="c hi">97%</td></tr><tr><td>Puts, a quarter of a typical move</td><td class="c">65%</td><td class="c">67%</td><td class="c">68%</td><td class="c">69%</td><td class="c">70%</td></tr><tr><td>Puts, half a typical move</td><td class="c">75%</td><td class="c">76%</td><td class="c">76%</td><td class="c">77%</td><td class="c">78%</td></tr><tr><td>Puts, one typical move</td><td class="c">87%</td><td class="c">87%</td><td class="c">88%</td><td class="c">88%</td><td class="c">89%</td></tr><tr><td>Puts, one and a half typical moves</td><td class="c hi">94%</td><td class="c hi">94%</td><td class="c hi">94%</td><td class="c hi">94%</td><td class="c hi">94%</td></tr><tr><td>Puts, two typical moves</td><td class="c hi">97%</td><td class="c hi">97%</td><td class="c hi">97%</td><td class="c hi">97%</td><td class="c hi">97%</td></tr></tbody></table></div>
+  <div class="table-scroll"><table class="heat"><thead><tr><th>S&amp;P 500 index</th><th class="num">1 week</th><th class="num">30 days</th><th class="num">45 days</th><th class="num">60 days</th><th class="num">90 days</th></tr></thead><tbody><tr><td>Calls, a quarter of a typical move</td><td class="c">54%</td><td class="c">47%</td><td class="c">46%</td><td class="c">44%</td><td class="c">39%</td></tr><tr><td>Calls, half a typical move</td><td class="c">65%</td><td class="c">59%</td><td class="c">58%</td><td class="c">57%</td><td class="c">53%</td></tr><tr><td>Calls, one typical move</td><td class="c">84%</td><td class="c">83%</td><td class="c">81%</td><td class="c">80%</td><td class="c">78%</td></tr><tr><td>Calls, one and a half typical moves</td><td class="c hi">94%</td><td class="c hi">94%</td><td class="c hi">94%</td><td class="c hi">94%</td><td class="c hi">93%</td></tr><tr><td>Calls, two typical moves</td><td class="c hi">98%</td><td class="c hi">98%</td><td class="c hi">98%</td><td class="c hi">98%</td><td class="c hi">98%</td></tr><tr><td>Puts, a quarter of a typical move</td><td class="c">68%</td><td class="c">72%</td><td class="c">74%</td><td class="c">77%</td><td class="c">78%</td></tr><tr><td>Puts, half a typical move</td><td class="c">76%</td><td class="c">79%</td><td class="c">82%</td><td class="c">83%</td><td class="c">84%</td></tr><tr><td>Puts, one typical move</td><td class="c">87%</td><td class="c">89%</td><td class="c hi">90%</td><td class="c hi">90%</td><td class="c hi">91%</td></tr><tr><td>Puts, one and a half typical moves</td><td class="c hi">94%</td><td class="c hi">95%</td><td class="c hi">95%</td><td class="c hi">95%</td><td class="c hi">95%</td></tr><tr><td>Puts, two typical moves</td><td class="c hi">97%</td><td class="c hi">97%</td><td class="c hi">97%</td><td class="c hi">97%</td><td class="c hi">97%</td></tr></tbody></table></div>
+  <p class="small tnote">Share of options that expired worthless, every trading day as a start date. 90% ranges for every cell in the chart above.</p>
+
+  <h2>Why do puts expire worthless more often than calls?</h2>
+  <p>Because prices rose over time. A put one typical move below the price needs a fall to finish in the money, a call one typical move above needs a rise of the same size, and rises were more common. The longer the term, the more the trend adds up: for S&amp;P 500 options a quarter of a typical move away, the share of puts that expired worthless rose from 68% at one week to 78% at 90 days, while calls fell from 54% to 39%.</p>
+
+  <h2>Earnings and market phases</h2>
+  <p>Options one typical move from the price, 30 days to run:</p>
+  <div class="table-scroll"><table><thead><tr><th></th><th class="num">Calm</th><th class="num">Normal</th><th class="num">Turbulent</th><th class="num">Report inside</th><th class="num">No report</th></tr></thead><tbody>
+    <tr><td>Stock calls</td><td class="num">82%</td><td class="num">83%</td><td class="num">87%</td><td class="num">78%</td><td class="num">86%</td></tr>
+    <tr><td>Stock puts</td><td class="num">87%</td><td class="num">87%</td><td class="num">89%</td><td class="num">85%</td><td class="num">89%</td></tr>
+    <tr><td>S&amp;P 500 calls</td><td class="num">83%</td><td class="num">82%</td><td class="num">82%</td><td class="num">&ndash;</td><td class="num">&ndash;</td></tr>
+    <tr><td>S&amp;P 500 puts</td><td class="num">90%</td><td class="num">87%</td><td class="num">90%</td><td class="num">&ndash;</td><td class="num">&ndash;</td></tr>
+  </tbody></table></div>
+  <p>An earnings report inside the term lowers the share, because the price jumps more than in the months before. In turbulent phases more stock options expired worthless, because the strikes were set with the high volatility of those weeks and the swings calmed down again.</p>
+
+  <h2>Year by year</h2>
+  <figure class="viz" id="v2">
+    <div class="ctl"><div class="seg" data-k="g2" role="group" aria-label="Instrument"><button type="button" data-v="stocks" aria-pressed="true">S&amp;P 500 stocks</button><button type="button" data-v="S&amp;P 500" aria-pressed="false">S&amp;P 500 index</button></div></div>
+    <div class="viz-legend"><span><i style="background:var(--c-hist)"></i>Calls</span><span><i style="background:var(--c-cur)"></i>Puts</span></div>
+    <div class="viz-tip" id="v2-tip"></div>
+    <div id="v2-svg"></div>
+    <figcaption class="small">Options one typical move from the price, 30 days to run, by the year of the start date. Hover for the numbers.</figcaption>
+  </figure>
+  <p>In falling years more calls expired worthless and fewer puts, in rising years the other way round. The share swings by more than ten points from year to year, so a single year says little.</p>
+
+  <h2>Why the number of worthless contracts says little</h2>
+  <p>Most option contracts are closed before they expire. So the share of all traded contracts that end worthless mostly describes how traders behave, not how likely a given option is to finish worthless. This study measures the second: if you hold an option to expiry, how likely is it to end worthless?</p>
+
+  <h2>What it means for option sellers</h2>
+  <p>A high share of worthless options does not make selling them profitable by itself. A stock put one typical move away expired worthless in about 87 of 100 cases, but the other cases can cost more than all the premiums together. What counts is the premium against the size of those losses. How delta relates to the chance of finishing in the money is in <a href="/research/delta-vs-itm-probability.html">this study</a>, and <a href="/OptionsCone/">OptionsCone</a> shows the probability of finishing beyond every strike, next to what the stock itself supports.</p>
+
+  <h2>Data and notes</h2>
+  <ul class="small">
+    <li>469 stocks of today&#39;s S&amp;P 500 from January 2004 and the S&amp;P 500 index (^GSPC) from June 1989, daily closes from Yahoo Finance, data through 30 October 2026. Today&#39;s index members only, so companies that left the index are missing.</li>
+    <li>Every trading day is a start date. Strikes are set from the close of that day, one typical move being the standard deviation of daily moves over the 63 trading days before, scaled to the term. Terms in trading days: 5, 21, 31, 42 and 63.</li>
+    <li>Worthless means the close on the last day was on the out-of-the-money side of the strike: at or below it for a call, at or above it for a put. Closing prices without dividends, as option strikes are.</li>
+    <li>Market phases: volatility of the last 21 trading days against the last 252, calm below 0.8, turbulent above 1.3. Earnings: a report between the start date and the last day, reports after the close counted on the next trading day.</li>
+    <li>90% ranges from resampling whole half-years of start dates, 1,000 times, so overlapping terms are taken into account.</li>
+    <li>All numbers count what happened in the past. They are not probabilities for the future, not forecasts and not financial advice.</li>
+  </ul>
+  <aside class="signup" aria-label="Newsletter">
+    <p class="signup-title">New studies by email</p>
+    <p class="signup-text">One email when a new study is out. No spam, unsubscribe anytime.</p>
+    <form class="signup-form" action="https://app.kit.com/forms/10127955/subscriptions" method="post">
+      <input type="email" name="email_address" required placeholder="Your email address" aria-label="Email address" autocomplete="email">
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="signup-msg" role="status" aria-live="polite"></p>
+    <p class="signup-note">Also available as an <a href="/research/feed.xml">RSS feed</a> &middot; <a href="/OptionsCone/legal.html#privacy">Privacy</a></p>
+  </aside>
+  <section class="more" hidden>
+    <h2>More research</h2>
+    <div class="more-list"></div>
+  </section>
+</article>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div class="about-row">
+      <img class="about-pic" src="/img/nikolai-alexander.jpg" width="114" height="170" alt="Nikolai Alexander">
+      <div class="about-text">
+        <p class="about"><strong>About.</strong> Nikolai Alexander. I studied business and econometrics, worked in biotech as product lead and later associate commercial director, and have done quantitative research on financial markets for more than ten years. Today I advise on data analytics and teach statistical methods up to PhD level, and I&nbsp;build research tools for market analysis.</p>
+        <div class="about-links">
+          <p><a href="/research/">Research</a> &middot; <a href="/OptionsCone/">OptionsCone</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+const D = {"main":{"stocks":{"1 week":{"calls":[[57.62,56.79,58.43,2423957],[68.59,67.88,69.29,2423957],[85.03,84.55,85.48,2423957],[93.65,93.37,93.92,2423957],[97.38,97.22,97.54,2423957]],"puts":[[65.19,64.17,66.15,2423957],[74.52,73.51,75.43,2423957],[87.2,86.38,87.98,2423957],[93.69,93.08,94.28,2423957],[96.78,96.31,97.21,2423957]]},"30 days":{"calls":[[54.04,52.23,55.86,2416453],[65.04,63.43,66.65,2416453],[83.02,81.93,84.06,2416453],[93.06,92.46,93.66,2416453],[97.4,97.1,97.71,2416453]],"puts":[[67.15,65.26,68.97,2416453],[75.63,73.89,77.31,2416453],[87.46,86.08,88.75,2416453],[93.8,92.77,94.72,2416453],[96.87,96.07,97.55,2416453]]},"45 days":{"calls":[[52.84,50.78,54.97,2411763],[63.89,61.98,65.77,2411763],[82.34,81.11,83.56,2411763],[92.85,92.17,93.51,2411763],[97.41,97.07,97.74,2411763]],"puts":[[67.92,65.8,69.98,2411763],[76.17,74.17,78.04,2411763],[87.73,86.1,89.21,2411763],[93.91,92.6,95.01,2411763],[96.88,95.9,97.7,2411763]]},"60 days":{"calls":[[51.78,49.47,54.18,2406604],[62.94,60.85,65.12,2406604],[81.82,80.38,83.36,2406604],[92.72,91.9,93.52,2406604],[97.43,97.07,97.79,2406604]],"puts":[[68.79,66.33,71.09,2406604],[76.89,74.62,78.96,2406604],[88.09,86.27,89.7,2406604],[94.04,92.56,95.23,2406604],[96.89,95.74,97.81,2406604]]},"90 days":{"calls":[[50.06,47.33,53.12,2396755],[61.38,58.9,64.22,2396755],[80.96,79.22,82.79,2396755],[92.43,91.44,93.46,2396755],[97.4,96.96,97.86,2396755]],"puts":[[70.15,67.04,72.79,2396755],[77.95,75.23,80.33,2396755],[88.61,86.62,90.34,2396755],[94.24,92.76,95.52,2396755],[96.95,95.83,97.84,2396755]]}},"S&P 500":{"1 week":{"calls":[[53.91,52.45,55.55,9167],[65.04,63.52,66.61,9167],[83.52,82.44,84.58,9167],[93.54,92.88,94.24,9167],[98.01,97.59,98.4,9167]],"puts":[[68.09,66.54,69.58,9167],[75.59,74.21,76.99,9167],[87.03,86.02,88.05,9167],[93.71,92.95,94.39,9167],[96.95,96.37,97.46,9167]]},"30 days":{"calls":[[47.26,44.11,50.69,9151],[59.41,56.23,62.57,9151],[82.56,80.02,84.99,9151],[94.43,92.9,95.85,9151],[97.95,97.14,98.71,9151]],"puts":[[72.11,69.14,74.99,9151],[78.95,76.31,81.51,9151],[88.91,86.85,90.66,9151],[94.81,93.36,96.08,9151],[97.46,96.51,98.29,9151]]},"45 days":{"calls":[[45.78,42.1,49.74,9141],[57.86,54.1,61.7,9141],[81.19,78.05,84.3,9141],[93.82,91.83,95.58,9141],[98.13,97.32,98.92,9141]],"puts":[[74.42,71.01,77.67,9141],[81.6,78.53,84.36,9141],[90.2,87.88,92.24,9141],[94.81,93.1,96.29,9141],[97.34,96.18,98.34,9141]]},"60 days":{"calls":[[43.83,39.58,48.3,9130],[57.17,52.93,61.67,9130],[79.67,76.11,83.26,9130],[93.6,91.27,95.78,9130],[98.34,97.27,99.24,9130]],"puts":[[76.68,73.01,80.33,9130],[82.84,79.62,86.05,9130],[90.49,87.95,92.72,9130],[95.13,93.42,96.59,9130],[97.28,96.02,98.4,9130]]},"90 days":{"calls":[[39.1,33.94,44.16,9109],[52.87,47.66,58.12,9109],[77.88,73.58,82.19,9109],[92.72,89.59,95.72,9109],[97.71,95.99,99.12,9109]],"puts":[[78.08,73.47,82.23,9109],[83.98,80.38,87.47,9109],[91.17,88.55,93.52,9109],[95.24,93.3,96.98,9109],[97.37,95.83,98.66,9109]]}}},"years":{"stocks":{"calls":[[2005,80.62,94992],[2006,82.28,96653],[2007,84.17,98782],[2008,91.47,101720],[2009,85.0,103691],[2010,81.36,104302],[2011,86.33,106536],[2012,82.95,108012],[2013,76.48,110458],[2014,80.2,112769],[2015,87.32,114445],[2016,82.19,115846],[2017,75.66,116916],[2018,86.14,117719],[2019,81.29,118188],[2020,85.77,118657],[2021,80.86,118188],[2022,86.01,117719],[2023,82.44,117250],[2024,80.55,118188],[2025,85.38,117250],[2026,82.6,88172]],"puts":[[2005,89.34,94992],[2006,89.34,96653],[2007,83.7,98782],[2008,78.78,101720],[2009,94.16,103691],[2010,89.74,104302],[2011,86.22,106536],[2012,89.67,108012],[2013,91.84,110458],[2014,88.37,112769],[2015,83.35,114445],[2016,91.03,115846],[2017,90.61,116916],[2018,82.09,117719],[2019,90.66,118188],[2020,86.58,118657],[2021,89.4,118188],[2022,82.97,117719],[2023,86.33,117250],[2024,87.95,118188],[2025,86.64,117250],[2026,84.93,88172]]},"S&P 500":{"calls":[[1990,96.64,149],[1991,78.66,253],[1992,89.37,254],[1993,87.35,253],[1994,88.49,252],[1995,45.24,252],[1996,67.72,254],[1997,69.57,253],[1998,73.81,252],[1999,87.3,252],[2000,91.67,252],[2001,90.73,248],[2002,92.06,252],[2003,80.95,252],[2004,84.52,252],[2005,86.51,252],[2006,86.45,251],[2007,84.46,251],[2008,98.02,253],[2009,89.29,252],[2010,79.37,252],[2011,88.89,252],[2012,88.0,250],[2013,75.0,252],[2014,80.56,252],[2015,94.84,252],[2016,82.54,252],[2017,60.96,251],[2018,90.84,251],[2019,80.16,252],[2020,87.35,253],[2021,78.17,252],[2022,91.24,251],[2023,74.0,250],[2024,71.43,252],[2025,87.2,250],[2026,80.85,188]],"puts":[[1990,73.83,149],[1991,96.44,253],[1992,98.03,254],[1993,98.42,253],[1994,84.13,252],[1995,98.41,252],[1996,92.91,254],[1997,90.51,253],[1998,86.9,252],[1999,92.46,252],[2000,86.51,252],[2001,76.61,248],[2002,75.0,252],[2003,95.63,252],[2004,85.71,252],[2005,90.48,252],[2006,92.43,251],[2007,78.88,251],[2008,78.26,253],[2009,96.83,252],[2010,86.51,252],[2011,83.73,252],[2012,89.2,250],[2013,96.43,252],[2014,91.27,252],[2015,82.94,252],[2016,96.83,252],[2017,99.6,251],[2018,74.5,251],[2019,92.86,252],[2020,86.56,253],[2021,94.05,252],[2022,75.7,251],[2023,92.0,250],[2024,92.86,252],[2025,88.0,250],[2026,92.55,188]]}},"ks":[0.25,0.5,1.0,1.5,2.0],"terms":["1 week","30 days","45 days","60 days","90 days"]};
+const st = {g: "stocks", t: "30 days", g2: "stocks"};
+const LAB = ["a quarter of a typical move", "half a typical move", "one typical move", "one and a half typical moves", "two typical moves"];
+const XL = ["\u00bc", "\u00bd", "1", "1\u00bd", "2"];
+const NS = "http://www.w3.org/2000/svg";
+function tipper(id) {
+  const tip = document.getElementById(id + "-tip"), box = document.getElementById(id);
+  box.addEventListener("mousemove", e => {
+    const g = e.target.closest("[data-tip]");
+    if (!g) { tip.style.opacity = 0; return; }
+    tip.innerHTML = g.dataset.tip; const b = box.getBoundingClientRect();
+    let x = e.clientX - b.left + 12; if (x + tip.offsetWidth > b.width) x = e.clientX - b.left - tip.offsetWidth - 12;
+    tip.style.left = x + "px"; tip.style.top = Math.max(0, e.clientY - b.top - tip.offsetHeight - 10) + "px"; tip.style.opacity = 1;
+  });
+  box.addEventListener("mouseleave", () => tip.style.opacity = 0);
+}
+function v1() {
+  const W = 720, H = 360, L = 46, R = 16, T = 12, B = 44, Y0 = 30, Y1 = 100;
+  const xs = i => L + (i + 0.5) * (W - L - R) / 5, ys = v => T + (Y1 - v) / (Y1 - Y0) * (H - T - B);
+  let s = "";
+  for (let v = Y0; v <= Y1; v += 10) s += `<line x1="${L}" x2="${W - R}" y1="${ys(v)}" y2="${ys(v)}" stroke="var(--line)"/><text class="tick" x="${L - 6}" y="${ys(v) + 4}" text-anchor="end">${v}%</text>`;
+  s += `<line x1="${L}" x2="${W - R}" y1="${ys(90)}" y2="${ys(90)}" stroke="var(--ink-3)" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+  XL.forEach((x, i) => s += `<text class="tick" x="${xs(i)}" y="${H - B + 18}" text-anchor="middle">${x}</text>`);
+  s += `<text class="tick" x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle">distance of the strike from the price, in typical moves</text>`;
+  const d = D.main[st.g][st.t];
+  [["calls", "--c-hist", -6], ["puts", "--c-cur", 6]].forEach(([side, c, off]) => {
+    const pts = d[side].map((r, i) => [xs(i) + off, ys(r[0])]);
+    s += `<polyline points="${pts.map(p => p.join(",")).join(" ")}" fill="none" stroke="var(${c})" stroke-width="2"/>`;
+    d[side].forEach((r, i) => {
+      const tip = `<b>${side === "calls" ? "Calls" : "Puts"}, ${LAB[i]}, ${st.t}</b><br>${r[0].toFixed(1)}% expired worthless<br>90% range ${r[1].toFixed(1)} to ${r[2].toFixed(1)}% \u00b7 ${r[3].toLocaleString("en-US")} options`;
+      s += `<g data-tip="${tip.replace(/"/g, "&quot;")}"><rect x="${xs(i) + off - 9}" y="${ys(r[2]) - 6}" width="18" height="${ys(r[1]) - ys(r[2]) + 12}" fill="transparent"/>` +
+           `<line x1="${xs(i) + off}" x2="${xs(i) + off}" y1="${ys(r[1])}" y2="${ys(r[2])}" stroke="var(${c})" stroke-width="2"/>` +
+           `<circle cx="${xs(i) + off}" cy="${ys(r[0])}" r="4.5" fill="var(${c})" stroke="var(--bg)" stroke-width="2"/></g>`;
+    });
+  });
+  document.getElementById("v1-svg").innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Share of options that expired worthless by distance from the price">${s}</svg>`;
+}
+function v2() {
+  const d = D.years[st.g2], ys0 = d.calls.map(r => r[0]);
+  const W = 720, H = 300, L = 46, R = 16, T = 12, B = 34;
+  let mn = 100, mx = 0; ["calls", "puts"].forEach(k => d[k].forEach(r => { mn = Math.min(mn, r[1]); mx = Math.max(mx, r[1]); }));
+  const Y0 = Math.floor(mn / 10) * 10, Y1 = Math.min(100, Math.ceil(mx / 10) * 10);
+  const x0 = ys0[0], x1 = ys0[ys0.length - 1], xs = y => L + (y - x0) / Math.max(1, x1 - x0) * (W - L - R), yy = v => T + (Y1 - v) / (Y1 - Y0) * (H - T - B);
+  let s = "";
+  for (let v = Y0; v <= Y1; v += 10) s += `<line x1="${L}" x2="${W - R}" y1="${yy(v)}" y2="${yy(v)}" stroke="var(--line)"/><text class="tick" x="${L - 6}" y="${yy(v) + 4}" text-anchor="end">${v}%</text>`;
+  ys0.forEach(y => { if (y % 5 === 0) s += `<text class="tick" x="${xs(y)}" y="${H - B + 18}" text-anchor="middle">${y}</text>`; });
+  [["calls", "--c-hist"], ["puts", "--c-cur"]].forEach(([side, c]) => {
+    s += `<polyline points="${d[side].map(r => xs(r[0]) + "," + yy(r[1])).join(" ")}" fill="none" stroke="var(${c})" stroke-width="2"/>`;
+    d[side].forEach(r => {
+      const tip = `<b>${r[0]}, ${side}</b><br>${r[1].toFixed(1)}% expired worthless \u00b7 ${r[2].toLocaleString("en-US")} options`;
+      s += `<g data-tip="${tip.replace(/"/g, "&quot;")}"><circle cx="${xs(r[0])}" cy="${yy(r[1])}" r="8" fill="transparent"/><circle cx="${xs(r[0])}" cy="${yy(r[1])}" r="3.2" fill="var(${c})"/></g>`;
+    });
+  });
+  document.getElementById("v2-svg").innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Share of options that expired worthless by year">${s}</svg>`;
+}
+document.querySelectorAll(".seg").forEach(seg => seg.addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  st[seg.dataset.k] = b.dataset.v;
+  seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  v1(); v2();
+}));
+tipper("v1"); tipper("v2"); v1(); v2();
+})();
+</script>
+<script src="/signup.js?v=2" defer></script>
+<script src="/related.js?v=2" defer></script>
+</body>
+</html>

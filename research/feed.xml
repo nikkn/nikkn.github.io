@@ -6,7 +6,16 @@
     <atom:link href="https://nikolai-alexander.com/research/feed.xml" rel="self" type="application/rss+xml"/>
     <description>Quantitative studies of financial markets and options, with the data and the numbers behind each result.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 13 Nov 2026 12:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 14 Nov 2026 12:00:00 GMT</lastBuildDate>
+
+    <item>
+      <title>Do most options expire worthless? Only the ones far from the price</title>
+      <link>https://nikolai-alexander.com/research/options-expire-worthless.html</link>
+      <guid isPermaLink="true">https://nikolai-alexander.com/research/options-expire-worthless.html</guid>
+      <pubDate>Sat, 14 Nov 2026 12:00:00 GMT</pubDate>
+      <category>Options research</category>
+      <description>How often calls and puts really expired worthless since 1990, depending on how far the strike was from the price and how long the option had to run. When the 90% claim is true, and when it is not.</description>
+    </item>
 
     <item>
       <title>The Santa Claus rally since 1950: up in 58 of 76 years, but the last three missed</title>
