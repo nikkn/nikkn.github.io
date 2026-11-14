@@ -121,6 +121,7 @@ details.acc[open] > summary::after { content: "\2212"; }
       <a href="use-cases.html">Use cases</a>
       <a href="manual.html">Manual</a>
       <a href="methods.html">Methods</a>
+      <a href="accuracy.html">Accuracy</a>
       <a class="nav-pro" href="./#pro">Pro</a>
       <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
     </nav>
@@ -288,8 +289,9 @@ details.acc[open] > summary::after { content: "\2212"; }
             <div class="acc-key">small miss<span class="acc-scale"></span>large miss</div>
           </div>
         </div>
-        <p>On every test date, both models predicted the chances for the same strikes: calls and puts at four distances from the price, for terms from two weeks to six months. That makes more than two million predictions for the stocks alone, each one compared with what the stock actually did. The textbook formula is the random walk at today&#39;s volatility, without an expected return, the same kind of formula many brokers use for their probability figures.</p>
+        <p>On every test date, both models predicted the chances for the same strikes: calls and puts at four distances from the price, for terms from two weeks to six months. That makes more than two million predictions for the stocks alone, each one compared with what the stock actually did. The textbook formula is the random walk at today&#39;s volatility, without an expected return: the standard way to turn a volatility into probabilities.</p>
         <p><strong>Limitations.</strong> For gold and silver the miss is larger than for stocks, though still below the textbook formula, mainly because calls came out too low. ETF puts from two to six months were rated slightly too high. The stocks are today&#39;s S&amp;P 500 members, which rose more after each test date than the average stock at the time. That favors a model that expects some rise over the textbook formula, which expects none. The ETFs have no such bias and show the same picture. The test covers 2016 to 2026, with the 2020 crash and the 2022 bear market, but no crisis like 2008. All misses are raw values and include the random noise of any finite sample.</p>
+        <p><a href="accuracy.html">See the full test results</a>: how the test was done, the results by subgroup and by strike, and every weak spot.</p>
       </div>
     </details>
     <div class="acc-tip" id="acc-tip"></div>
