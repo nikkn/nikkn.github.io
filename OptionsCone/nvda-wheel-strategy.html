@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="max-image-preview:large">
+<title>NVDA wheel strategy: how often puts and calls expired worthless</title>
+<meta name="description" content="Over the last ten years, 92% of NVDA puts one typical move below the price expired worthless. What happened after assignment and with covered calls, next to the average S&amp;P 500 stock.">
+<link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/nvda-wheel-strategy.html">
+<link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NVDA wheel strategy: how often puts and calls expired worthless">
+<meta property="og:description" content="Selling puts, getting assigned and selling covered calls on NVDA: how each step of the wheel went on every trading day of the last ten years.">
+<meta property="og:url" content="https://nikolai-alexander.com/OptionsCone/nvda-wheel-strategy.html">
+<meta property="og:image" content="https://nikolai-alexander.com/OptionsCone/img/social.png?v=6">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="OptionsCone">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=15">
+<style>
+  .byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+  .data-note { font-size: 13.5px; color: var(--ink-3); border-left: 3px solid var(--line); padding: 2px 0 2px 12px; }
+  .note.end { margin-top: 56px; }
+  .glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 22px 0 8px; }
+  .glance div { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 14px 12px; }
+  .glance b { display: block; font: 600 28px/1.1 var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+  .glance span { display: block; font-size: 13.5px; color: var(--ink-2); margin-top: 6px; line-height: 1.35; }
+  .glance small { display: block; font-size: 12.5px; color: var(--ink-3); margin-top: 6px; }
+  td.num, th.num { text-align: right; padding-right: 18px; }
+  td:first-child { width: auto; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "NVDA wheel strategy: how often puts and calls expired worthless",
+  "description": "Selling puts, getting assigned and selling covered calls on NVDA: how each step of the wheel went on every trading day of the last ten years, next to the average S&P 500 stock.",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "I studied business and econometrics, worked in biotech as product lead and later associate commercial director, and have done quantitative research on financial markets for more than ten years. Today I advise on data analytics and teach statistical methods up to PhD level, and I build research tools for market analysis.",
+             "sameAs": ["https://x.com/nikkn_alexander"]},
+  "publisher": {"@type": "Organization", "name": "OptionsCone"},
+  "datePublished": "2026-11-16",
+  "dateModified": "2026-11-16",
+  "about": ["NVDA wheel strategy", "selling puts on NVDA", "NVDA covered call", "cash secured put", "assignment"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/OptionsCone/nvda-wheel-strategy.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "How often do NVDA puts expire worthless?",
+     "acceptedAnswer": {"@type": "Answer", "text": "From November 2016 to October 2026, 92% of 30-day NVDA puts one typical move below the price expired worthless, about 12% below the price at NVDA's usual volatility. Half a typical move below it was 81%, two typical moves below it 98%."}},
+    {"@type": "Question", "name": "How long did NVDA take to get back to the strike after an assignment?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Of the puts one typical move below the price that finished in the money, NVDA closed at or above the strike again within 30 days in 56% of cases, within 60 days in 67% and within 90 days in 73%. The average S&P 500 stock got back about as often: 58%, 70% and 77%."}},
+    {"@type": "Question", "name": "Do covered calls on NVDA get called away often?",
+     "acceptedAnswer": {"@type": "Answer", "text": "More often than on the average stock. One typical move above the price, 79% of NVDA's 30-day calls expired worthless, against 83% for the average S&P 500 stock, and only 74% when an earnings report fell inside the 30 days. When the shares were called away, NVDA closed a median 5.8% above the strike."}}
+  ]
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="./"><picture><source media="(prefers-color-scheme: dark)" srcset="brand/optionscone-wordmark-dark.svg"><img src="brand/optionscone-wordmark-light.svg" alt="OptionsCone" width="183" height="34"></picture></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="use-cases.html" aria-current="page">Use cases</a>
+      <a href="manual.html">Manual</a>
+      <a href="methods.html">Methods</a>
+      <a href="accuracy.html">Accuracy</a>
+      <a class="nav-pro" href="./#pro">Pro</a>
+      <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="doc">
+
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ul>
+      <li><a href="#glance">NVDA at a glance</a></li>
+      <li><a href="#put">Step 1: selling the put</a></li>
+      <li><a href="#assigned">Step 2: if you get assigned</a></li>
+      <li><a href="#call">Step 3: the covered call</a></li>
+      <li><a href="#optionscone">Setting it up in OptionsCone</a></li>
+      <li><a href="#data">Data and limits</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <article class="prose">
+    <h1>NVDA wheel strategy: how often puts and calls expired worthless</h1>
+    <p class="byline">By <a href="https://nikolai-alexander.com/#about">Nikolai Alexander</a> &middot; 16 November 2026</p>
+    <p class="lede">The wheel on NVDA runs in three steps: sell a put, take the shares if you are assigned, then sell covered calls until the shares are called away. This guide shows how each step went for NVDA on every trading day of the last ten years, next to the average S&amp;P 500 stock.</p>
+
+    <h2 id="glance">NVDA at a glance</h2>
+    <div class="glance">
+      <div><b>13.5%</b><span>one typical 30-day move</span><small>average stock: 7.9%</small></div>
+      <div><b>92%</b><span>of puts one typical move below the price expired worthless</span><small>average stock: 87%</small></div>
+      <div><b>73%</b><span>of assigned puts were back at the strike within 90 days</span><small>average stock: 77%</small></div>
+      <div><b>79%</b><span>of calls one typical move above the price expired worthless</span><small>average stock: 83%</small></div>
+    </div>
+    <p>NVDA moves about 1.7 times as much as the average S&amp;P 500 stock. Over 30 days, one typical move was about 13.5% at its usual volatility of 44% over the last ten years. It reports earnings four times a year, and on report day the stock moved a median 5.2%, against 3.2% for the average stock. In late October 2026 its volatility over the previous three months was about 35%, which puts one typical move at roughly 11%.</p>
+    <p>A typical move is the stock's volatility over the previous three months, scaled to 30 days. All strikes in this guide sit a number of typical moves from the price, so the distances follow NVDA's own swings instead of a fixed percentage.</p>
+
+    <h2 id="put">Step 1: selling the put</h2>
+    <p>The wheel starts with a sold put, usually a <a href="cash-secured-put.html">cash secured put</a>. If NVDA stays above the strike, the put expires worthless and you keep the premium. The table shows how often that happened for 30-day puts.</p>
+    <div class="table-scroll"><table>
+      <tr><th>Strike below the price</th><th class="num">At NVDA's usual volatility</th><th class="num">NVDA puts expired worthless</th><th class="num">Average stock</th></tr>
+      <tr><td>&frac12; typical move</td><td class="num">6.1%</td><td class="num">81%</td><td class="num">75%</td></tr>
+      <tr><td>1 typical move</td><td class="num">11.9%</td><td class="num">92%</td><td class="num">87%</td></tr>
+      <tr><td>1&frac12; typical moves</td><td class="num">17.3%</td><td class="num">96%</td><td class="num">94%</td></tr>
+      <tr><td>2 typical moves</td><td class="num">22.4%</td><td class="num">98%</td><td class="num">97%</td></tr>
+    </table></div>
+    <p>Measured in its own typical moves, NVDA's puts expired worthless more often than the average stock's, most clearly close to the price. In percent, the strikes simply sat further away.</p>
+    <p><strong>Earnings:</strong> a report inside the 30 days lowered the share a little, about as much as for the average stock. One typical move below the price, 90% of NVDA's puts expired worthless with a report and 92% without. For the average stock it was 85% and 88%.</p>
+    <p><strong>Touched before expiry:</strong> about one put in four at one typical move was touched before expiry (24%). Of those, 64% still expired worthless, against 54% for the average stock, so a touch alone did not decide the trade.</p>
+
+    <h2 id="assigned">Step 2: if you get assigned</h2>
+    <p>When a put one typical move below the price finished in the money, NVDA closed a median 5.4% below the strike at expiry, and in one case in ten more than 18% below it. For the average stock it was 3.5% and 13%.</p>
+    <p>The question for the wheel is how long the shares take to get back to the strike, the price you paid for them. The table shows how often NVDA closed at or above the strike at least once within 30, 60 and 90 days after the assignment.</p>
+    <div class="table-scroll"><table>
+      <tr><th>Back at the strike within</th><th class="num">NVDA</th><th class="num">Average stock</th></tr>
+      <tr><td>30 days</td><td class="num">56%</td><td class="num">58%</td></tr>
+      <tr><td>60 days</td><td class="num">67%</td><td class="num">70%</td></tr>
+      <tr><td>90 days</td><td class="num">73%</td><td class="num">77%</td></tr>
+    </table></div>
+    <p>Assigned NVDA shares got back about as often as those of the average stock, and about one in four was still below the strike 90 days later. Assignments were rare, though: only about one put in twelve finished in the money, so these NVDA numbers rest on few cases, and the small gaps to the average stock may be chance. When NVDA did fall through the strike, it fell further, which is where its larger swings show most.</p>
+
+    <h2 id="call">Step 3: the covered call</h2>
+    <p>With the shares in the account, the wheel continues with <a href="covered-call.html">covered calls</a>. If NVDA stays below the strike, the call expires worthless, you keep the premium and the shares. The table shows how often that happened for 30-day calls.</p>
+    <div class="table-scroll"><table>
+      <tr><th>Strike above the price</th><th class="num">At NVDA's usual volatility</th><th class="num">NVDA calls expired worthless</th><th class="num">Average stock</th></tr>
+      <tr><td>&frac12; typical move</td><td class="num">6.5%</td><td class="num">59%</td><td class="num">65%</td></tr>
+      <tr><td>1 typical move</td><td class="num">13.5%</td><td class="num">79%</td><td class="num">83%</td></tr>
+      <tr><td>1&frac12; typical moves</td><td class="num">20.9%</td><td class="num">90%</td><td class="num">93%</td></tr>
+      <tr><td>2 typical moves</td><td class="num">28.8%</td><td class="num">94%</td><td class="num">97%</td></tr>
+    </table></div>
+    <p>NVDA's calls expired worthless less often than the average stock's at every distance. The stock trended up strongly over these ten years, and earnings widened the gap: one typical move above the price, 74% of the calls expired worthless when a report fell inside the 30 days, and 82% without one. For the average stock it was 77% and 85%.</p>
+    <p><strong>When the shares were called away,</strong> NVDA closed a median 5.8% above the strike at expiry, and in one case in ten more than 22% above it. That gain goes to the buyer of the call. For the average stock it was 2.9% and 10%.</p>
+
+    <h2 id="optionscone">Setting it up in OptionsCone</h2>
+    <p>The numbers above describe the past performance of the strategy. OptionsCone shows the same questions for NVDA's options as they are listed today:</p>
+    <ul>
+      <li><strong>Download NVDA</strong> and look at the expiries around 30 days out.</li>
+      <li><strong>Set the contour to <em>expire</em>.</strong> Below the price, the line marks the strikes NVDA finishes below with the chosen probability, from today's option prices. Above the price, it does the same for calls.</li>
+      <li><strong>Switch the contour to <em>touch</em></strong> to see where a put or a call is likely to come under pressure first.</li>
+      <li><strong>With Pro,</strong> the realized odds show the same from NVDA's own moves next to the odds from option prices, and the expected value map shows what each short option is worth at expiration on average, as a share of its premium.</li>
+    </ul>
+
+    <h2 id="data">Data and limits</h2>
+    <p class="data-note">NVDA daily closing, high and low prices for the last ten years, November 2016 to October 2026, adjusted for splits. Every trading day is a start date (2,493 starts). 30 days means 21 trading days. Worthless means the close on the last day was on the safe side of the strike. Touched means the daily high or low reached it. The average stock pools 469 of today's S&amp;P 500 members over the same years.</p>
+    <ul>
+      <li>NVDA was one of the best-performing stocks of these ten years, and the average stock is made of today's index members, so both look back on a history of winners. A strong uptrend favors puts and works against covered calls, and the coming years need not look the same.</li>
+      <li>The strikes are set with the stock's past volatility. Implied volatility is usually higher, so a strike one typical move away by the implied volatility your platform shows sits a little further out.</li>
+      <li>All numbers are shares of many past trades, not a prediction for a single trade. NVDA's numbers also come from one stock only and are less certain than those of the average stock.</li>
+    </ul>
+
+    <h2 id="faq">NVDA wheel FAQ</h2>
+    <h3>How often do NVDA puts expire worthless?</h3>
+    <p>From November 2016 to October 2026, 92% of 30-day NVDA puts one typical move below the price expired worthless, about 12% below the price at NVDA's usual volatility. Half a typical move below it was 81%, two typical moves below it 98%.</p>
+    <h3>How long did NVDA take to get back to the strike after an assignment?</h3>
+    <p>Of the puts one typical move below the price that finished in the money, NVDA closed at or above the strike again within 30 days in 56% of cases, within 60 days in 67% and within 90 days in 73%. The average S&amp;P 500 stock got back about as often: 58%, 70% and 77%.</p>
+    <h3>Do covered calls on NVDA get called away often?</h3>
+    <p>More often than on the average stock. One typical move above the price, 79% of NVDA's 30-day calls expired worthless, against 83% for the average S&amp;P 500 stock, and only 74% when an earnings report fell inside the 30 days. When the shares were called away, NVDA closed a median 5.8% above the strike.</p>
+
+    <p class="note end">Nothing on this page is a recommendation to buy or sell NVDA stock or options.</p>
+
+    <h2>Try it on NVDA today</h2>
+    <p>See where NVDA's listed puts and calls sit right now, with the odds for every strike and expiry. The <a href="manual.html">manual</a> explains each control.</p>
+    <p><a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a></p>
+  </article>
+
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/eVqbJ14of3vwabb4NSbII00" rel="nofollow">Cancel subscription here</a></p>
+      <p>Not financial advice.</p>
+    </div>
+    <div>
+      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="changelog.html">What&#39;s new</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

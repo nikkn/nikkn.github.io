@@ -20,6 +20,15 @@
 <meta property="og:site_name" content="OptionsCone">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="style.css?v=14">
+<style>
+  .ticker-guides { margin: 32px 0 0; }
+  .ticker-guides h3 { margin: 0 0 4px; }
+  .ticker-guides p { color: var(--ink-2); font-size: 15px; margin: 0 0 12px; }
+  .ticker-list { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+  .ticker-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 18px; padding: 10px 2px; border-bottom: 1px solid var(--line); }
+  .ticker-list a { font-weight: 600; }
+  .ticker-list span { color: var(--ink-3); font-size: 14px; }
+</style>
 <script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
 </head>
 <body>
@@ -78,6 +87,13 @@
           <span class="g-foot">Example: SPY &middot; <span class="g-more">Read the guide &rarr;</span></span></span>
       </a>
     </div>
+    <div id="wheel" class="ticker-guides">
+      <h3>The wheel by ticker</h3>
+      <p>How selling puts and covered calls went on single stocks over the last ten years, next to the average S&amp;P 500 stock.</p>
+      <ul class="ticker-list">
+        <li><a href="nvda-wheel-strategy.html">NVDA wheel strategy</a><span>typical 30-day move 13.5% &middot; 92% of puts one typical move below the price expired worthless</span></li>
+      </ul>
+    </div>
   </section>
 
 <div class="doc">
@@ -86,6 +102,7 @@
     <p>On this page</p>
     <ul>
       <li><a href="#guides"><strong>Guides for option traders</strong></a></li>
+      <li><a href="#wheel">The wheel by ticker</a></li>
       <li><a href="#holders"><strong>For stock holders</strong></a></li>
       <li><a href="#scenarios"><strong>Build realistic scenarios</strong></a></li>
       <li><a href="#target">Price target</a></li>
