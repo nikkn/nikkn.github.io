@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="max-image-preview:large">
+<title>Expected move calculator: why the downside is often priced wider | OptionsCone</title>
+<meta name="description" content="Professional expected move calculator, free for Windows: the range up and down, calculated from every strike&#39;s price, not estimated with the textbook formula.">
+<link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/expected-move-calculator.html">
+<link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Expected move calculator: why the downside is often priced wider">
+<meta property="og:description" content="Professional expected move calculator, free for Windows: the range up and down, calculated from every strike&#39;s price, not estimated with the textbook formula.">
+<meta property="og:url" content="https://nikolai-alexander.com/OptionsCone/expected-move-calculator.html">
+<meta property="og:image" content="https://nikolai-alexander.com/OptionsCone/img/tools/em-spy-light.png">
+<meta property="og:image:width" content="1400">
+<meta property="og:image:height" content="968">
+<meta property="og:image:alt" content="OptionsCone chart of SPY with lines marking the expected range implied by option prices for each expiry, wider below the price than above it.">
+<meta property="og:site_name" content="OptionsCone">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=15">
+<style>
+  .byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+  .data-note { font-size: 13.5px; color: var(--ink-3); border-left: 3px solid var(--line); padding: 2px 0 2px 12px; }
+  .note.end { margin-top: 56px; }
+  .cta-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 18px 0 8px; }
+  .cta-top small { color: var(--ink-3); font-size: 13.5px; }
+  .guess { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; margin: 18px 0; }
+  .guess p { margin: 0; }
+  .formula { font-family: var(--mono); font-size: 15px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 10px 14px; overflow-x: auto; }
+  td.num, th.num { text-align: right; padding-right: 18px; }
+  td:first-child { width: auto; }
+  .related { list-style: none; padding: 0; }
+  .related li { margin: 0 0 8px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "OptionsCone",
+  "operatingSystem": "Windows",
+  "applicationCategory": "FinanceApplication",
+  "description": "Expected move calculator: the range option prices imply for the expiries of a stock or ETF up to six months out, including around earnings, drawn on the price chart.",
+  "url": "https://nikolai-alexander.com/OptionsCone/expected-move-calculator.html",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What is the expected move of a stock?",
+     "acceptedAnswer": {"@type": "Answer", "text": "The expected move is the range option prices imply for a stock by a given expiry, usually one standard deviation. The stock is expected to finish inside it about two times out of three and outside it about one time in three."}},
+    {"@type": "Question", "name": "How is the expected move calculated?",
+     "acceptedAnswer": {"@type": "Answer", "text": "The textbook formula is price times at-the-money implied volatility times the square root of the days to expiry divided by 365. A common shortcut is about 85% of the price of the at-the-money straddle. Both give one symmetric number."}},
+    {"@type": "Question", "name": "How do I find the expected move for earnings?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Compare the implied volatility of the last expiry before the report with the first one after it. The extra volatility of the later expiry is what option prices assign to the report. In OptionsCone the expiry badges show the jump and the expected range widens at the first expiry after the report."}},
+    {"@type": "Question", "name": "Is the expected move a forecast?",
+     "acceptedAnswer": {"@type": "Answer", "text": "No. It is the range option prices assume, and option prices often include a premium for risk. The stock can and regularly does finish outside it, and it can trade outside it before expiry and come back."}}
+  ]
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="./"><picture><source media="(prefers-color-scheme: dark)" srcset="brand/optionscone-wordmark-dark.svg"><img src="brand/optionscone-wordmark-light.svg" alt="OptionsCone" width="183" height="34"></picture></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="use-cases.html">Use cases</a>
+      <a href="manual.html">Manual</a>
+      <a href="methods.html">Methods</a>
+      <a href="accuracy.html">Accuracy</a>
+      <a class="nav-pro" href="./#pro">Pro</a>
+      <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="doc">
+
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ul>
+      <li><a href="#example">Example: SPY</a></li>
+      <li><a href="#formula">The textbook formula</a></li>
+      <li><a href="#read">How to read it</a></li>
+      <li><a href="#earnings">Expected move for earnings</a></li>
+      <li><a href="#touch">Finish or touch</a></li>
+      <li><a href="#answers">Questions it answers</a></li>
+      <li><a href="#pro">Free and Pro</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <article class="prose">
+    <h1>Expected move calculator: the range option prices imply, up to six months out</h1>
+    <p class="byline">By <a href="https://nikolai-alexander.com/#about">Nikolai Alexander</a> &middot; 17 November 2026</p>
+    <p class="lede">The expected move is the range a stock is expected to stay within until an expiry, according to its option prices. OptionsCone draws that range on the price chart for the weekly and monthly expiries up to about six months out, for stocks and ETFs, and around earnings. Because it uses the price of every listed strike, it also shows something the usual formula hides: the range often reaches further down than up.</p>
+    <div class="cta-top">
+      <a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a>
+      <small>Free version, no account, no broker needed.<br>Windows may show a warning when you install, as it does for many new apps. Click <em>More info</em>, then <em>Run anyway</em>.</small>
+    </div>
+    <figure><img class="shot" src="img/tools/em-spy-light.png" width="1400" height="968" alt="OptionsCone chart of SPY on 9 November 2026, monthly expiries, with two lines marking, for each expiry, the strikes SPY finishes below or above with a 15% probability: the expected range, wider below the price than above it."><figcaption>SPY on 9 November 2026, monthly expiries. For each expiry, the lines mark the strikes SPY finishes below or above with a 15% probability. About 70% of the outcomes lie between them.</figcaption></figure>
+
+    <h2 id="example">Example: the SPY expected move into December</h2>
+    <p>On 9 November 2026 SPY traded at $752.47. The textbook expected move to the expiry on 18 December, 39 days later, came to &plusmn;$40, or &plusmn;5.3%: from about $713 to $792.</p>
+    <div class="guess"><p>Take a guess before you read on: if you mark the range from the price of every put and call instead, does it still run from $713 to $792, or does it lean to one side?</p></div>
+    <p>It leans. Option prices put the 15% line below the price at $695, 7.6% down, and the one above at $789, only 4.9% up. Puts on the index cost more than calls the same distance away, because investors pay for protection against falls. The usual formula averages that away, the chart shows it.</p>
+    <div class="table-scroll"><table>
+      <tr><th>SPY, expiry</th><th class="num">Textbook &plusmn;</th><th class="num">Lower line</th><th class="num">Upper line</th></tr>
+      <tr><td>20 November (11 days)</td><td class="num">3.0%</td><td class="num">&minus;4.0%</td><td class="num">+2.6%</td></tr>
+      <tr><td>18 December (39 days)</td><td class="num">5.3%</td><td class="num">&minus;7.6%</td><td class="num">+4.9%</td></tr>
+      <tr><td>15 January (67 days)</td><td class="num">7.0%</td><td class="num">&minus;9.6%</td><td class="num">+6.3%</td></tr>
+      <tr><td>19 February (102 days)</td><td class="num">8.8%</td><td class="num">&minus;12.3%</td><td class="num">+8.3%</td></tr>
+      <tr><td>19 March (130 days)</td><td class="num">10.0%</td><td class="num">&minus;14.3%</td><td class="num">+9.6%</td></tr>
+    </table></div>
+    <p class="data-note">Data: SPY option chain, downloaded on 9 November 2026 at 13:04 New York time, quotes delayed about 15 minutes, monthly expiries. Textbook range from the at-the-money implied volatility, lines at the listed strikes nearest to a 15% probability, calculated with OptionsCone. An illustration, not a recommendation.</p>
+
+    <h2 id="formula">The textbook formula</h2>
+    <p>The common definition of the expected move is one standard deviation, calculated from the at-the-money implied volatility of the expiry:</p>
+    <p class="formula">expected move = price &times; implied volatility &times; &radic;(days to expiry / 365)</p>
+    <p>A popular shortcut takes about 85% of the price of the at-the-money straddle. Both give one number, the same distance up and down, and the stock is expected to finish inside that range about two times out of three. For a quick estimate that is fine. For placing strikes it leaves out the skew, the fact that each strike has its own implied volatility, which is why the lines in OptionsCone often sit further out below the price than above it. On SPY for 18 December, the lower line sat 43% further from the price than the formula suggests, and the upper one 8% closer. OptionsCone works out the range from the option price of every strike, so you start with the range option prices imply instead of approximating it with a single number.</p>
+
+    <h2 id="read">How to read it in OptionsCone</h2>
+    <ul>
+      <li><strong>Download the ticker</strong> during US trading hours.</li>
+      <li><strong>Set the contour to <em>expire</em></strong> and the probability to 15% below and above the price, with both sides linked. That is the closest setting to one standard deviation, and the two lines enclose about 70% of the outcomes.</li>
+      <li><strong>Read the lines expiry by expiry.</strong> Each marker is the listed strike nearest to the 15% probability. Hover it for the exact probability, the strike's distance from the price and its implied volatility.</li>
+      <li><strong>Change the probability</strong> for a narrower or wider range, for example 25% on each side for the range the stock finishes in about half the time.</li>
+      <li><strong>Unlink the two sides</strong> to set a different probability below and above the price. That gives a lopsided range, for example for a bullish strangle with the put further away than the call, or a bearish one the other way round.</li>
+      <li><strong>Read the badge</strong> above each expiry for its implied volatility. A jump from one expiry to the next usually means an event in between, most often earnings.</li>
+    </ul>
+
+    <h2 id="earnings">Expected move for earnings</h2>
+    <p>Before a report, the expiries after it trade at a higher implied volatility than those before it. The difference is what option prices assign to the report itself.</p>
+    <figure><img class="shot" src="img/tools/em-nvda-earnings-dark.png" width="1400" height="708" loading="lazy" alt="OptionsCone chart of NVDA on 20 October 2026 with the 15% expected range for each expiry: the range jumps wider at the first expiry after the earnings report of 17 November, marked by a star on the date axis."><figcaption>NVDA on 20 October 2026, four weeks before its report of 17 November (star on the date axis). The range jumps at the first expiry after the report.</figcaption></figure>
+    <p>On NVDA the badge rose from 39.4% for the expiry of 13 November, the last one before the report, to 44.2% for 20 November, the first one after it. The lower line jumped from $195 to $185 within one week. Turned into a single day, that extra volatility comes to a move of about 6% on report day, roughly $13 either way, which is what option prices assumed for the report four weeks ahead.</p>
+    <p class="formula">report-day move &asymp; &radic;( days to the later expiry / 365 &times; (IV after&sup2; &minus; IV before&sup2;) )</p>
+    <p class="data-note">Data: NVDA option chain, downloaded on 20 October 2026 at 15:09 New York time, quotes delayed about 15 minutes. Implied volatility from the expiry badges, calculated with OptionsCone. An illustration, not a recommendation.</p>
+
+    <h2 id="touch">Finish or touch</h2>
+    <p>The expected move describes where the stock finishes. On the way there it travels further: a stock often trades beyond the range for a while and comes back by expiry. Switch the contour to <em>touch</em> and the lines mark the strikes the stock reaches at some point with the same probability, which sit noticeably further out. For a stop, a roll rule or the short strike of a strangle, that is often the more useful range. The <a href="options-probability-calculator.html">options probability calculator</a> page explains the difference in more detail.</p>
+
+    <h2 id="answers">Questions it answers</h2>
+    <ul>
+      <li><strong>Where should the short strikes of a strangle or an iron condor go?</strong> Near or outside the expected range of the expiry you trade.</li>
+      <li><strong>How big a move is priced in for earnings?</strong> The jump in the badges and in the range at the first expiry after the report.</li>
+      <li><strong>Is the downside priced wider than the upside?</strong> Compare the distance of the two lines from the price.</li>
+      <li><strong>How far can the stock run by a given date?</strong> Pick the expiry nearest to that date and read the range.</li>
+    </ul>
+
+    <h2 id="pro">Free and Pro</h2>
+    <p>The free version draws the expected range from option prices for each expiry up to about six months out, together with the probability, implied volatility, open interest, volume, spread and time value of every strike, each as its own heatmap. Open interest shows where other traders are positioned, volume and the bid-ask spread show how liquid a strike is and what it costs to trade, and the time value per day shows what a seller can earn each day. The range itself is what option prices assume, which often includes a premium for risk.</p>
+    <p>OptionsCone Pro puts the stock's own realized odds next to it, made forward-looking, so you can see whether option prices assume more or less movement than the stock itself supports, strike by strike.</p>
+
+    <h2 id="faq">FAQ</h2>
+    <h3>What is the expected move of a stock?</h3>
+    <p>The expected move is the range option prices imply for a stock by a given expiry, usually one standard deviation. The stock is expected to finish inside it about two times out of three and outside it about one time in three.</p>
+    <h3>How is the expected move calculated?</h3>
+    <p>The textbook formula is price times at-the-money implied volatility times the square root of the days to expiry divided by 365. A common shortcut is about 85% of the price of the at-the-money straddle. Both give one symmetric number, while OptionsCone marks the range from the price of every listed strike.</p>
+    <h3>Is the expected move a forecast?</h3>
+    <p>No. It is the range option prices assume, and option prices often include a premium for risk. The stock can and regularly does finish outside it, and it can trade outside it before expiry and come back. How often the probabilities came true is shown on the <a href="accuracy.html">accuracy</a> page.</p>
+
+    <h2>Related</h2>
+    <ul class="related">
+      <li><a href="options-probability-calculator.html">Options probability calculator</a>: touch and expiry odds for every strike.</li>
+      <li><a href="put-credit-spread.html">Put credit spreads</a>: picking the strikes, the width and the expiry.</li>
+      <li><a href="covered-call.html">Covered calls</a>: picking the strike that pays the most.</li>
+    </ul>
+
+    <p class="note end">The expected range in OptionsCone is an estimate from option prices, not a forecast. Nothing on this page is a recommendation to buy or sell SPY, NVDA or any other security.</p>
+
+    <h2>Try it on your own tickers for free</h2>
+    <p>Download any US stock or ETF with listed options and see its expected range for each expiry up to six months out, before earnings too.</p>
+    <p><a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a></p>
+  </article>
+
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/eVqbJ14of3vwabb4NSbII00" rel="nofollow">Cancel subscription here</a></p>
+      <p>Not financial advice.</p>
+    </div>
+    <div>
+      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="changelog.html">What&#39;s new</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

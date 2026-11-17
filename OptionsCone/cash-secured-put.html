@@ -127,7 +127,7 @@
 
     <h2 id="delta">Delta is not the probability of being assigned</h2>
     <p>Many put sellers use delta as the chance of assignment and sell, for example, a "30-delta put". For puts this underestimates the risk. A put's delta is smaller than its risk-neutral probability of finishing in the money, so a 30-delta put ends in the money more often than 30% of the time. The gap grows with implied volatility and with the days to expiry, which makes it large on a volatile stock like NVDA and on puts with several months to run.</p>
-    <p>Our study <a href="../research/delta-vs-itm-probability.html">delta is not the probability of finishing in the money</a> shows how large the gap gets. OptionsCone shows the probability of finishing below each strike directly, so you can read the assignment probability itself instead of a delta rule of thumb.</p>
+    <p>OptionsCone shows the probability of finishing below each strike directly, so you can read the assignment probability itself instead of a delta rule of thumb. How far delta and the probability drift apart from stock to stock is shown on the <a href="options-probability-calculator.html#delta">options probability calculator</a> page.</p>
 
     <h2 id="chart">Reading the chart: support levels, trend lines and moving averages</h2>
     <p>Probabilities describe how far a stock tends to move. Technical analysis looks at where it has turned before. Many put sellers combine the two, and OptionsCone draws both on the same chart.</p>
@@ -193,7 +193,7 @@
 
     <h2 id="faq">Cash secured put FAQ</h2>
     <h3>Which delta should I use for a cash secured put?</h3>
-    <p>Delta is not the probability of being assigned. A put's delta is smaller than its risk-neutral probability of finishing in the money, so a 30-delta put ends in the money more often than 30% of the time. The gap grows with implied volatility and the days to expiry. Delta also comes from option prices alone, so it says nothing about how the stock has actually moved. Reading the assignment probability directly, from option prices and from the stock's own moves, is clearer than a delta rule of thumb. Our study <a href="../research/delta-vs-itm-probability.html">delta is not the probability of finishing in the money</a> shows the gap in numbers.</p>
+    <p>Delta is not the probability of being assigned. A put's delta is smaller than its risk-neutral probability of finishing in the money, so a 30-delta put ends in the money more often than 30% of the time. The gap grows with implied volatility and the days to expiry. Delta also comes from option prices alone, so it says nothing about how the stock has actually moved. Reading the assignment probability directly, from option prices and from the stock's own moves, is clearer than a delta rule of thumb. The <a href="options-probability-calculator.html#delta">options probability calculator</a> page shows the gap in numbers.</p>
     <h3>How do I avoid assignment on a cash secured put?</h3>
     <p>Choose a strike with a low probability of finishing in the money, ideally below a support level, check whether an earnings date falls before expiry, and defend the position when the strike comes under pressure, by rolling it down and out for a credit or by closing it.</p>
     <h3>When should I roll a cash secured put?</h3>
@@ -205,7 +205,7 @@
 
     <p class="note end">We use NVDA as an example. The same steps work for any stock with listed options. Nothing on this page is a recommendation to buy or sell NVDA stock or options.</p>
 
-    <h2>Try it on your own stock</h2>
+    <h2>Try it on your own stock for free</h2>
     <p>Every figure on this page comes from one download and a few clicks. The <a href="manual.html">manual</a> explains each control.</p>
     <p><a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a></p>
   </article>

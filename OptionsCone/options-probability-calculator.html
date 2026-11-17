@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="max-image-preview:large">
+<title>Free options probability calculator: touch and expiry odds for every strike | OptionsCone</title>
+<meta name="description" content="Professional options probability calculator, free for Windows: touch and expiry odds of every listed strike, calculated from its price, not estimated from delta.">
+<link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/options-probability-calculator.html">
+<link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Free options probability calculator: touch and expiry odds for every strike">
+<meta property="og:description" content="Professional options probability calculator, free for Windows: touch and expiry odds of every listed strike, calculated from its price, not estimated from delta.">
+<meta property="og:url" content="https://nikolai-alexander.com/OptionsCone/options-probability-calculator.html">
+<meta property="og:image" content="https://nikolai-alexander.com/OptionsCone/img/tools/prob-avgo-expire.png">
+<meta property="og:image:width" content="1400">
+<meta property="og:image:height" content="908">
+<meta property="og:image:alt" content="OptionsCone probability cone for Broadcom (AVGO) with the strikes it finishes beyond with a 20% probability marked for each expiry.">
+<meta property="og:site_name" content="OptionsCone">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=15">
+<style>
+  .byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+  .data-note { font-size: 13.5px; color: var(--ink-3); border-left: 3px solid var(--line); padding: 2px 0 2px 12px; }
+  .note.end { margin-top: 56px; }
+  .cta-top { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin: 18px 0 8px; }
+  .cta-top small { color: var(--ink-3); font-size: 13.5px; }
+  .guess { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; margin: 18px 0; }
+  .guess p { margin: 0; }
+  td.num, th.num { text-align: right; padding-right: 18px; }
+  td:first-child { width: auto; }
+  .related { list-style: none; padding: 0; }
+  .related li { margin: 0 0 8px; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "OptionsCone",
+  "operatingSystem": "Windows",
+  "applicationCategory": "FinanceApplication",
+  "description": "Options probability calculator: the probability of touching and of finishing beyond every listed strike of the expiries up to six months out, as a heatmap on the price chart.",
+  "url": "https://nikolai-alexander.com/OptionsCone/options-probability-calculator.html",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about"}
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Is the options probability calculator free?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Yes. The free version of OptionsCone for Windows shows the probability of touching and of finishing beyond every listed strike of the weekly and monthly expiries up to about six months out, together with implied volatility, open interest, volume, spreads and time value. It needs no broker account."}},
+    {"@type": "Question", "name": "What is the difference between the probability of touch and the probability of expiring in the money?",
+     "acceptedAnswer": {"@type": "Answer", "text": "The probability of expiring in the money is the chance that the stock finishes beyond the strike on expiration day. The probability of touch is the chance that it trades at the strike at any time before. A stock can touch a strike and come back, so the touch probability is higher, often about twice as high."}},
+    {"@type": "Question", "name": "Is delta the probability of an option expiring in the money?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Only roughly. Delta is often used as a shortcut, but for puts it understates the chance of finishing in the money and for calls it overstates it. The gap grows with implied volatility and with the time to expiry."}},
+    {"@type": "Question", "name": "Where do the probabilities come from?",
+     "acceptedAnswer": {"@type": "Answer", "text": "In the free version they come from option prices, each strike from its own implied volatility. They show what option prices assume, not a forecast. OptionsCone Pro adds the stock's own realized odds next to them."}}
+  ]
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="./"><picture><source media="(prefers-color-scheme: dark)" srcset="brand/optionscone-wordmark-dark.svg"><img src="brand/optionscone-wordmark-light.svg" alt="OptionsCone" width="183" height="34"></picture></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="use-cases.html">Use cases</a>
+      <a href="manual.html">Manual</a>
+      <a href="methods.html">Methods</a>
+      <a href="accuracy.html">Accuracy</a>
+      <a class="nav-pro" href="./#pro">Pro</a>
+      <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="doc">
+
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ul>
+      <li><a href="#example">Example: AVGO</a></li>
+      <li><a href="#touch">Touch or expire</a></li>
+      <li><a href="#read">How to read it</a></li>
+      <li><a href="#delta">Delta is not the probability</a></li>
+      <li><a href="#answers">Questions it answers</a></li>
+      <li><a href="#pro">Free and Pro</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <article class="prose">
+    <h1>Free options probability calculator: the odds for every strike and expiry</h1>
+    <p class="byline">By <a href="https://nikolai-alexander.com/#about">Nikolai Alexander</a> &middot; 17 November 2026</p>
+    <p class="lede">OptionsCone turns the option chain of a stock into heatmaps on the price chart, so you don't have to enter strikes and dates one by one. For every listed strike of the weekly and monthly expiries up to about six months out, it shows how likely the stock is to touch the strike before expiry and to finish beyond it. All of it sits as one heatmap on the price chart, next to the candles, earnings dates and your own support lines.</p>
+    <div class="cta-top">
+      <a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a>
+      <small>Free version, no account, no broker needed.<br>Windows may show a warning when you install, as it does for many new apps. Click <em>More info</em>, then <em>Run anyway</em>.</small>
+    </div>
+    <figure><img class="shot" src="img/tools/prob-avgo-expire.png" width="1400" height="908" alt="OptionsCone probability cone for Broadcom (AVGO) on 29 September 2026: each dot a listed strike, colored by the probability of touching it, with lines marking the strikes AVGO finishes beyond with a 20% probability at each expiry."><figcaption>AVGO on 29 September 2026. The color shows how likely each strike is to be touched. The lines mark, for each expiry, the strikes AVGO finishes below or above with a 20% probability.</figcaption></figure>
+
+    <h2 id="example">Example: how likely was AVGO to reach 320?</h2>
+    <p>On 29 September 2026 Broadcom (AVGO) traded at $361.29. Its next earnings report was due on 9 December, after the expiry in this example.</p>
+    <div class="guess"><p>Take a guess before you read on: how likely was AVGO, according to its option prices, to trade at $320 at some point before the expiry on 20 November, 52 days later? And how likely was it to still be below $320 on that day?</p></div>
+    <p>Option prices put the chance of finishing below $320 at 21%, so a sold 320 put would have ended in the money about one time in five. The chance of touching $320 on the way was much higher, 41%, about twice as high. The table shows a few more strikes of the same expiry.</p>
+    <div class="table-scroll"><table>
+      <tr><th>AVGO, 20 November</th><th class="num">Distance</th><th class="num">Finishes beyond</th><th class="num">Touches before expiry</th></tr>
+      <tr><td>300 put</td><td class="num">&minus;17.0%</td><td class="num">11%</td><td class="num">22%</td></tr>
+      <tr><td>320 put</td><td class="num">&minus;11.4%</td><td class="num">21%</td><td class="num">41%</td></tr>
+      <tr><td>330 put</td><td class="num">&minus;8.7%</td><td class="num">27%</td><td class="num">54%</td></tr>
+      <tr><td>400 call</td><td class="num">+10.7%</td><td class="num">23%</td><td class="num">47%</td></tr>
+      <tr><td>420 call</td><td class="num">+16.3%</td><td class="num">15%</td><td class="num">30%</td></tr>
+    </table></div>
+    <p class="data-note">Data: AVGO option chain, downloaded on 29 September 2026 at 10:44 New York time, quotes delayed about 15 minutes. Probabilities from option prices, calculated with OptionsCone. An illustration, not a recommendation.</p>
+
+    <h2 id="touch">Touch or expire: two different questions</h2>
+    <p>The probability of expiring in the money answers what happens on expiration day. The probability of touch answers what can happen before it: whether the stock trades at the strike at any time on the way. A stock can fall through a strike and recover, so the touch probability is always the higher one, and in the AVGO table it is roughly twice as high at every strike.</p>
+    <p>Which one matters depends on the trade. A put seller who holds to expiry cares most about finishing in the money. Anyone with a stop, a roll rule or simply nerves cares about the touch, because that is when the position comes under pressure.</p>
+    <figure><img class="shot" src="img/tools/prob-avgo-touch-dark.png" width="1400" height="908" loading="lazy" alt="The same AVGO cone with the contour lines switched to touch: the strikes AVGO touches with a 20% probability sit further from the price than those it finishes beyond."><figcaption>The same chart with the lines switched to touch. At the same 20%, the strikes sit further from the price.</figcaption></figure>
+
+    <h2 id="read">How to read it in OptionsCone</h2>
+    <ul>
+      <li><strong>Download the ticker</strong> during US trading hours. The chart fills with one column of dots per expiry, one dot per listed strike, calls above the price and puts below.</li>
+      <li><strong>Read the color</strong> as the probability of touching each strike: the stronger the color, the more likely the touch. In light mode it runs from pale to deep blue, in dark mode from dark to bright.</li>
+      <li><strong>Set the contour</strong> to <em>expire</em> or <em>touch</em> and pick a probability, for example 20%. The lines then mark, expiry by expiry, the strike with that probability below and above the price.</li>
+      <li><strong>Click any dot</strong> to open a box with the details of that contract: the strike, its distance from the price, the expiry and the days left, delta and gamma, its implied volatility, the touch and expire probability and the mid price. The box stays open while you switch the heatmap, for example to open interest or time value per day, and then shows those numbers for the same contract. Click the dot again or press Esc to close it.</li>
+      <li><strong>Draw your own levels</strong> with the horizontal line tool, for example a support level, and see how likely the stock is to reach it before each expiry.</li>
+    </ul>
+    <p>The <a href="manual.html">manual</a> explains every control.</p>
+
+    <h2 id="delta">Delta is not the probability</h2>
+    <p>Many traders use delta as a shortcut for the chance of expiring in the money and sell, for example, a 20-delta put expecting a 20% chance of assignment. For puts this understates the risk, for calls it overstates it, and the gap grows with implied volatility and with the time to expiry. How large the gap is depends on the stock. In the option chains of 12 October 2026, a 30-delta put on Apple came close to its delta. A 30-delta put on Bloom Energy, with about 72% implied volatility and five months to run, had a 48% chance of finishing in the money, 60% more than its delta suggests. OptionsCone works out the probability of every strike from its own option price, so you start with the probability itself instead of approximating it with delta.</p>
+    <p>The chance of finishing beyond the strike is also not quite the chance of a profitable trade. A seller keeps the premium, which gives the trade some room beyond the strike, and a buyer has to make up for it. The probability tells you how often the strike is reached, the premium tells you what that is worth.</p>
+
+    <h2 id="answers">Questions it answers</h2>
+    <ul>
+      <li><strong>How likely is my put to be assigned?</strong> The expire probability of its strike, at its expiry.</li>
+      <li><strong>Will the stock reach my stop or my target before a date?</strong> Draw the level and read the touch probability where it crosses each expiry.</li>
+      <li><strong>Which strike gives me a 15% chance at each expiry?</strong> Set the contour to 15%, the lines mark it across all expiries on the chart at once.</li>
+      <li><strong>Is an expiry with earnings priced differently?</strong> The stars on the date axis mark earnings, and the contour usually widens at the first expiry after a report.</li>
+    </ul>
+
+    <h2 id="pro">Free and Pro</h2>
+    <p>The free version shows the probabilities from option prices, plus implied volatility, open interest, volume, the bid-ask spread and the time value per day of every contract, each as its own heatmap. Open interest shows where other traders are positioned, volume and the bid-ask spread show how liquid a strike is and what it costs to trade, and the time value per day shows what a seller can earn each day. The probabilities describe what option prices assume, not what the stock will do.</p>
+    <p>OptionsCone Pro adds the stock's own realized odds next to them. 10y: industry-standard probability models, built on the stock's realized moves of the last ten years. Adaptive: the same models, adjusted to each stock's current conditions, the events ahead and how this particular stock typically responds to them. Where these odds and option prices disagree, an option can be priced richer or thinner than the stock's own moves support, which is where many traders look for an edge. The map shows it strike by strike.</p>
+
+    <h2 id="faq">FAQ</h2>
+    <h3>Is the options probability calculator free?</h3>
+    <p>Yes. The free version of OptionsCone for Windows shows the probability of touching and of finishing beyond every listed strike of the weekly and monthly expiries up to about six months out, together with implied volatility, open interest, volume, spreads and time value. It needs no broker account.</p>
+    <h3>What is the difference between the probability of touch and the probability of expiring in the money?</h3>
+    <p>The probability of expiring in the money is the chance that the stock finishes beyond the strike on expiration day. The probability of touch is the chance that it trades at the strike at any time before. A stock can touch a strike and come back, so the touch probability is higher, often about twice as high.</p>
+    <h3>Where do the probabilities come from?</h3>
+    <p>In the free version they come from option prices, each strike from its own implied volatility. They show what option prices assume, not a forecast. How they are calculated is explained in the <a href="methods.html">methods</a>, and how often they came true on the <a href="accuracy.html">accuracy</a> page.</p>
+
+    <h2>Related</h2>
+    <ul class="related">
+      <li><a href="expected-move-calculator.html">Expected move calculator</a>: the range option prices imply for each expiry, up to six months out.</li>
+      <li><a href="cash-secured-put.html">Cash secured puts</a>: picking a put with a low chance of assignment.</li>
+      <li><a href="covered-call.html">Covered calls</a>: picking the strike that pays the most.</li>
+    </ul>
+
+    <p class="note end">The probabilities in OptionsCone are estimates from option prices, not forecasts. Nothing on this page is a recommendation to buy or sell AVGO stock or options.</p>
+
+    <h2>Try it on your own tickers for free</h2>
+    <p>Download any US stock or ETF with listed options and see the odds for every strike and expiry in one picture.</p>
+    <p><a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a></p>
+  </article>
+
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/eVqbJ14of3vwabb4NSbII00" rel="nofollow">Cancel subscription here</a></p>
+      <p>Not financial advice.</p>
+    </div>
+    <div>
+      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="changelog.html">What&#39;s new</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
