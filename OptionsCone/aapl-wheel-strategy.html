@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="max-image-preview:large">
+<title>AAPL wheel strategy: how fast did assigned shares recover?</title>
+<meta name="description" content="AAPL wheel: getting assigned is the step most sellers fear. 88% of assigned AAPL puts were back at the strike within 90 days, the average stock 77%.">
+<link rel="canonical" href="https://nikolai-alexander.com/OptionsCone/aapl-wheel-strategy.html">
+<link rel="icon" href="brand/favicon-16.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AAPL wheel strategy: how fast did assigned shares recover?">
+<meta property="og:description" content="AAPL wheel: getting assigned is the step most sellers fear. 88% of assigned AAPL puts were back at the strike within 90 days, the average stock 77%.">
+<meta property="og:url" content="https://nikolai-alexander.com/OptionsCone/aapl-wheel-strategy.html">
+<meta property="og:image" content="https://nikolai-alexander.com/OptionsCone/img/social.png?v=6">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="OptionsCone">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=15">
+<style>
+  .byline { font-size: 14px; color: var(--ink-3); margin: 0 0 22px; }
+  .data-note { font-size: 13.5px; color: var(--ink-3); border-left: 3px solid var(--line); padding: 2px 0 2px 12px; }
+  .note.end { margin-top: 56px; }
+  .glance { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 22px 0 8px; }
+  .glance div { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 14px 12px; }
+  .glance b { display: block; font: 600 28px/1.1 var(--sans); color: var(--ink); letter-spacing: -0.01em; }
+  .glance span { display: block; font-size: 13.5px; color: var(--ink-2); margin-top: 6px; line-height: 1.35; }
+  .glance small { display: block; font-size: 12.5px; color: var(--ink-3); margin-top: 6px; }
+  td.num, th.num { text-align: right; padding-right: 18px; }
+  td:first-child { width: auto; }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "AAPL wheel strategy: how fast did assigned AAPL shares get back to the strike?",
+  "description": "AAPL wheel: getting assigned is the step most sellers fear. 88% of assigned AAPL puts were back at the strike within 90 days, the average stock 77%.",
+  "author": {"@type": "Person", "name": "Nikolai Alexander", "url": "https://nikolai-alexander.com/#about",
+             "description": "I studied business and econometrics, worked in biotech as product lead and later associate commercial director, and have done quantitative research on financial markets for more than ten years. Today I advise on data analytics and teach statistical methods up to PhD level, and I build research tools for market analysis.",
+             "sameAs": ["https://x.com/nikkn_alexander"]},
+  "publisher": {"@type": "Organization", "name": "OptionsCone"},
+  "datePublished": "2026-11-19",
+  "dateModified": "2026-11-19",
+  "about": ["AAPL wheel strategy", "selling puts on AAPL", "AAPL covered call", "cash secured put", "assignment"],
+  "mainEntityOfPage": "https://nikolai-alexander.com/OptionsCone/aapl-wheel-strategy.html"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "How often do AAPL puts expire worthless?",
+     "acceptedAnswer": {"@type": "Answer", "text": "From November 2016 to October 2026, 87% of 30-day AAPL puts one typical move below the price expired worthless, about 7% below the price at AAPL's usual volatility. That is the same as for the average S&P 500 stock. Half a typical move below it was 77%, two typical moves below it 97%."}},
+    {"@type": "Question", "name": "How long did AAPL take to get back to the strike after an assignment?",
+     "acceptedAnswer": {"@type": "Answer", "text": "Of the puts one typical move below the price that finished in the money, AAPL closed at or above the strike again within 30 days in 70% of cases, within 60 days in 81% and within 90 days in 88%. For the average S&P 500 stock it was 58%, 70% and 77%."}},
+    {"@type": "Question", "name": "Do covered calls on AAPL get called away often?",
+     "acceptedAnswer": {"@type": "Answer", "text": "More often than on the average stock. One typical move above the price, 77% of AAPL's 30-day calls expired worthless, against 83% for the average S&P 500 stock, and only 65% when an earnings report fell inside the 30 days. When the shares were called away, AAPL closed a median 3.2% above the strike."}}
+  ]
+}
+</script>
+<script data-goatcounter="https://optionscone.goatcounter.com/count" async src="count.js"></script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="./"><picture><source media="(prefers-color-scheme: dark)" srcset="brand/optionscone-wordmark-dark.svg"><img src="brand/optionscone-wordmark-light.svg" alt="OptionsCone" width="183" height="34"></picture></a>
+    <nav class="site-nav" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="use-cases.html" aria-current="page">Use cases</a>
+      <a href="manual.html">Manual</a>
+      <a href="methods.html">Methods</a>
+      <a href="accuracy.html">Accuracy</a>
+      <a class="nav-pro" href="./#pro">Pro</a>
+      <a class="btn small primary" href="https://licence.optionscone.com/get/free">Download</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+<div class="doc">
+
+  <nav class="toc" aria-label="On this page">
+    <p>On this page</p>
+    <ul>
+      <li><a href="#glance">AAPL at a glance</a></li>
+      <li><a href="#put">Step 1: selling the put</a></li>
+      <li><a href="#assigned">Step 2: if you get assigned</a></li>
+      <li><a href="#call">Step 3: the covered call</a></li>
+      <li><a href="#optionscone">Setting it up in OptionsCone</a></li>
+      <li><a href="#data">Data and limits</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <article class="prose">
+    <h1>AAPL wheel strategy: how fast did assigned AAPL shares get back to the strike?</h1>
+    <p class="byline">By <a href="https://nikolai-alexander.com/#about">Nikolai Alexander</a> &middot; 19 November 2026</p>
+    <p class="lede">The wheel on AAPL runs in three steps: sell a put, take the shares if you are assigned, then sell covered calls until the shares are called away. This guide shows how each step went for AAPL on every trading day of the last ten years, next to the average S&amp;P 500 stock.</p>
+
+    <h2 id="glance">AAPL at a glance</h2>
+    <div class="glance">
+      <div><b>7.3%</b><span>one typical 30-day move</span><small>average stock: 7.9%</small></div>
+      <div><b>87%</b><span>of puts one typical move below the price expired worthless</span><small>average stock: 87%</small></div>
+      <div><b>88%</b><span>of assigned puts were back at the strike within 90 days</span><small>average stock: 77%</small></div>
+      <div><b>77%</b><span>of calls one typical move above the price expired worthless</span><small>average stock: 83%</small></div>
+    </div>
+    <p>AAPL moves a little less than the average S&amp;P 500 stock, about 0.9 times as much. Over 30 days, one typical move was about 7.3% at its usual volatility of 24% over the last ten years. It reports earnings four times a year, and on report day the stock moved a median 3.3%, against 3.2% for the average stock. In late October 2026 its volatility over the previous three months was about 19%, which puts one typical move at roughly 5.6%.</p>
+    <p>A typical move is the stock's volatility over the previous three months, scaled to 30 days. All strikes in this guide sit a number of typical moves from the price, so the distances follow AAPL's own swings instead of a fixed percentage.</p>
+
+    <h2 id="put">Step 1: selling the put</h2>
+    <p>The wheel starts with a sold put, usually a <a href="cash-secured-put.html">cash secured put</a>. If AAPL stays above the strike, the put expires worthless and you keep the premium. The table shows how often that happened for 30-day puts.</p>
+    <div class="table-scroll"><table>
+      <tr><th>Strike below the price</th><th class="num">At AAPL's usual volatility</th><th class="num">AAPL puts expired worthless</th><th class="num">Average stock</th></tr>
+      <tr><td>&frac12; typical move</td><td class="num">3.4%</td><td class="num">77%</td><td class="num">75%</td></tr>
+      <tr><td>1 typical move</td><td class="num">6.8%</td><td class="num">87%</td><td class="num">87%</td></tr>
+      <tr><td>1&frac12; typical moves</td><td class="num">10.0%</td><td class="num">94%</td><td class="num">94%</td></tr>
+      <tr><td>2 typical moves</td><td class="num">13.1%</td><td class="num">97%</td><td class="num">97%</td></tr>
+    </table></div>
+    <p>Measured in its own typical moves, AAPL's puts expired worthless about as often as the average stock's at every distance. In percent, the strikes sat a little closer to the price, because AAPL swings a little less.</p>
+    <p><strong>Earnings:</strong> unlike for most stocks, a report inside the 30 days did not lower the share for AAPL's puts. One typical move below the price, 88% of AAPL's puts expired worthless with a report and 86% without. For the average stock it was 85% and 88%.</p>
+    <p><strong>Touched before expiry:</strong> a bit more than one put in four at one typical move was touched before expiry (28%). Of those, 52% still expired worthless, against 54% for the average stock, so a touch alone did not decide the trade.</p>
+
+    <h2 id="assigned">Step 2: if you get assigned</h2>
+    <p>When a put one typical move below the price finished in the money, AAPL closed a median 3.0% below the strike at expiry, and in one case in ten more than 10% below it. For the average stock it was 3.5% and 13%.</p>
+    <p>The question for the wheel is how long the shares take to get back to the strike, the price you paid for them. The table shows how often AAPL closed at or above the strike at least once within 30, 60 and 90 days after the assignment.</p>
+    <div class="table-scroll"><table>
+      <tr><th>Back at the strike within</th><th class="num">AAPL</th><th class="num">Average stock</th></tr>
+      <tr><td>30 days</td><td class="num">70%</td><td class="num">58%</td></tr>
+      <tr><td>60 days</td><td class="num">81%</td><td class="num">70%</td></tr>
+      <tr><td>90 days</td><td class="num">88%</td><td class="num">77%</td></tr>
+    </table></div>
+    <p>Assigned AAPL shares got back to the strike clearly more often than those of the average stock, and they also fell less far below it. About one put in eight finished in the money, so these numbers rest on about 330 assignments over ten years. That makes them less certain than the numbers for the average stock, but the gap of about 11 points held at all three horizons.</p>
+
+    <h2 id="call">Step 3: the covered call</h2>
+    <p>With the shares in the account, the wheel continues with <a href="covered-call.html">covered calls</a>. If AAPL stays below the strike, the call expires worthless, you keep the premium and the shares. The table shows how often that happened for 30-day calls.</p>
+    <div class="table-scroll"><table>
+      <tr><th>Strike above the price</th><th class="num">At AAPL's usual volatility</th><th class="num">AAPL calls expired worthless</th><th class="num">Average stock</th></tr>
+      <tr><td>&frac12; typical move</td><td class="num">3.6%</td><td class="num">54%</td><td class="num">65%</td></tr>
+      <tr><td>1 typical move</td><td class="num">7.3%</td><td class="num">77%</td><td class="num">83%</td></tr>
+      <tr><td>1&frac12; typical moves</td><td class="num">11.1%</td><td class="num">88%</td><td class="num">93%</td></tr>
+      <tr><td>2 typical moves</td><td class="num">15.1%</td><td class="num">96%</td><td class="num">97%</td></tr>
+    </table></div>
+    <p>AAPL's calls expired worthless less often than the average stock's at every distance, most clearly close to the price. Earnings made the biggest difference: one typical move above the price, 65% of the calls expired worthless when a report fell inside the 30 days, and 82% without one. For the average stock it was 77% and 85%.</p>
+    <p><strong>When the shares were called away,</strong> AAPL closed a median 3.2% above the strike at expiry, and in one case in ten more than 8% above it. That gain goes to the buyer of the call. For the average stock it was 2.9% and 10%.</p>
+
+    <h2 id="optionscone">Setting it up in OptionsCone</h2>
+    <p>The numbers above describe the past performance of the strategy. OptionsCone shows the same questions for AAPL's options as they are listed today:</p>
+    <ul>
+      <li><strong>Download AAPL</strong> and look at the expiries around 30 days out.</li>
+      <li><strong>Set the contour to <em>expire</em>.</strong> Below the price, the line marks the strikes AAPL finishes below with the chosen probability, from today's option prices. Above the price, it does the same for calls.</li>
+      <li><strong>Switch the contour to <em>touch</em></strong> to see where a put or a call is likely to come under pressure first.</li>
+      <li><strong>With Pro,</strong> the realized odds show the same from AAPL's own moves next to the odds from option prices, and the expected value map shows what each short option is worth at expiration on average, as a share of its premium.</li>
+    </ul>
+
+    <h2 id="data">Data and limits</h2>
+    <p class="data-note">AAPL daily closing, high and low prices for the last ten years, November 2016 to October 2026, adjusted for splits. Every trading day is a start date (2,493 starts). 30 days means 21 trading days. Worthless means the close on the last day was on the safe side of the strike. Touched means the daily high or low reached it. The average stock pools 469 of today's S&amp;P 500 members over the same years.</p>
+    <ul>
+      <li>AAPL rose strongly over these ten years, and the average stock is made of today's index members, so both look back on a history of winners. A strong uptrend favors puts and quick recoveries after an assignment, works against covered calls, and the coming years need not look the same.</li>
+      <li>The strikes are set with the stock's past volatility. Implied volatility is usually higher, so a strike one typical move away by the implied volatility your platform shows sits a little further out.</li>
+      <li>All numbers are shares of many past trades, not a prediction for a single trade. AAPL's numbers also come from one stock only and are less certain than those of the average stock.</li>
+    </ul>
+
+    <h2 id="faq">AAPL wheel FAQ</h2>
+    <h3>How often do AAPL puts expire worthless?</h3>
+    <p>From November 2016 to October 2026, 87% of 30-day AAPL puts one typical move below the price expired worthless, about 7% below the price at AAPL's usual volatility. That is the same as for the average S&amp;P 500 stock. Half a typical move below it was 77%, two typical moves below it 97%.</p>
+    <h3>How long did AAPL take to get back to the strike after an assignment?</h3>
+    <p>Of the puts one typical move below the price that finished in the money, AAPL closed at or above the strike again within 30 days in 70% of cases, within 60 days in 81% and within 90 days in 88%. For the average S&amp;P 500 stock it was 58%, 70% and 77%.</p>
+    <h3>Do covered calls on AAPL get called away often?</h3>
+    <p>More often than on the average stock. One typical move above the price, 77% of AAPL's 30-day calls expired worthless, against 83% for the average S&amp;P 500 stock, and only 65% when an earnings report fell inside the 30 days. When the shares were called away, AAPL closed a median 3.2% above the strike.</p>
+
+    <p>The wheel on other stocks: <a href="nvda-wheel-strategy.html">NVDA wheel strategy</a>.</p>
+
+    <p class="note end">Nothing on this page is a recommendation to buy or sell AAPL stock or options.</p>
+
+    <h2>Try it on AAPL today for free</h2>
+    <p>See where AAPL's listed puts and calls sit right now, with the odds for every strike and expiry. The <a href="manual.html">manual</a> explains each control.</p>
+    <p><a class="btn primary" href="https://licence.optionscone.com/get/free">Download for Windows</a></p>
+  </article>
+
+</div>
+</main>
+
+<footer class="site-foot">
+  <div class="wrap">
+    <div>
+      <p><a href="/OptionsCone/legal.html" rel="nofollow">Legal notice</a> &middot; <a href="https://billing.stripe.com/p/login/eVqbJ14of3vwabb4NSbII00" rel="nofollow">Cancel subscription here</a></p>
+      <p>Not financial advice.</p>
+    </div>
+    <div>
+      <p><a href="./">Home</a> &middot; <a href="manual.html">Manual</a> &middot; <a href="methods.html">Methods</a> &middot; <a href="changelog.html">What&#39;s new</a> &middot; <a href="mailto:research@nikolai-alexander.com">Report a problem</a></p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
