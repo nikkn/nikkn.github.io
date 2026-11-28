@@ -111,6 +111,11 @@ details.acc[open] > summary::after { content: "\2212"; }
 :root[data-theme="dark"] { --acc-tb: #55575e; }
 @media (max-width: 860px) { .acc-stats, .acc-charts { grid-template-columns: 1fr; } .acc-num { font-size: 40px; } }
 @media (max-width: 520px) { .acc-heat { grid-template-columns: 1fr; } }
+.buy-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; align-items: center; margin-top: 24px; }
+.buy-price { font-size: 17px; line-height: 1.6; color: var(--ink); margin: 8px 0 16px; }
+.buy-facts { margin: 0; padding-left: 18px; font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+.buy-facts li { margin: 0 0 4px; }
+@media (max-width: 860px) { .buy-row { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -337,21 +342,21 @@ details.acc[open] > summary::after { content: "\2212"; }
 
 
     <h3 class="sub-h">Get Pro today</h3>
-    <div class="grid2 plans">
+    <div class="buy-row">
       <div class="plan">
-        <h3>Monthly</h3>
-        <p class="price">19.90 USD <span class="per">per month</span></p>
-        <p><a class="btn primary" href="https://licence.optionscone.com/buy?plan=monthly">Get Pro monthly</a></p>
-        <p class="per cancel">Cancel any time</p>
+        <h3>Pro</h3>
+        <p class="buy-price">19.90 USD per month<br>189 USD per year <span class="save">save 20%</span></p>
+        <div class="btn-row"><a class="btn primary" href="https://licence.optionscone.com/buy?plan=monthly">Get Pro monthly</a><a class="btn primary" href="https://licence.optionscone.com/buy?plan=yearly">Get Pro yearly</a></div>
       </div>
-      <div class="plan">
-        <h3>Yearly <span class="save">save 20%</span></h3>
-        <p class="price">189 USD <span class="per">per year</span></p>
-        <p><a class="btn primary" href="https://licence.optionscone.com/buy?plan=yearly">Get Pro yearly</a></p>
-        <p class="per cancel">Cancel any time</p>
-      </div>
+      <ul class="buy-facts">
+        <li>The subscription renews automatically every month or year. You can cancel any time.</li>
+        <li>Pro keeps working until the end of the paid period.</li>
+        <li>Prices include sales tax or VAT.</li>
+        <li>The checkout shows the amount in your currency before you pay.</li>
+        <li>One key runs on up to two of your own computers.</li>
+        <li>See the <a href="legal.html#terms" rel="nofollow">terms of sale</a>.</li>
+      </ul>
     </div>
-    <p class="fine">The subscription renews automatically every month or year. You can cancel any time, and Pro keeps working until the end of the paid period. Prices include sales tax or VAT. The checkout shows the amount in your currency before you pay. One key runs on up to two of your own computers. See the <a href="legal.html#terms" rel="nofollow">terms of sale</a>.</p>
 
     <h3 class="sub-h">From purchase to Pro in a minute</h3>
     <ol class="steps">
