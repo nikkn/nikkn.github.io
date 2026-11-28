@@ -116,6 +116,7 @@ details.acc[open] > summary::after { content: "\2212"; }
 .buy-facts { margin: 0; padding-left: 18px; font-size: 15px; line-height: 1.55; color: var(--ink-2); }
 .buy-facts li { margin: 0 0 4px; }
 @media (max-width: 860px) { .buy-row { grid-template-columns: 1fr; } }
+.marks li::before { content: counter(m, upper-alpha); }
 </style>
 </head>
 <body>
@@ -177,14 +178,14 @@ details.acc[open] > summary::after { content: "\2212"; }
       </div>
     </div>
     <figure class="shot" style="margin:34px 0 14px">
-      <a href="img/features.png"><img src="img/features-annotated.png" width="1824" height="998" loading="lazy" alt="OptionsCone showing Apple (AAPL): a selected contract with its tooltip, contour lines for three models, volatility badges, earnings stars, a moving average and the readout of a candle."></a>
+      <a href="img/features.png?v=7"><img src="img/features-annotated.png?v=7" width="1555" height="928" loading="lazy" alt="OptionsCone Pro showing Apple (AAPL): the shortlist of puts with the most premium per day, the second one selected with its tooltip, the implied 30% touch contour, volatility badges, earnings stars, a moving average and the readout of a candle."></a>
     </figure>
     <ol class="marks">
-      <li><strong>Candle readout.</strong> Open, high, low and close of the day under the pointer.</li>
-      <li><strong>Price chart tools.</strong> Two moving averages, trend and horizontal lines, daily or weekly candles, ten years of history.</li>
-      <li><strong>Contour lines.</strong> The strikes that match your chosen probability at every expiry, one line per model.</li>
+      <li><strong>Shortlist.</strong> The ten contracts that best fit a goal, such as the most premium per day, within your limits. With Pro, the goals include the highest expected value and the least risk per premium.</li>
+      <li><strong>Price chart.</strong> Two moving averages, trend and horizontal lines, daily or weekly candles and ten years of history, with the open, high, low and close of the day under the pointer.</li>
+      <li><strong>Contour lines.</strong> The strikes that match your chosen probability of a touch or of finishing beyond the strike, at every expiry, one line per model.</li>
       <li><strong>Expiry badges.</strong> The implied volatility of each expiry, and how it compares with the stock&#39;s realized volatility.</li>
-      <li><strong>Selected contract.</strong> Click a dot and its tooltip stays open: delta, gamma, implied volatility, touch and expire probabilities from the option market and, with Pro, from the realized odds.</li>
+      <li><strong>Selected contract.</strong> Click a dot or a shortlist row and its tooltip stays open: touch and expire probabilities, implied volatility, spread and more, depending on the map. Pro adds maps for potential opportunities and for the risk you take on.</li>
       <li><strong>Earnings dates.</strong> Filled where confirmed, hollow where projected; an expiry that spans a report prices a different risk.</li>
     </ol>
   </section>
